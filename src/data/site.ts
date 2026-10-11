@@ -4,7 +4,10 @@ export const siteConfig = {
   motto: "Leading with Grace, Serving with Integrity",
   description: "Official website of the Leo Club of EIC, Colombo 7. Empowering youth leaders to create sustainable community impact through compassionate service, fellowship, and visionary leadership.",
   url: "https://www.eicleos.org",
-  charterYear: 2023,
+  charterYear: 2022,
+  district: "District 306 D2",
+  sponsoringClub: "Lions Club of Colombo West",
+  charteredUnder: "Lions Club of Colombo West",
   address: "51 Sir Ernest De Silva Mawatha, Flower Terrace Rd, Colombo 00700",
   socials: {
     instagram: "https://www.instagram.com/leoclubofeic/",

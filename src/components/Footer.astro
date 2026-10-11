@@ -38,46 +38,19 @@ import RippleWaveLoader from './RippleWaveLoader.astro';
         <div class="footer-hero-titles">
           <div class="footer-badge-eyebrow">
             <span class="badge-sparkle">✦</span>
-            <span>District 306 — Sri Lanka</span>
+            <span>{siteConfig.district}</span>
             <span class="badge-sep">•</span>
-            <span>Chartered {siteConfig.charterYear}</span>
+            <span>Est. {siteConfig.charterYear}</span>
+            <span class="badge-sep">•</span>
+            <span>Chartered Under {siteConfig.charteredUnder}</span>
           </div>
           <h3 class="footer-motto-title">
             Leading with <span class="text-gold-serif">Grace,</span> Serving with <span class="text-iris-serif">Integrity.</span>
           </h3>
           <p class="footer-hero-subtitle">
-            {siteConfig.fullName} — Colombo 00700
+            {siteConfig.fullName} — Colombo 00700, Sri Lanka
           </p>
         </div>
-      </div>
-
-      <!-- Quick Connect / Fellowship Subscription Pill -->
-      <div class="footer-connect-box">
-        <p class="connect-label">Stay In Fellowship</p>
-        <form class="footer-subscribe-form" id="footer-subscribe-form" onsubmit="return false;">
-          <div class="subscribe-input-wrap">
-            <input 
-              type="email" 
-              id="footer-email-input"
-              placeholder="Enter your email for updates..." 
-              class="footer-email-input" 
-              required
-              aria-label="Email address for fellowship updates"
-            />
-            <button type="submit" id="footer-submit-btn" class="footer-submit-btn">
-              <span class="btn-text">Connect</span>
-              <div class="btn-loader" style="display: none;">
-                <RippleWaveLoader size="sm" color="gold" />
-              </div>
-              <svg class="btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-              </svg>
-            </button>
-          </div>
-          <p id="footer-feedback" class="footer-feedback-msg" style="display: none;">
-            ✦ Thank you! We look forward to staying in touch.
-          </p>
-        </form>
       </div>
     </div>
 
@@ -96,8 +69,8 @@ import RippleWaveLoader from './RippleWaveLoader.astro';
             <span>6°55'12"N, 79°51'45"E • Colombo 7</span>
           </div>
           <p class="hq-sponsor">
-            Sponsored by <strong>Lions Club of Colombo East</strong><br />
-            Chartered Under <strong>Lions Clubs International</strong>
+            Chartered Under <strong>{siteConfig.charteredUnder}</strong><br />
+            <span>{siteConfig.district} • Est. {siteConfig.charterYear}</span>
           </p>
         </div>
       </div>
@@ -163,7 +136,7 @@ import RippleWaveLoader from './RippleWaveLoader.astro';
           <div class="pulse-loader-mini">
             <RippleWaveLoader size="sm" color="gold" />
           </div>
-          <span class="status-text">Active Charter • 100% In Good Standing</span>
+          <span class="status-text">Active Charter • {siteConfig.district} • Est. {siteConfig.charterYear}</span>
         </div>
         <p class="copyright-text">
           © 2026 {siteConfig.fullName}. All rights reserved.
@@ -288,18 +261,10 @@ import RippleWaveLoader from './RippleWaveLoader.astro';
      Top Heroic Crest & Creed Banner
      ========================================================================= */
   .footer-hero-banner {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
+    display: flex;
+    align-items: center;
     padding-bottom: clamp(2.5rem, 5vw, 3.5rem);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  @media (min-width: 960px) {
-    .footer-hero-banner {
-      grid-template-columns: 1.4fr 1fr;
-      align-items: center;
-    }
   }
 
   .footer-hero-brand {
@@ -387,83 +352,6 @@ import RippleWaveLoader from './RippleWaveLoader.astro';
     font-size: 0.86rem;
     color: rgba(255, 255, 255, 0.65);
     letter-spacing: 0.02em;
-  }
-
-  /* Connect Pill Form */
-  .footer-connect-box {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(194, 155, 77, 0.25);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-radius: var(--radius-lg);
-    padding: clamp(1.25rem, 3vw, 1.75rem);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
-  }
-
-  .connect-label {
-    font-size: 0.78rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: #F4E8C9;
-    margin-bottom: 0.75rem;
-  }
-
-  .subscribe-input-wrap {
-    display: flex;
-    gap: 0.5rem;
-    background: rgba(16, 8, 28, 0.6);
-    border: 1px solid rgba(122, 87, 184, 0.35);
-    border-radius: var(--radius-full);
-    padding: 0.3rem 0.3rem 0.3rem 1.1rem;
-    transition: border-color var(--duration-fast) ease;
-  }
-
-  .subscribe-input-wrap:focus-within {
-    border-color: var(--c-gold);
-    box-shadow: 0 0 16px rgba(194, 155, 77, 0.25);
-  }
-
-  .footer-email-input {
-    background: transparent;
-    border: none;
-    color: #FFFFFF;
-    font-size: 0.86rem;
-    width: 100%;
-    outline: none;
-  }
-
-  .footer-email-input::placeholder {
-    color: rgba(255, 255, 255, 0.45);
-  }
-
-  .footer-submit-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    padding: 0.65rem 1.35rem;
-    background: linear-gradient(135deg, #C29B4D 0%, #9F7B2F 100%);
-    color: #FFFFFF;
-    font-size: 0.82rem;
-    font-weight: 600;
-    border-radius: var(--radius-full);
-    box-shadow: 0 4px 14px rgba(194, 155, 77, 0.35);
-    transition: all var(--duration-fast) ease;
-    white-space: nowrap;
-    border: none;
-  }
-
-  .footer-submit-btn:hover {
-    background: linear-gradient(135deg, #D4AF60 0%, #B88E3E 100%);
-    box-shadow: 0 6px 18px rgba(194, 155, 77, 0.5);
-    transform: translateY(-1px);
-  }
-
-  .footer-feedback-msg {
-    margin-top: 0.75rem;
-    font-size: 0.8rem;
-    color: #F4E8C9;
-    font-style: italic;
   }
 
   /* =========================================================================
@@ -694,44 +582,3 @@ import RippleWaveLoader from './RippleWaveLoader.astro';
     box-shadow: 0 4px 16px rgba(122, 87, 184, 0.4);
   }
 </style>
-
-<script>
-  // Client-side quick feedback for the fellowship subscribe form
-  function initFooterForm() {
-    const form = document.getElementById('footer-subscribe-form');
-    const input = document.getElementById('footer-email-input') as HTMLInputElement | null;
-    const btn = document.getElementById('footer-submit-btn');
-    const feedback = document.getElementById('footer-feedback');
-    if (!form || !btn || !input || !feedback) return;
-
-    btn.addEventListener('click', () => {
-      if (!input.value || !input.checkValidity()) {
-        input.reportValidity();
-        return;
-      }
-      const btnText = btn.querySelector('.btn-text') as HTMLElement | null;
-      const btnLoader = btn.querySelector('.btn-loader') as HTMLElement | null;
-      const btnIcon = btn.querySelector('.btn-icon') as HTMLElement | null;
-
-      if (btnText) btnText.style.display = 'none';
-      if (btnIcon) btnIcon.style.display = 'none';
-      if (btnLoader) btnLoader.style.display = 'inline-flex';
-
-      setTimeout(() => {
-        if (btnLoader) btnLoader.style.display = 'none';
-        if (btnText) {
-          btnText.textContent = 'Joined ✓';
-          btnText.style.display = 'inline';
-        }
-        feedback.style.display = 'block';
-        input.disabled = true;
-      }, 700);
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initFooterForm);
-  } else {
-    initFooterForm();
-  }
-</script>

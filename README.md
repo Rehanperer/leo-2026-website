@@ -2,7 +2,7 @@
 
 > *"Leading with Grace, Serving with Integrity"*
 
-Official 2026 digital home for the **Leo Club of EIC (Ethos International), Colombo 7**, chartered under Lions Clubs International. Designed with an Apple-grade luxury aesthetic featuring bespoke botanical accents, cinematic iris bloom intro, living Earth globe showcases, and fluid responsive design.
+Official 2026 digital home for the **Leo Club of EIC (Ethos International), Colombo 7**, chartered under the **Lions Club of Colombo West (District 306 D2, Est. 2022)**. Designed with an Apple-grade luxury aesthetic featuring bespoke botanical accents, cinematic iris bloom intro, living Earth globe showcases, and fluid responsive design.
 
 ---
 
@@ -12,7 +12,7 @@ Official 2026 digital home for the **Leo Club of EIC (Ethos International), Colo
 - **🌿 Responsive Botanical Vines**: Scroll-triggered vector vines with blooming golden buds and tender tendrils that gracefully frame content across desktop and mobile devices.
 - **🌍 Living Earth & Iris Showcase**: High-fidelity unclipped watercolor artwork of the blooming purple iris embracing the living planet with celestial orbital rings.
 - **💎 Frosted Glass Island Navigation**: 24px Apple backdrop-blur saturate pill navbar with interactive rotating crest, smooth page anchor transitions, and mobile drawer.
-- **🏛️ Luxury Royal Plum Footer**: Opulent nightfall finale with 4-column bento grid, interactive "Stay in Fellowship" connect pill, live charter pulse, and crest watermark.
+- **🏛️ Luxury Royal Plum Footer**: Opulent nightfall finale with 4-column bento grid, official charter credentials, live charter pulse, and crest watermark.
 - **⚡ Ultra-Fast Static Architecture**: Built on Astro 5 + TypeScript + pure modern CSS keyframes for 60fps animations with zero heavy client JavaScript overhead.
 
 ---
@@ -67,4 +67,4 @@ npm run preview
 
 ## 📜 License
 
-Created with pride for the **Leo Club of EIC, Colombo 7** (Lions Clubs International District 306). All rights reserved © 2026.
+Created with pride for the **Leo Club of EIC, Colombo 7** (Lions Clubs International District 306 D2 • Chartered under Lions Club of Colombo West • Est. 2022). All rights reserved © 2026.
