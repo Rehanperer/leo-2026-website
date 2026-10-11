@@ -1,0 +1,154 @@
+---
+import { pillars } from '../data/pillars';
+import Icon from './Icon.astro';
+import BotanicalAccent from './BotanicalAccent.astro';
+import ScrollVine from './ScrollVine.astro';
+---
+
+<section id="pillars" class="section pillars-section" aria-label="What We Do">
+  <!-- Scroll-triggered growing botanical vine on the right -->
+  <ScrollVine side="right" height={620} />
+
+  <!-- Botanical corner sprays framing the Areas of Impact bento grid -->
+  <BotanicalAccent position="top-left" size="clamp(190px, 24vw, 320px)" opacity={0.34} />
+  <BotanicalAccent position="bottom-right" size="clamp(180px, 22vw, 300px)" opacity={0.3} />
+
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow eyebrow-gold">Areas of Impact</span>
+      <h2 class="section-title">
+        What We <em>Do</em>
+      </h2>
+      <p class="section-subtitle">
+        Through diverse avenues of humanitarian service, ecological action, and leadership development, we create meaningful change across communities.
+      </p>
+    </div>
+
+    <div class="bento-grid">
+      {pillars.map((pillar) => (
+        <div class={`pillar-card card-glass ${pillar.highlight ? 'pillar-featured' : ''}`}>
+          <div class="pillar-icon-box">
+            <Icon name={pillar.icon} size={24} class="pillar-icon" />
+          </div>
+
+          <div class="pillar-content">
+            <span class="pillar-tagline">{pillar.tagline}</span>
+            <h3 class="pillar-title">{pillar.title}</h3>
+            <p class="pillar-desc">{pillar.description}</p>
+          </div>
+
+          <div class="pillar-footer">
+            <span class="pillar-link">
+              <span>Learn more</span>
+              <Icon name="arrow-right" size={14} />
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .pillars-section {
+    position: relative;
+    overflow-x: clip;
+    background-color: var(--c-bg);
+  }
+
+  .bento-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.25rem, 2.5vw, 1.85rem);
+  }
+
+  @media (min-width: 680px) {
+    .bento-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1040px) {
+    .bento-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .pillar-card {
+    padding: clamp(1.75rem, 3.5vw, 2.35rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 280px;
+  }
+
+  .pillar-featured {
+    background: linear-gradient(180deg, #FFFFFF 0%, #F9F5FD 100%);
+    border-color: rgba(122, 87, 184, 0.22);
+  }
+
+  .pillar-icon-box {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-md);
+    background: var(--c-iris-mist);
+    border: 1px solid var(--c-border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--c-iris-deep);
+    margin-bottom: 1.5rem;
+    transition: transform var(--duration-fast) ease, background var(--duration-fast) ease;
+  }
+
+  .pillar-card:hover .pillar-icon-box {
+    transform: scale(1.08) translateY(-2px);
+    background: var(--c-iris);
+    color: #FFFFFF;
+  }
+
+  .pillar-tagline {
+    display: block;
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--c-gold-deep);
+    margin-bottom: 0.4rem;
+  }
+
+  .pillar-title {
+    font-family: var(--font-serif);
+    font-size: 1.45rem;
+    font-weight: 600;
+    color: var(--c-text-primary);
+    line-height: 1.25;
+    margin-bottom: 0.75rem;
+  }
+
+  .pillar-desc {
+    font-size: 0.92rem;
+    color: var(--c-text-secondary);
+    line-height: 1.65;
+  }
+
+  .pillar-footer {
+    margin-top: 1.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(122, 87, 184, 0.08);
+  }
+
+  .pillar-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--c-iris-deep);
+    transition: gap var(--duration-fast) ease;
+  }
+
+  .pillar-card:hover .pillar-link {
+    gap: 0.65rem;
+  }
+</style>

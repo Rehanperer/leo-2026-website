@@ -1,0 +1,476 @@
+---
+import { siteConfig } from '../data/site';
+---
+
+<header class="nav-wrapper" id="site-header">
+  <div class="nav-container">
+    <nav class="nav-island" aria-label="Primary Navigation">
+      <!-- Brand Crest & Title -->
+      <a href="#hero" class="brand-link" aria-label="Leo Club of EIC — Return to top">
+        <div class="crest-frame">
+          <img 
+            src="/crest.webp" 
+            alt="Leo Club of EIC Crest" 
+            class="brand-crest"
+            width="38" 
+            height="38" 
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+        <div class="brand-copy">
+          <span class="brand-title">LEO CLUB OF EIC</span>
+          <span class="brand-subtitle">COLOMBO 7</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <ul class="nav-links" role="menubar">
+        {siteConfig.navLinks.map((item) => (
+          <li role="none">
+            <a href={item.href} class="nav-item" role="menuitem">
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <!-- Action Pill Group -->
+      <div class="nav-actions">
+        <!-- Replay Bloom Intro Trigger -->
+        <button 
+          id="replay-bloom-btn" 
+          class="replay-pill" 
+          type="button" 
+          title="Replay cinematic flower bloom intro"
+          aria-label="Replay cinematic flower bloom"
+        >
+          <span class="replay-icon">✦</span>
+          <span class="replay-label">Replay Intro</span>
+        </button>
+
+        <a href="#join" class="btn btn-primary nav-cta">
+          Join Us
+        </a>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button 
+          id="mobile-nav-toggle" 
+          class="mobile-toggle" 
+          type="button" 
+          aria-expanded="false" 
+          aria-controls="mobile-nav-menu"
+          aria-label="Toggle navigation menu"
+        >
+          <span class="menu-bar bar-top"></span>
+          <span class="menu-bar bar-bot"></span>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Mobile Dropdown Panel -->
+  <div id="mobile-nav-menu" class="mobile-menu-drawer" aria-hidden="true">
+    <div class="mobile-menu-inner">
+      <ul class="mobile-menu-list">
+        {siteConfig.navLinks.map((item) => (
+          <li>
+            <a href={item.href} class="mobile-menu-link">
+              <span>{item.label}</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m9 18 6-6-6-6"/>
+              </svg>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <div class="mobile-menu-footer">
+        <button id="mobile-replay-bloom-btn" class="btn btn-secondary w-full" type="button">
+          <span>✦ Replay Cinematic Bloom</span>
+        </button>
+        <a href="#join" class="btn btn-primary w-full mobile-join-btn">
+          Join Leo Club of EIC
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .nav-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    box-sizing: border-box;
+    z-index: 1000;
+    padding-top: clamp(0.75rem, 2vw, 1.25rem);
+    padding-inline: var(--gutter);
+    pointer-events: none;
+  }
+
+  .nav-container {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Apple-Style Floating Frosted Glass Island */
+  .nav-island {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(0.75rem, 2vw, 2.5rem);
+    width: 100%;
+    max-width: 1100px;
+    height: 64px;
+    padding: 0.4rem 0.6rem 0.4rem 0.85rem;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(24px) saturate(190%);
+    -webkit-backdrop-filter: blur(24px) saturate(190%);
+    border: 1px solid rgba(122, 87, 184, 0.16);
+    box-shadow: 0 10px 32px -8px rgba(33, 22, 56, 0.1), 0 2px 6px rgba(0, 0, 0, 0.03);
+    transition: all var(--duration-normal) var(--ease-apple);
+  }
+
+  /* Scrolled state enhancements */
+  :global(.is-scrolled) .nav-island {
+    background: rgba(255, 255, 255, 0.92);
+    border-color: rgba(122, 87, 184, 0.24);
+    box-shadow: 0 16px 40px -10px rgba(33, 22, 56, 0.15), 0 4px 12px rgba(194, 155, 77, 0.08);
+  }
+
+  /* Brand */
+  .brand-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .crest-frame {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    padding: 2px;
+    background: linear-gradient(135deg, #F4E8C9 0%, #C29B4D 50%, #9F7B2F 100%);
+    box-shadow: 0 2px 8px rgba(194, 155, 77, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--duration-normal) var(--ease-apple);
+  }
+
+  .brand-link:hover .crest-frame {
+    transform: scale(1.06) rotate(3deg);
+  }
+
+  .brand-crest {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .brand-copy {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+
+  .brand-title {
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--c-text-primary);
+  }
+
+  .brand-subtitle {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    color: var(--c-gold-deep);
+  }
+
+  /* Links */
+  .nav-links {
+    display: none;
+    list-style: none;
+    align-items: center;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 900px) {
+    .nav-links {
+      display: flex;
+    }
+  }
+
+  .nav-item {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--c-text-secondary);
+    padding: 0.5rem 0.95rem;
+    border-radius: var(--radius-full);
+    transition: all var(--duration-fast) ease;
+  }
+
+  .nav-item:hover {
+    color: var(--c-iris-deep);
+    background: var(--c-iris-mist);
+  }
+
+  /* Actions */
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-shrink: 0;
+  }
+
+  .replay-pill {
+    display: none;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--c-gold-deep);
+    background: rgba(194, 155, 77, 0.1);
+    border: 1px solid var(--c-border-gold);
+    padding: 0.45rem 0.95rem;
+    border-radius: var(--radius-full);
+    transition: all var(--duration-fast) ease;
+  }
+
+  @media (min-width: 640px) {
+    .replay-pill {
+      display: inline-flex;
+    }
+  }
+
+  .replay-pill:hover {
+    background: rgba(194, 155, 77, 0.18);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(194, 155, 77, 0.2);
+  }
+
+  .replay-icon {
+    font-size: 0.7rem;
+    color: var(--c-gold);
+  }
+
+  .nav-cta {
+    padding: 0.55rem 1.35rem;
+    font-size: 0.84rem;
+  }
+
+  /* Mobile hamburger button */
+  .mobile-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--c-iris-mist);
+    border: 1px solid var(--c-border-subtle);
+    color: var(--c-text-primary);
+    transition: background var(--duration-fast) ease;
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 900px) {
+    .mobile-toggle {
+      display: none !important;
+    }
+  }
+
+  @media (max-width: 580px) {
+    .nav-cta {
+      display: none !important;
+    }
+    .brand-subtitle {
+      display: none;
+    }
+    .nav-island {
+      height: 52px;
+      padding-inline: 0.65rem;
+      gap: 0.5rem;
+    }
+    .brand-link {
+      gap: 0.5rem;
+      min-width: 0;
+      flex: 1;
+    }
+    .brand-title {
+      font-size: 0.78rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .crest-frame {
+      width: 34px;
+      height: 34px;
+      flex-shrink: 0;
+    }
+    .mobile-toggle {
+      width: 36px;
+      height: 36px;
+    }
+  }
+
+  .menu-bar {
+    width: 18px;
+    height: 2px;
+    background-color: var(--c-text-primary);
+    border-radius: 2px;
+    transition: transform var(--duration-fast) ease, opacity var(--duration-fast) ease;
+  }
+
+  .mobile-toggle[aria-expanded="true"] .bar-top {
+    transform: translateY(3.5px) rotate(45deg);
+  }
+
+  .mobile-toggle[aria-expanded="true"] .bar-bot {
+    transform: translateY(-3.5px) rotate(-45deg);
+  }
+
+  /* Mobile Drawer Dropdown */
+  .mobile-menu-drawer {
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: all var(--duration-normal) var(--ease-apple);
+    margin-top: 0.65rem;
+  }
+
+  .mobile-menu-drawer.is-open {
+    pointer-events: auto;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .mobile-menu-inner {
+    max-width: 1100px;
+    margin-inline: auto;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(28px) saturate(190%);
+    -webkit-backdrop-filter: blur(28px) saturate(190%);
+    border: 1px solid rgba(122, 87, 184, 0.18);
+    border-radius: var(--radius-xl);
+    padding: 1.25rem;
+    box-shadow: var(--shadow-xl);
+  }
+
+  .mobile-menu-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .mobile-menu-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 1.15rem;
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--c-text-primary);
+    transition: background var(--duration-fast) ease;
+  }
+
+  .mobile-menu-link:hover {
+    background: var(--c-iris-mist);
+    color: var(--c-iris-deep);
+  }
+
+  .mobile-menu-footer {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--c-border-subtle);
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .w-full {
+    width: 100%;
+  }
+</style>
+
+<script>
+  function initNav() {
+    const header = document.getElementById('site-header');
+    const toggle = document.getElementById('mobile-nav-toggle');
+    const menu = document.getElementById('mobile-nav-menu');
+    const replayBtn = document.getElementById('replay-bloom-btn');
+    const mobileReplayBtn = document.getElementById('mobile-replay-bloom-btn');
+
+    // Sticky scroll effect
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 24) {
+        header?.classList.add('is-scrolled');
+      } else {
+        header?.classList.remove('is-scrolled');
+      }
+    }, { passive: true });
+
+    // Mobile menu toggle
+    function closeMenu() {
+      toggle?.setAttribute('aria-expanded', 'false');
+      menu?.classList.remove('is-open');
+      menu?.setAttribute('aria-hidden', 'true');
+    }
+
+    toggle?.addEventListener('click', () => {
+      const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', (!isExpanded).toString());
+      if (!isExpanded) {
+        menu?.classList.add('is-open');
+        menu?.setAttribute('aria-hidden', 'false');
+      } else {
+        closeMenu();
+      }
+    });
+
+    // Close when clicking nav links
+    menu?.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', closeMenu);
+    });
+
+    // Replay intro handlers
+    function handleReplay() {
+      closeMenu();
+      if (typeof (window as any).replayCinematicIntro === 'function') {
+        (window as any).replayCinematicIntro();
+      }
+    }
+
+    replayBtn?.addEventListener('click', handleReplay);
+    mobileReplayBtn?.addEventListener('click', handleReplay);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNav);
+  } else {
+    initNav();
+  }
+</script>

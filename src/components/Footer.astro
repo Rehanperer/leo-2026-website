@@ -1,0 +1,737 @@
+---
+import { siteConfig } from '../data/site';
+import Icon from './Icon.astro';
+import RippleWaveLoader from './RippleWaveLoader.astro';
+---
+
+<footer class="site-footer" role="contentinfo">
+  <!-- Top luminous gold & iris dividing sheen -->
+  <div class="footer-glow-line" aria-hidden="true"></div>
+
+  <!-- Background atmospheric watermark crest & celestial orbital rings -->
+  <div class="footer-bg-elements" aria-hidden="true">
+    <div class="footer-watermark-crest">
+      <img src="/crest.webp" alt="" class="watermark-img" width="500" height="500" loading="lazy" />
+    </div>
+    <div class="footer-orbit-ring ring-outer"></div>
+    <div class="footer-orbit-ring ring-inner"></div>
+    <div class="footer-ambient-aura"></div>
+  </div>
+
+  <div class="container footer-container">
+    <!-- Top Heroic Crest & Creed Showcase -->
+    <div class="footer-hero-banner">
+      <div class="footer-hero-brand">
+        <div class="footer-crest-stage">
+          <img 
+            src="/crest.webp" 
+            alt="Leo Club of EIC Official Crest" 
+            class="footer-hero-crest" 
+            width="72" 
+            height="72"
+            loading="lazy" 
+            decoding="async"
+          />
+          <div class="crest-halo" aria-hidden="true"></div>
+        </div>
+
+        <div class="footer-hero-titles">
+          <div class="footer-badge-eyebrow">
+            <span class="badge-sparkle">✦</span>
+            <span>District 306 — Sri Lanka</span>
+            <span class="badge-sep">•</span>
+            <span>Chartered {siteConfig.charterYear}</span>
+          </div>
+          <h3 class="footer-motto-title">
+            Leading with <span class="text-gold-serif">Grace,</span> Serving with <span class="text-iris-serif">Integrity.</span>
+          </h3>
+          <p class="footer-hero-subtitle">
+            {siteConfig.fullName} — Colombo 00700
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Connect / Fellowship Subscription Pill -->
+      <div class="footer-connect-box">
+        <p class="connect-label">Stay In Fellowship</p>
+        <form class="footer-subscribe-form" id="footer-subscribe-form" onsubmit="return false;">
+          <div class="subscribe-input-wrap">
+            <input 
+              type="email" 
+              id="footer-email-input"
+              placeholder="Enter your email for updates..." 
+              class="footer-email-input" 
+              required
+              aria-label="Email address for fellowship updates"
+            />
+            <button type="submit" id="footer-submit-btn" class="footer-submit-btn">
+              <span class="btn-text">Connect</span>
+              <div class="btn-loader" style="display: none;">
+                <RippleWaveLoader size="sm" color="gold" />
+              </div>
+              <svg class="btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+          <p id="footer-feedback" class="footer-feedback-msg" style="display: none;">
+            ✦ Thank you! We look forward to staying in touch.
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- 4-Column Comprehensive Navigation Grid -->
+    <div class="footer-nav-grid">
+      <!-- Col 1: Headquarters & Charter Credentials -->
+      <div class="footer-col">
+        <h4 class="col-title">Headquarters</h4>
+        <div class="hq-info">
+          <p class="hq-address">
+            <Icon name="map-pin" size={15} class="col-icon" />
+            <span>{siteConfig.address}</span>
+          </p>
+          <div class="hq-coords">
+            <span class="coords-dot"></span>
+            <span>6°55'12"N, 79°51'45"E • Colombo 7</span>
+          </div>
+          <p class="hq-sponsor">
+            Sponsored by <strong>Lions Club of Colombo East</strong><br />
+            Chartered Under <strong>Lions Clubs International</strong>
+          </p>
+        </div>
+      </div>
+
+      <!-- Col 2: Six Avenues of Service -->
+      <div class="footer-col">
+        <h4 class="col-title">Areas of Impact</h4>
+        <ul class="col-links-list">
+          <li><a href="#pillars" class="col-link">Leadership Development</a></li>
+          <li><a href="#pillars" class="col-link">Compassionate Grassroots Service</a></li>
+          <li><a href="#pillars" class="col-link">Ecological Stewardship</a></li>
+          <li><a href="#pillars" class="col-link">Educational Empowerment</a></li>
+          <li><a href="#pillars" class="col-link">Culture & Creative Fellowship</a></li>
+          <li><a href="#pillars" class="col-link">Youth Innovation & Tech</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Signature Initiatives -->
+      <div class="footer-col">
+        <h4 class="col-title">Signature Projects</h4>
+        <ul class="col-links-list">
+          <li><a href="#projects" class="col-link">Project Blooming Hope</a></li>
+          <li><a href="#projects" class="col-link">EcoGrace Canopy Initiative</a></li>
+          <li><a href="#projects" class="col-link">Project Vidura Rural Education</a></li>
+          <li><a href="#projects" class="col-link">Grace & Integrity Leadership Academy</a></li>
+          <li><a href="#impact" class="col-link">Annual Impact Report 2026</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Official Fellowship Channels -->
+      <div class="footer-col">
+        <h4 class="col-title">Fellowship & Socials</h4>
+        <div class="social-pills-stack">
+          <a href={siteConfig.socials.instagram} target="_blank" rel="noopener noreferrer" class="social-pill-btn">
+            <span class="social-pill-icon">📸</span>
+            <span class="social-pill-name">Instagram</span>
+            <Icon name="arrow-right" size={12} class="social-arrow" />
+          </a>
+          <a href={siteConfig.socials.tiktok} target="_blank" rel="noopener noreferrer" class="social-pill-btn">
+            <span class="social-pill-icon">🎵</span>
+            <span class="social-pill-name">TikTok</span>
+            <Icon name="arrow-right" size={12} class="social-arrow" />
+          </a>
+          <a href={siteConfig.socials.youtube} target="_blank" rel="noopener noreferrer" class="social-pill-btn">
+            <span class="social-pill-icon">▶</span>
+            <span class="social-pill-name">YouTube</span>
+            <Icon name="arrow-right" size={12} class="social-arrow" />
+          </a>
+          <a href="mailto:contact@eicleos.org" class="social-pill-btn">
+            <span class="social-pill-icon">✉</span>
+            <span class="social-pill-name">contact@eicleos.org</span>
+            <Icon name="arrow-right" size={12} class="social-arrow" />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Legal Bar with Live Activity & Back to Top -->
+    <div class="footer-bottom-bar">
+      <div class="footer-legal">
+        <div class="live-status-pill">
+          <!-- Pulse wave loader indicator -->
+          <div class="pulse-loader-mini">
+            <RippleWaveLoader size="sm" color="gold" />
+          </div>
+          <span class="status-text">Active Charter • 100% In Good Standing</span>
+        </div>
+        <p class="copyright-text">
+          © 2026 {siteConfig.fullName}. All rights reserved.
+        </p>
+      </div>
+
+      <div class="footer-actions-wrap">
+        <a href="#hero" class="footer-back-to-top" aria-label="Return to top of page">
+          <span>Return to Top</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m18 15-6-6-6 6"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* =========================================================================
+     Royal Plum Luxury Nightfall Canvas
+     ========================================================================= */
+  .site-footer {
+    position: relative;
+    background: radial-gradient(ellipse 95% 55% at 50% 0%, #2A1A47 0%, #160D26 60%, #0E071A 100%);
+    color: #FFFFFF;
+    padding-top: clamp(4.5rem, 8vw, 6.5rem);
+    padding-bottom: clamp(2rem, 4vw, 3rem);
+    overflow: hidden;
+  }
+
+  /* Radiant golden top dividing line */
+  .footer-glow-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(
+      90deg, 
+      transparent 0%, 
+      rgba(194, 155, 77, 0.4) 25%, 
+      rgba(164, 127, 224, 0.9) 50%, 
+      rgba(194, 155, 77, 0.4) 75%, 
+      transparent 100%
+    );
+    box-shadow: 0 0 16px rgba(194, 155, 77, 0.5);
+  }
+
+  /* Atmospheric background elements */
+  .footer-bg-elements {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .footer-watermark-crest {
+    position: absolute;
+    top: 20%;
+    right: -100px;
+    opacity: 0.045;
+    mix-blend-mode: screen;
+    filter: blur(2px);
+  }
+
+  .watermark-img {
+    width: 620px;
+    height: 620px;
+    object-fit: contain;
+  }
+
+  .footer-orbit-ring {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .ring-outer {
+    top: -150px;
+    right: -100px;
+    width: 600px;
+    height: 600px;
+    border: 1px dashed rgba(194, 155, 77, 0.12);
+    animation: rotateFooterRing 90s linear infinite;
+  }
+
+  .ring-inner {
+    top: -80px;
+    right: -30px;
+    width: 460px;
+    height: 460px;
+    border: 1px solid rgba(122, 87, 184, 0.15);
+    animation: rotateFooterRing 60s linear infinite reverse;
+  }
+
+  @keyframes rotateFooterRing {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .footer-ambient-aura {
+    position: absolute;
+    top: 0;
+    left: 20%;
+    width: 60%;
+    height: 250px;
+    background: radial-gradient(ellipse at center, rgba(122, 87, 184, 0.18) 0%, transparent 70%);
+    filter: blur(60px);
+  }
+
+  .footer-container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  /* =========================================================================
+     Top Heroic Crest & Creed Banner
+     ========================================================================= */
+  .footer-hero-banner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding-bottom: clamp(2.5rem, 5vw, 3.5rem);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  @media (min-width: 960px) {
+    .footer-hero-banner {
+      grid-template-columns: 1.4fr 1fr;
+      align-items: center;
+    }
+  }
+
+  .footer-hero-brand {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .footer-crest-stage {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .footer-hero-crest {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    border: 2px solid rgba(194, 155, 77, 0.5);
+    box-shadow: 0 0 24px rgba(194, 155, 77, 0.25), 0 8px 16px rgba(0, 0, 0, 0.4);
+    background: #FFFFFF;
+    transition: transform 0.4s var(--ease-apple);
+  }
+
+  .footer-crest-stage:hover .footer-hero-crest {
+    transform: scale(1.08) rotate(4deg);
+  }
+
+  .crest-halo {
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1px dashed rgba(194, 155, 77, 0.4);
+    animation: rotateFooterRing 30s linear infinite;
+  }
+
+  .footer-hero-titles {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .footer-badge-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #F4E8C9;
+  }
+
+  .badge-sparkle {
+    color: var(--c-gold);
+    font-size: 0.8rem;
+  }
+
+  .badge-sep {
+    opacity: 0.5;
+  }
+
+  .footer-motto-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.4rem, 2.6vw, 2.1rem);
+    font-weight: 600;
+    font-style: italic;
+    line-height: 1.25;
+    color: #FFFFFF;
+    letter-spacing: -0.01em;
+  }
+
+  .text-gold-serif {
+    background: linear-gradient(135deg, #F9F0D9 0%, #C29B4D 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-iris-serif {
+    background: linear-gradient(135deg, #D4C2F5 0%, #9B79DE 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .footer-hero-subtitle {
+    font-size: 0.86rem;
+    color: rgba(255, 255, 255, 0.65);
+    letter-spacing: 0.02em;
+  }
+
+  /* Connect Pill Form */
+  .footer-connect-box {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(194, 155, 77, 0.25);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  }
+
+  .connect-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #F4E8C9;
+    margin-bottom: 0.75rem;
+  }
+
+  .subscribe-input-wrap {
+    display: flex;
+    gap: 0.5rem;
+    background: rgba(16, 8, 28, 0.6);
+    border: 1px solid rgba(122, 87, 184, 0.35);
+    border-radius: var(--radius-full);
+    padding: 0.3rem 0.3rem 0.3rem 1.1rem;
+    transition: border-color var(--duration-fast) ease;
+  }
+
+  .subscribe-input-wrap:focus-within {
+    border-color: var(--c-gold);
+    box-shadow: 0 0 16px rgba(194, 155, 77, 0.25);
+  }
+
+  .footer-email-input {
+    background: transparent;
+    border: none;
+    color: #FFFFFF;
+    font-size: 0.86rem;
+    width: 100%;
+    outline: none;
+  }
+
+  .footer-email-input::placeholder {
+    color: rgba(255, 255, 255, 0.45);
+  }
+
+  .footer-submit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.65rem 1.35rem;
+    background: linear-gradient(135deg, #C29B4D 0%, #9F7B2F 100%);
+    color: #FFFFFF;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border-radius: var(--radius-full);
+    box-shadow: 0 4px 14px rgba(194, 155, 77, 0.35);
+    transition: all var(--duration-fast) ease;
+    white-space: nowrap;
+    border: none;
+  }
+
+  .footer-submit-btn:hover {
+    background: linear-gradient(135deg, #D4AF60 0%, #B88E3E 100%);
+    box-shadow: 0 6px 18px rgba(194, 155, 77, 0.5);
+    transform: translateY(-1px);
+  }
+
+  .footer-feedback-msg {
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    color: #F4E8C9;
+    font-style: italic;
+  }
+
+  /* =========================================================================
+     4-Column Navigation Bento
+     ========================================================================= */
+  .footer-nav-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 600px) {
+    .footer-nav-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 980px) {
+    .footer-nav-grid {
+      grid-template-columns: 1.3fr 1fr 1fr 1.1fr;
+    }
+  }
+
+  .col-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: #F4E8C9;
+    margin-bottom: 1.25rem;
+  }
+
+  .hq-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .hq-address {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.84rem;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.5;
+  }
+
+  .col-icon {
+    flex-shrink: 0;
+    color: var(--c-gold);
+    margin-top: 3px;
+  }
+
+  .hq-coords {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.74rem;
+    color: rgba(244, 232, 201, 0.85);
+    letter-spacing: 0.05em;
+  }
+
+  .coords-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--c-gold);
+    box-shadow: 0 0 6px var(--c-gold);
+  }
+
+  .hq-sponsor {
+    font-size: 0.76rem;
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.5;
+    border-left: 2px solid rgba(194, 155, 77, 0.35);
+    padding-left: 0.75rem;
+  }
+
+  .hq-sponsor strong {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  /* Nav Links */
+  .col-links-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .col-link {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    transition: all var(--duration-fast) ease;
+    display: inline-block;
+  }
+
+  .col-link:hover {
+    color: #F4E8C9;
+    transform: translateX(3px);
+  }
+
+  /* Social Pills Stack */
+  .social-pills-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .social-pill-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.84rem;
+    transition: all var(--duration-fast) var(--ease-apple);
+  }
+
+  .social-pill-icon {
+    margin-right: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .social-pill-name {
+    flex-grow: 1;
+    font-weight: 500;
+  }
+
+  .social-arrow {
+    opacity: 0.45;
+    transition: transform var(--duration-fast) ease, opacity var(--duration-fast) ease;
+  }
+
+  .social-pill-btn:hover {
+    background: rgba(122, 87, 184, 0.25);
+    border-color: rgba(194, 155, 77, 0.4);
+    color: #FFFFFF;
+    transform: translateX(2px);
+  }
+
+  .social-pill-btn:hover .social-arrow {
+    opacity: 1;
+    color: var(--c-gold);
+    transform: translateX(2px);
+  }
+
+  /* =========================================================================
+     Bottom Legal Bar with Live Indicator & Return to Top
+     ========================================================================= */
+  .footer-bottom-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: flex-start;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  @media (min-width: 720px) {
+    .footer-bottom-bar {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .footer-legal {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .live-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.35rem 0.85rem;
+    background: rgba(194, 155, 77, 0.12);
+    border: 1px solid rgba(194, 155, 77, 0.3);
+    border-radius: var(--radius-full);
+    width: fit-content;
+  }
+
+  .pulse-loader-mini {
+    transform: scale(0.65);
+    margin: -8px 0;
+  }
+
+  .status-text {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #F4E8C9;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .copyright-text {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.5;
+  }
+
+  .footer-back-to-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 1.15rem;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(194, 155, 77, 0.3);
+    border-radius: var(--radius-full);
+    color: #F4E8C9;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all var(--duration-fast) var(--ease-apple);
+  }
+
+  .footer-back-to-top:hover {
+    background: linear-gradient(135deg, var(--c-iris) 0%, var(--c-iris-deep) 100%);
+    border-color: rgba(194, 155, 77, 0.6);
+    color: #FFFFFF;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(122, 87, 184, 0.4);
+  }
+</style>
+
+<script>
+  // Client-side quick feedback for the fellowship subscribe form
+  function initFooterForm() {
+    const form = document.getElementById('footer-subscribe-form');
+    const input = document.getElementById('footer-email-input') as HTMLInputElement | null;
+    const btn = document.getElementById('footer-submit-btn');
+    const feedback = document.getElementById('footer-feedback');
+    if (!form || !btn || !input || !feedback) return;
+
+    btn.addEventListener('click', () => {
+      if (!input.value || !input.checkValidity()) {
+        input.reportValidity();
+        return;
+      }
+      const btnText = btn.querySelector('.btn-text') as HTMLElement | null;
+      const btnLoader = btn.querySelector('.btn-loader') as HTMLElement | null;
+      const btnIcon = btn.querySelector('.btn-icon') as HTMLElement | null;
+
+      if (btnText) btnText.style.display = 'none';
+      if (btnIcon) btnIcon.style.display = 'none';
+      if (btnLoader) btnLoader.style.display = 'inline-flex';
+
+      setTimeout(() => {
+        if (btnLoader) btnLoader.style.display = 'none';
+        if (btnText) {
+          btnText.textContent = 'Joined ✓';
+          btnText.style.display = 'inline';
+        }
+        feedback.style.display = 'block';
+        input.disabled = true;
+      }, 700);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFooterForm);
+  } else {
+    initFooterForm();
+  }
+</script>

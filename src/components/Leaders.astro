@@ -1,0 +1,209 @@
+---
+import { executiveBoard } from '../data/leaders';
+import BotanicalAccent from './BotanicalAccent.astro';
+import ScrollVine from './ScrollVine.astro';
+---
+
+<section id="leaders" class="section leaders-section" aria-label="Executive Leadership">
+  <!-- Scroll-triggered growing botanical vine on the right -->
+  <ScrollVine side="right" height={560} />
+
+  <!-- Botanical corner sprays framing the Executive Board -->
+  <BotanicalAccent position="top-left" size="clamp(190px, 24vw, 320px)" opacity={0.32} />
+  <BotanicalAccent position="bottom-right" size="clamp(180px, 22vw, 300px)" opacity={0.3} />
+
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow eyebrow-gold">Stewards of Our Mission</span>
+      <h2 class="section-title">
+        Meet Our <em>Leaders</em>
+      </h2>
+      <p class="section-subtitle">
+        Guiding our club with empathy, honor, and strategic foresight to inspire the next generation of youth changemakers.
+      </p>
+    </div>
+
+    <!-- Leaders Grid / Horizontal Snap on Mobile -->
+    <div class="leaders-container">
+      <div class="leaders-track">
+        {executiveBoard.map((leader) => (
+          <div class="leader-card card-glass">
+            <div class="leader-avatar-wrapper">
+              <div class="avatar-ring">
+                <div class="avatar-monogram">
+                  <span>{leader.initials}</span>
+                </div>
+              </div>
+              <span class="role-badge">{leader.role}</span>
+            </div>
+
+            <div class="leader-info">
+              <h3 class="leader-name">{leader.name}</h3>
+              <p class="leader-dept">{leader.department}</p>
+              {leader.quote && (
+                <p class="leader-quote">
+                  "{leader.quote}"
+                </p>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Curator note -->
+    <div class="leaders-curator-note">
+      <span class="curator-dot"></span>
+      <p>
+        Official 2026 Executive Portraits & Roster update in progress. Full cabinet listings will be available upon installation.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .leaders-section {
+    position: relative;
+    overflow-x: clip;
+    background-color: var(--c-bg);
+  }
+
+  .leaders-container {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 1.5rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  .leaders-track {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: clamp(1.25rem, 2.5vw, 1.85rem);
+  }
+
+  @media (max-width: 640px) {
+    .leaders-track {
+      display: flex;
+      scroll-snap-type: x mandatory;
+      padding-inline: 0.5rem;
+    }
+
+    .leader-card {
+      min-width: 270px;
+      scroll-snap-align: center;
+      flex-shrink: 0;
+    }
+  }
+
+  .leader-card {
+    padding: clamp(1.75rem, 3vw, 2.25rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: #FFFFFF;
+  }
+
+  .leader-avatar-wrapper {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .avatar-ring {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(135deg, #F4E8C9 0%, #C29B4D 50%, #7A57B8 100%);
+    box-shadow: 0 8px 24px -4px rgba(122, 87, 184, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--duration-normal) var(--ease-apple);
+  }
+
+  .leader-card:hover .avatar-ring {
+    transform: scale(1.06) rotate(4deg);
+  }
+
+  .avatar-monogram {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FAF8FD 0%, #EDE6F9 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--c-iris-deep);
+  }
+
+  .role-badge {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #FFFFFF;
+    background: var(--c-iris-deep);
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(84, 57, 138, 0.3);
+  }
+
+  .leader-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .leader-name {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--c-text-primary);
+    margin-bottom: 0.25rem;
+  }
+
+  .leader-dept {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--c-gold-deep);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.85rem;
+  }
+
+  .leader-quote {
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--c-text-secondary);
+    line-height: 1.55;
+    max-width: 240px;
+  }
+
+  .leaders-curator-note {
+    margin-top: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.84rem;
+    color: var(--c-text-tertiary);
+    text-align: center;
+  }
+
+  .curator-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--c-gold);
+  }
+</style>

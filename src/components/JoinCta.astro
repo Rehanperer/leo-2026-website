@@ -1,0 +1,158 @@
+---
+import { siteConfig } from '../data/site';
+import Icon from './Icon.astro';
+import BotanicalAccent from './BotanicalAccent.astro';
+import ScrollVine from './ScrollVine.astro';
+---
+
+<section id="join" class="section join-section" aria-label="Join the Leo Club of EIC">
+  <!-- Scroll-triggered growing botanical vine on the right -->
+  <ScrollVine side="right" height={520} />
+
+  <!-- Botanical lush corner sprays framing the fellowship invitation -->
+  <BotanicalAccent position="top-left" size="clamp(210px, 26vw, 360px)" opacity={0.38} />
+  <BotanicalAccent position="bottom-right" size="clamp(210px, 26vw, 360px)" opacity={0.38} />
+
+  <div class="container container-narrow">
+    <div class="join-card card-glass">
+      <!-- Ambient aura -->
+      <div class="join-aura" aria-hidden="true"></div>
+
+      <div class="join-content">
+        <span class="eyebrow eyebrow-gold">Join Our Fellowship</span>
+        
+        <h2 class="join-title">
+          Ready to Lead with <em>Grace</em> and Serve with <em>Integrity?</em>
+        </h2>
+
+        <p class="join-text">
+          Whether you are an aspiring youth leader eager to build real-world project experience or someone passionate about community philanthropy, the Leo Club of EIC welcomes you.
+        </p>
+
+        <div class="join-actions">
+          <a href={`mailto:contact@eicleos.org?subject=Membership%20Inquiry%20-%20Leo%20Club%20of%20EIC`} class="btn btn-primary btn-join">
+            <span>Apply For Membership</span>
+            <Icon name="arrow-right" size={16} />
+          </a>
+          <a href={siteConfig.socials.instagram} target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-join">
+            <span>Connect on Instagram</span>
+          </a>
+        </div>
+
+        <!-- Membership perks pill list -->
+        <div class="perks-row">
+          <div class="perk-item">
+            <Icon name="check" size={14} class="perk-icon" />
+            <span>International Lions Recognition</span>
+          </div>
+          <div class="perk-item">
+            <Icon name="check" size={14} class="perk-icon" />
+            <span>Executive Leadership Training</span>
+          </div>
+          <div class="perk-item">
+            <Icon name="check" size={14} class="perk-icon" />
+            <span>Lifelong Fellowship & Network</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .join-section {
+    position: relative;
+    overflow-x: clip;
+    padding-bottom: clamp(5rem, 10vh, 8.5rem);
+  }
+
+  .join-card {
+    position: relative;
+    padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 5vw, 3.5rem);
+    border-radius: var(--radius-xl);
+    text-align: center;
+    background: linear-gradient(180deg, #FFFFFF 0%, #FAF6FE 100%);
+    border: 1px solid rgba(122, 87, 184, 0.2);
+    box-shadow: var(--shadow-xl);
+    overflow: hidden;
+  }
+
+  .join-aura {
+    position: absolute;
+    top: -50%;
+    left: 20%;
+    right: 20%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, rgba(194, 155, 77, 0.22) 0%, rgba(122, 87, 184, 0.15) 50%, transparent 75%);
+    filter: blur(50px);
+    pointer-events: none;
+  }
+
+  .join-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .join-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.85rem, 3.5vw, 2.75rem);
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--c-text-primary);
+    max-width: 650px;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.01em;
+  }
+
+  .join-title em {
+    font-style: italic;
+    color: var(--c-iris-deep);
+  }
+
+  .join-text {
+    font-size: var(--fs-base);
+    color: var(--c-text-secondary);
+    line-height: 1.7;
+    max-width: 580px;
+    margin-bottom: 2.25rem;
+  }
+
+  .join-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .btn-join {
+    padding: 0.95rem 2.25rem;
+    font-size: 0.92rem;
+  }
+
+  .perks-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(0.75rem, 2vw, 1.5rem);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--c-border-subtle);
+    width: 100%;
+  }
+
+  .perk-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--c-text-secondary);
+  }
+
+  .perk-icon {
+    color: var(--c-botanical-green);
+  }
+</style>

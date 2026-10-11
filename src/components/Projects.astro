@@ -1,0 +1,297 @@
+---
+import { signatureProjects } from '../data/projects';
+import Icon from './Icon.astro';
+import BotanicalAccent from './BotanicalAccent.astro';
+import ScrollVine from './ScrollVine.astro';
+---
+
+<section id="projects" class="section projects-section" aria-label="Signature Service Projects">
+  <!-- Scroll-triggered growing botanical vine on the left -->
+  <ScrollVine side="left" height={560} />
+
+  <!-- Botanical corner sprays framing the Signature Projects showcase -->
+  <BotanicalAccent position="top-right" size="clamp(200px, 25vw, 340px)" opacity={0.34} />
+  <BotanicalAccent position="bottom-left" size="clamp(180px, 22vw, 300px)" opacity={0.3} />
+
+  <div class="container">
+    <div class="projects-header-row">
+      <div class="header-left">
+        <span class="eyebrow">Service in Action</span>
+        <h2 class="section-title">
+          Signature <em>Projects</em>
+        </h2>
+        <p class="section-subtitle">
+          Empowering communities through purposeful action, youth collaboration, and enduring humanitarian outcomes.
+        </p>
+      </div>
+
+      <!-- Carousel Navigation Arrows -->
+      <div class="carousel-nav-arrows" aria-hidden="true">
+        <button id="project-prev-btn" class="nav-arrow-btn" aria-label="Previous project">
+          <Icon name="chevron-left" size={18} />
+        </button>
+        <button id="project-next-btn" class="nav-arrow-btn" aria-label="Next project">
+          <Icon name="chevron-right" size={18} />
+        </button>
+      </div>
+    </div>
+
+    <!-- Projects Scroll Track -->
+    <div class="projects-carousel-container" id="projects-track-wrap">
+      <div class="projects-track" id="projects-track">
+        {signatureProjects.map((project) => (
+          <article class="project-card card-glass">
+            <div class="project-card-top">
+              <span class="project-tag">{project.tag}</span>
+              <span class="project-date">
+                <Icon name="calendar" size={13} />
+                <span>{project.date}</span>
+              </span>
+            </div>
+
+            <div class="project-body">
+              <span class="project-category">{project.category}</span>
+              <h3 class="project-title">{project.title}</h3>
+              <p class="project-summary">{project.summary}</p>
+            </div>
+
+            <!-- Impact Metrics Subgrid -->
+            <div class="project-metrics">
+              {project.impactMetrics.map((metric) => (
+                <div class="metric-block">
+                  <span class="metric-val">{metric.value}</span>
+                  <span class="metric-lbl">{metric.label}</span>
+                </div>
+              ))}
+            </div>
+
+            <div class="project-footer">
+              <span class="project-explore-btn">
+                <span>View Project Story</span>
+                <Icon name="arrow-right" size={14} />
+              </span>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .projects-section {
+    position: relative;
+    overflow-x: clip;
+    background: linear-gradient(180deg, rgba(250, 248, 253, 0) 0%, rgba(243, 237, 250, 0.4) 50%, rgba(250, 248, 253, 0) 100%);
+  }
+
+  .projects-header-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+
+  .header-left {
+    max-width: 680px;
+  }
+
+  .carousel-nav-arrows {
+    display: none;
+    gap: 0.65rem;
+  }
+
+  @media (min-width: 768px) {
+    .carousel-nav-arrows {
+      display: flex;
+    }
+  }
+
+  .nav-arrow-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: 1px solid var(--c-border-subtle);
+    color: var(--c-text-primary);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--duration-fast) ease;
+  }
+
+  .nav-arrow-btn:hover {
+    background: var(--c-iris-deep);
+    color: #FFFFFF;
+    border-color: var(--c-iris-deep);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+
+  /* Projects Carousel Track */
+  .projects-carousel-container {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 1.5rem;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+  }
+
+  .projects-track {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: clamp(1.25rem, 2.5vw, 1.85rem);
+  }
+
+  @media (max-width: 900px) {
+    .projects-track {
+      display: flex;
+      scroll-snap-type: x mandatory;
+      padding-inline: 0.25rem;
+    }
+
+    .project-card {
+      min-width: clamp(290px, 85vw, 360px);
+      scroll-snap-align: center;
+      flex-shrink: 0;
+    }
+  }
+
+  .project-card {
+    padding: clamp(1.75rem, 3.5vw, 2.35rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #FFFFFF;
+  }
+
+  .project-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+
+  .project-tag {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--c-gold-deep);
+    background: rgba(194, 155, 77, 0.12);
+    border: 1px solid var(--c-border-gold);
+    padding: 0.3rem 0.75rem;
+    border-radius: var(--radius-full);
+  }
+
+  .project-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--c-text-tertiary);
+  }
+
+  .project-category {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-iris);
+    margin-bottom: 0.4rem;
+  }
+
+  .project-title {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--c-text-primary);
+    line-height: 1.25;
+    margin-bottom: 0.85rem;
+  }
+
+  .project-summary {
+    font-size: 0.88rem;
+    color: var(--c-text-secondary);
+    line-height: 1.65;
+    margin-bottom: 1.75rem;
+  }
+
+  /* Metrics block */
+  .project-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    background: var(--c-bg);
+    border: 1px solid var(--c-border-subtle);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .metric-val {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--c-iris-deep);
+  }
+
+  .metric-lbl {
+    display: block;
+    font-size: 0.68rem;
+    color: var(--c-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+  }
+
+  .project-footer {
+    padding-top: 1rem;
+    border-top: 1px solid rgba(122, 87, 184, 0.08);
+  }
+
+  .project-explore-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--c-iris-deep);
+    transition: gap var(--duration-fast) ease;
+  }
+
+  .project-card:hover .project-explore-btn {
+    gap: 0.75rem;
+  }
+</style>
+
+<script>
+  function initProjectCarousel() {
+    const wrap = document.getElementById('projects-track-wrap');
+    const prev = document.getElementById('project-prev-btn');
+    const next = document.getElementById('project-next-btn');
+
+    if (!wrap || !prev || !next) return;
+
+    prev.addEventListener('click', () => {
+      wrap.scrollBy({ left: -360, behavior: 'smooth' });
+    });
+
+    next.addEventListener('click', () => {
+      wrap.scrollBy({ left: 360, behavior: 'smooth' });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initProjectCarousel);
+  } else {
+    initProjectCarousel();
+  }
+</script>

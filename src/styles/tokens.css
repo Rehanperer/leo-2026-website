@@ -1,0 +1,92 @@
+:root {
+  /* =========================================================================
+     Color Tokens — Extracted with fidelity from the 2026 Iris & Gold Crest
+     ========================================================================= */
+  --c-bg: #FAF8FD;
+  --c-bg-subtle: #F3EDFA;
+  --c-surface: #FFFFFF;
+  --c-surface-glass: rgba(255, 255, 255, 0.78);
+  --c-surface-card: #FFFFFF;
+  --c-surface-card-hover: #FCFAFF;
+
+  /* Typography / Text Colors (WCAG AAA / AA compliant) */
+  --c-text-primary: #211638;       /* Royal deep plum */
+  --c-text-secondary: #5C5272;     /* Muted amethyst slate */
+  --c-text-tertiary: #8C82A2;      /* Gentle lavender stone */
+  --c-text-inverse: #FFFFFF;
+
+  /* Floral Violet & Iris Palette */
+  --c-iris: #7A57B8;              /* Signature iris purple */
+  --c-iris-deep: #54398A;         /* Deep royal iris for buttons & contrast */
+  --c-iris-light: #9B79DE;        /* Luminous petal violet */
+  --c-iris-soft: #EDE6F9;         /* Airy lavender wash */
+  --c-iris-mist: rgba(122, 87, 184, 0.08);
+
+  /* Gold Regal Accents (from laurel leaves & seal border) */
+  --c-gold: #C29B4D;              /* Warm ceremonial gold */
+  --c-gold-deep: #9F7B2F;         /* Text-safe rich bronze gold */
+  --c-gold-light: #F4E8C9;        /* Champagne gold tint */
+  --c-gold-glow: rgba(194, 155, 77, 0.35);
+
+  /* Earth / Nature Accents (from central globe & botanical leaves) */
+  --c-earth-blue: #3E84C2;
+  --c-botanical-green: #488E62;
+  --c-green-soft: #E8F4EC;
+
+  /* Borders & Dividers */
+  --c-border-subtle: rgba(122, 87, 184, 0.12);
+  --c-border-gold: rgba(194, 155, 77, 0.28);
+  --c-border-glass: rgba(255, 255, 255, 0.6);
+
+  /* Elevation & Shadows (Apple-grade soft diffused shadows) */
+  --shadow-sm: 0 2px 8px rgba(33, 22, 56, 0.04);
+  --shadow-md: 0 8px 24px -4px rgba(65, 41, 107, 0.07), 0 2px 6px rgba(0, 0, 0, 0.02);
+  --shadow-lg: 0 16px 40px -8px rgba(65, 41, 107, 0.1), 0 4px 12px rgba(194, 155, 77, 0.06);
+  --shadow-xl: 0 28px 64px -12px rgba(50, 28, 88, 0.14), 0 8px 24px rgba(122, 87, 184, 0.08);
+  --shadow-gold: 0 12px 32px -4px rgba(194, 155, 77, 0.32);
+
+  /* =========================================================================
+     Typography Scale (Fluid Responsive via clamp)
+     ========================================================================= */
+  --font-serif: "Cormorant Garamond", "Baskerville", "Georgia", "Times New Roman", serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "Inter", sans-serif;
+
+  --fs-xs: clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
+  --fs-sm: clamp(0.84rem, 0.8rem + 0.2vw, 0.9375rem);
+  --fs-base: clamp(0.97rem, 0.93rem + 0.25vw, 1.0625rem);
+  --fs-md: clamp(1.1rem, 1.04rem + 0.35vw, 1.25rem);
+  --fs-lg: clamp(1.25rem, 1.15rem + 0.6vw, 1.5rem);
+  --fs-xl: clamp(1.5rem, 1.35rem + 1vw, 2rem);
+  --fs-2xl: clamp(1.85rem, 1.6rem + 1.5vw, 2.75rem);
+  --fs-3xl: clamp(1.9rem, 1.6rem + 1.8vw, 3.4rem);
+  --fs-hero: clamp(1.85rem, 1.25rem + 2.4vw, 4.4rem);
+
+  /* =========================================================================
+     Layout & Spacing Tokens
+     ========================================================================= */
+  --container-max: 1240px;
+  --container-narrow: 880px;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.875rem;
+  --space-md: 1.25rem;
+  --space-lg: 2rem;
+  --space-xl: clamp(2.5rem, 6vw, 4.5rem);
+  --space-2xl: clamp(4rem, 9vw, 7.5rem);
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+
+  /* Animation Timings */
+  --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 180ms;
+  --duration-normal: 320ms;
+  --duration-slow: 600ms;
+}

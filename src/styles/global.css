@@ -1,0 +1,274 @@
+@import './tokens.css';
+
+/* =========================================================================
+   Modern Baseline Reset & Typography
+   ========================================================================= */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--c-text-primary);
+  background-color: var(--c-bg);
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: clip;
+  max-width: 100%;
+  background-color: var(--c-bg);
+  background-image:
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(217, 203, 240, 0.4) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 85% 15%, rgba(244, 232, 201, 0.3) 0%, transparent 60%);
+  background-repeat: no-repeat;
+  color: var(--c-text-primary);
+}
+
+::selection {
+  background: var(--c-iris);
+  color: #FFFFFF;
+}
+
+img, picture, svg, video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--duration-fast) ease;
+}
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+/* =========================================================================
+   Layout Containers & Structural Helpers
+   ========================================================================= */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.container-narrow {
+  width: 100%;
+  max-width: var(--container-narrow);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  position: relative;
+  padding-block: var(--space-2xl);
+}
+
+.section-header {
+  text-align: center;
+  max-width: 720px;
+  margin-inline: auto;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--c-iris-deep);
+  background: var(--c-iris-mist);
+  padding: 0.35rem 0.9rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--c-border-subtle);
+  margin-bottom: 1rem;
+}
+
+.eyebrow-gold {
+  color: var(--c-gold-deep);
+  background: rgba(194, 155, 77, 0.1);
+  border-color: var(--c-border-gold);
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: var(--fs-3xl);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--c-text-primary);
+  margin-bottom: 0.9rem;
+  letter-spacing: -0.01em;
+}
+
+.section-title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--c-iris);
+}
+
+.section-subtitle {
+  font-size: var(--fs-base);
+  color: var(--c-text-secondary);
+  line-height: 1.65;
+  max-width: 600px;
+  margin-inline: auto;
+}
+
+/* =========================================================================
+   Apple-Style Buttons & Interactive Pills
+   ========================================================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  line-height: 1;
+  padding: 0.85rem 1.75rem;
+  border-radius: var(--radius-full);
+  transition: all var(--duration-normal) var(--ease-apple);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--c-iris) 0%, var(--c-iris-deep) 100%);
+  color: #FFFFFF;
+  box-shadow: 0 4px 18px rgba(84, 57, 138, 0.28), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--c-iris-light) 0%, var(--c-iris) 100%);
+  box-shadow: 0 8px 24px rgba(84, 57, 138, 0.36), 0 2px 6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--c-surface);
+  color: var(--c-text-primary);
+  border: 1px solid var(--c-border-subtle);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover {
+  background: #FAF8FD;
+  border-color: var(--c-iris);
+  color: var(--c-iris-deep);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, #D4AF60 0%, #B88E3E 100%);
+  color: #FFFFFF;
+  box-shadow: 0 4px 18px rgba(184, 142, 62, 0.32);
+}
+
+.btn-gold:hover {
+  background: linear-gradient(135deg, #DFBE72 0%, #C69947 100%);
+  box-shadow: 0 8px 24px rgba(184, 142, 62, 0.42);
+  transform: translateY(-1px);
+}
+
+.btn-glass {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--c-text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-glass:hover {
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--c-iris-deep);
+  transform: translateY(-1px);
+}
+
+/* =========================================================================
+   Apple Glass Cards & Elevated Surfaces
+   ========================================================================= */
+.card-glass {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: all var(--duration-normal) var(--ease-apple);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-glass:hover {
+  border-color: rgba(122, 87, 184, 0.28);
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-4px);
+}
+
+.card-glass::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(194, 155, 77, 0.5), transparent);
+  opacity: 0;
+  transition: opacity var(--duration-normal) ease;
+}
+
+.card-glass:hover::before {
+  opacity: 1;
+}
+
+/* =========================================================================
+   Focus States (Accessibility)
+   ========================================================================= */
+:focus-visible {
+  outline: 2px solid var(--c-iris);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* =========================================================================
+   Accessibility & Reduced Motion
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

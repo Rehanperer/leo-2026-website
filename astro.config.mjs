@@ -1,0 +1,17 @@
+import { defineConfig } from 'astro/config';
+
+// https://astro.build/config
+export default defineConfig({
+  site: 'https://www.eicleos.org',
+  output: 'static',
+  build: {
+    inlineStylesheets: 'auto'
+  },
+  image: {
+    responsiveStyles: true,
+    service: {
+      entrypoint: 'astro/assets/services/sharp'
+    }
+  },
+  compressHTML: true
+});

@@ -1,0 +1,103 @@
+---
+interface Props {
+  color?: 'brand' | 'red' | 'gold' | 'iris';
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+}
+
+const {
+  color = 'brand',
+  size = 'md',
+  class: className = ''
+} = Astro.props;
+
+const bars = [0, 1, 2, 3, 4, 5, 6];
+---
+
+<div class={`ripple-wave-loader size-${size} color-${color} ${className}`} aria-label="Loading" role="status">
+  {bars.map((index) => (
+    <div 
+      class="wave-bar" 
+      style={`animation-delay: ${index * 0.1}s;`}
+      aria-hidden="true"
+    />
+  ))}
+</div>
+
+<style>
+  .ripple-wave-loader {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    height: 48px;
+    padding-inline: 4px;
+  }
+
+  .wave-bar {
+    border-radius: 9999px;
+    animation: rippleWave 1s ease-in-out infinite;
+    will-change: transform;
+    transform-origin: center center;
+  }
+
+  /* Sizes */
+  .size-sm .wave-bar {
+    width: 5px;
+    height: 20px;
+  }
+  .size-md .wave-bar {
+    width: 8px; /* w-2 */
+    height: 32px; /* h-8 */
+  }
+  .size-lg .wave-bar {
+    width: 10px;
+    height: 44px;
+  }
+
+  /* Exact Framer-Motion Keyframes:
+     scaleY: [0.5, 1.5, 0.5]
+     scaleX: [1, 0.8, 1]
+     translateY: ['0%', '-15%', '0%']
+  */
+  @keyframes rippleWave {
+    0%, 100% {
+      transform: scaleY(0.5) scaleX(1) translateY(0%);
+    }
+    50% {
+      transform: scaleY(1.5) scaleX(0.8) translateY(-15%);
+    }
+  }
+
+  /* Colors */
+  .color-red .wave-bar {
+    background-color: #EF4444; /* bg-red-500 */
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.35);
+  }
+
+  .color-iris .wave-bar {
+    background-color: var(--c-iris);
+    box-shadow: 0 0 10px rgba(122, 87, 184, 0.35);
+  }
+
+  .color-gold .wave-bar {
+    background-color: var(--c-gold);
+    box-shadow: 0 0 10px rgba(194, 155, 77, 0.35);
+  }
+
+  /* Brand Luxury Gradient across 7 bars */
+  .color-brand .wave-bar:nth-child(1) { background: #7A57B8; }
+  .color-brand .wave-bar:nth-child(2) { background: #8C66CC; }
+  .color-brand .wave-bar:nth-child(3) { background: #A47FE0; }
+  .color-brand .wave-bar:nth-child(4) { background: #C29B4D; box-shadow: 0 0 12px rgba(194, 155, 77, 0.4); }
+  .color-brand .wave-bar:nth-child(5) { background: #A47FE0; }
+  .color-brand .wave-bar:nth-child(6) { background: #8C66CC; }
+  .color-brand .wave-bar:nth-child(7) { background: #7A57B8; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wave-bar {
+      animation: none !important;
+      transform: scaleY(1) !important;
+    }
+  }
+</style>

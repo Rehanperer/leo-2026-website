@@ -1,0 +1,220 @@
+---
+import { impactStats } from '../data/stats';
+import BotanicalAccent from './BotanicalAccent.astro';
+import ScrollVine from './ScrollVine.astro';
+---
+
+<section id="impact" class="section impact-section" aria-label="Our Impact and Milestones">
+  <!-- Scroll-triggered growing botanical vine on the left -->
+  <ScrollVine side="left" height={520} />
+
+  <!-- Botanical corner sprays framing the impact metrics -->
+  <BotanicalAccent position="top-right" size="clamp(200px, 25vw, 340px)" opacity={0.34} />
+  <BotanicalAccent position="bottom-left" size="clamp(190px, 23vw, 320px)" opacity={0.3} />
+
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Measurable Change</span>
+      <h2 class="section-title">
+        The Measure of Our <em>Impact</em>
+      </h2>
+      <p class="section-subtitle">
+        Every metric reflects a heart touched, a future encouraged, and a dedicated team of youth striving for positive community transformation.
+      </p>
+    </div>
+
+    <div class="stats-grid">
+      {impactStats.map((stat) => (
+        <div class="stat-card card-glass">
+          <div class="stat-top">
+            <span class="stat-counter" data-target={stat.value}>
+              {stat.value}
+            </span>
+            <span class="stat-suffix">{stat.suffix}</span>
+          </div>
+
+          <h3 class="stat-label">{stat.label}</h3>
+          <p class="stat-detail">{stat.detail}</p>
+
+          <div class="stat-accent-bar" aria-hidden="true"></div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Global Lions & Leos Planetary Fellowship Footprint Bar -->
+    <div class="impact-global-banner">
+      <div class="global-badge-pill">
+        <span class="global-pulse-dot"></span>
+        <span class="global-badge-text">Chartered District 306 Sri Lanka (6°55'N, 79°51'E) • Connected to 1.4M+ Global Leos & Lions Worldwide</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .impact-section {
+    position: relative;
+    overflow-x: clip;
+    background: linear-gradient(180deg, rgba(250, 248, 253, 0) 0%, rgba(243, 237, 250, 0.45) 50%, rgba(250, 248, 253, 0) 100%);
+  }
+
+  .impact-global-banner {
+    display: flex;
+    justify-content: center;
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .global-badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.55rem 1.25rem;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(194, 155, 77, 0.3);
+    box-shadow: 0 4px 16px rgba(122, 87, 184, 0.08);
+  }
+
+  .global-pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #C29B4D;
+    box-shadow: 0 0 8px #C29B4D;
+    animation: pulseDot 2s infinite ease-in-out;
+  }
+
+  @keyframes pulseDot {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.3); opacity: 1; }
+  }
+
+  .global-badge-text {
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    color: var(--c-text-primary);
+    letter-spacing: 0.02em;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1rem, 2.5vw, 1.75rem);
+  }
+
+  @media (min-width: 580px) {
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .stats-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .stat-card {
+    padding: clamp(1.75rem, 3.5vw, 2.25rem);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  .stat-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    margin-bottom: 0.65rem;
+  }
+
+  .stat-counter {
+    font-family: var(--font-serif);
+    font-size: clamp(2.5rem, 4.5vw, 3.75rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--c-iris-deep);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-suffix {
+    font-family: var(--font-serif);
+    font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+    font-weight: 600;
+    color: var(--c-gold-deep);
+    margin-left: 2px;
+  }
+
+  .stat-label {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--c-text-primary);
+    margin-bottom: 0.65rem;
+  }
+
+  .stat-detail {
+    font-size: 0.85rem;
+    color: var(--c-text-secondary);
+    line-height: 1.55;
+    max-width: 240px;
+  }
+
+  .stat-accent-bar {
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    right: 20%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--c-iris-light), transparent);
+    opacity: 0.4;
+  }
+</style>
+
+<script>
+  // Lightweight IntersectionObserver number ramp
+  function initCounters() {
+    const counters = document.querySelectorAll('.stat-counter');
+    if (!('IntersectionObserver' in window)) return;
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target as HTMLElement;
+        const target = parseInt(el.getAttribute('data-target') || '0', 10);
+        if (!target) return;
+
+        const duration = 1600;
+        const startTime = performance.now();
+
+        function update(now: number) {
+          const progress = Math.min((now - startTime) / duration, 1);
+          // Ease out cubic
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = Math.floor(eased * target);
+          el.textContent = current.toLocaleString();
+
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          } else {
+            el.textContent = target.toLocaleString();
+          }
+        }
+
+        requestAnimationFrame(update);
+        obs.unobserve(el);
+      });
+    }, { threshold: 0.25 });
+
+    counters.forEach((c) => observer.observe(c));
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCounters);
+  } else {
+    initCounters();
+  }
+</script>

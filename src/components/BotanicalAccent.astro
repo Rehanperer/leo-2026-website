@@ -1,0 +1,147 @@
+---
+interface Props {
+  position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'center-left' | 'center-right';
+  variant?: 'spray-tl' | 'spray-br' | 'petal' | 'cluster';
+  size?: string;
+  opacity?: number;
+  class?: string;
+}
+
+const {
+  position = 'top-right',
+  variant,
+  size = 'clamp(180px, 24vw, 340px)',
+  opacity = 0.38,
+  class: className = ''
+} = Astro.props;
+
+// Select image asset
+let imageSrc = '/botanical/iris-blossom-tl.webp';
+if (variant === 'spray-br' || position === 'bottom-right' || position === 'top-right') {
+  imageSrc = '/botanical/iris-blossom-br.webp';
+}
+if (variant === 'spray-tl' || position === 'top-left' || position === 'bottom-left') {
+  imageSrc = '/botanical/iris-blossom-tl.webp';
+}
+if (variant === 'petal') {
+  imageSrc = '/botanical/iris-single-petal.webp';
+}
+---
+
+<div 
+  class={`botanical-accent pos-${position} ${className}`} 
+  style={`--botanical-size: ${size}; --botanical-opacity: ${opacity};`}
+  aria-hidden="true"
+>
+  <img 
+    src={imageSrc} 
+    alt="" 
+    class="botanical-img" 
+    loading="lazy" 
+    decoding="async"
+  />
+</div>
+
+<style>
+  .botanical-accent {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    width: var(--botanical-size);
+    opacity: var(--botanical-opacity);
+    mix-blend-mode: multiply;
+    transition: opacity 0.5s ease;
+  }
+
+  .botanical-img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 20px rgba(122, 87, 184, 0.08));
+  }
+
+  /* Positions */
+  .pos-top-left {
+    top: -24px;
+    left: -20px;
+    -webkit-mask-image: radial-gradient(ellipse 85% 85% at 20% 20%, #000000 40%, rgba(0, 0, 0, 0.6) 65%, transparent 88%);
+    mask-image: radial-gradient(ellipse 85% 85% at 20% 20%, #000000 40%, rgba(0, 0, 0, 0.6) 65%, transparent 88%);
+    animation: floatGentleTL 15s ease-in-out infinite;
+  }
+
+  .pos-top-right {
+    top: -24px;
+    right: -20px;
+    transform: scaleX(-1);
+    -webkit-mask-image: radial-gradient(ellipse 85% 85% at 20% 20%, #000000 40%, rgba(0, 0, 0, 0.6) 65%, transparent 88%);
+    mask-image: radial-gradient(ellipse 85% 85% at 20% 20%, #000000 40%, rgba(0, 0, 0, 0.6) 65%, transparent 88%);
+    animation: floatGentleTR 17s ease-in-out infinite;
+  }
+
+  .pos-bottom-left {
+    bottom: -24px;
+    left: -20px;
+    transform: scaleY(-1);
+    -webkit-mask-image: radial-gradient(ellipse 85% 85% at 20% 20%, #000000 40%, rgba(0, 0, 0, 0.6) 65%, transparent 88%);
+    mask-image: radial-gradient(ellipse 85% 85% at 20% 20%, #000000 40%, rgba(0, 0, 0, 0.6) 65%, transparent 88%);
+    animation: floatGentleBL 16s ease-in-out infinite;
+  }
+
+  .pos-bottom-right {
+    bottom: -24px;
+    right: -20px;
+    -webkit-mask-image: radial-gradient(ellipse 85% 85% at 75% 75%, #000000 40%, rgba(0, 0, 0, 0.6) 65%, transparent 88%);
+    mask-image: radial-gradient(ellipse 85% 85% at 75% 75%, #000000 40%, rgba(0, 0, 0, 0.6) 65%, transparent 88%);
+    animation: floatGentleBR 18s ease-in-out infinite;
+  }
+
+  .pos-center-left {
+    top: 50%;
+    left: -30px;
+    transform: translateY(-50%);
+    -webkit-mask-image: radial-gradient(ellipse 85% 85% at 30% 50%, #000000 40%, rgba(0, 0, 0, 0.6) 65%, transparent 88%);
+    mask-image: radial-gradient(ellipse 85% 85% at 30% 50%, #000000 40%, rgba(0, 0, 0, 0.6) 65%, transparent 88%);
+    animation: floatGentleTL 20s ease-in-out infinite;
+  }
+
+  .pos-center-right {
+    top: 50%;
+    right: -30px;
+    transform: translateY(-50%) scaleX(-1);
+    -webkit-mask-image: radial-gradient(ellipse 85% 85% at 30% 50%, #000000 40%, rgba(0, 0, 0, 0.6) 65%, transparent 88%);
+    mask-image: radial-gradient(ellipse 85% 85% at 30% 50%, #000000 40%, rgba(0, 0, 0, 0.6) 65%, transparent 88%);
+    animation: floatGentleTR 22s ease-in-out infinite;
+  }
+
+  @keyframes floatGentleTL {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(6px, 8px) rotate(1.2deg); }
+  }
+
+  @keyframes floatGentleTR {
+    0%, 100% { transform: scaleX(-1) translate(0, 0) rotate(0deg); }
+    50% { transform: scaleX(-1) translate(-6px, 8px) rotate(-1.2deg); }
+  }
+
+  @keyframes floatGentleBL {
+    0%, 100% { transform: scaleY(-1) translate(0, 0) rotate(0deg); }
+    50% { transform: scaleY(-1) translate(6px, -8px) rotate(-1.2deg); }
+  }
+
+  @keyframes floatGentleBR {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, -8px) rotate(-1.2deg); }
+  }
+
+  @media (max-width: 768px) {
+    .botanical-accent {
+      opacity: calc(var(--botanical-opacity) * 0.75);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .botanical-accent {
+      animation: none !important;
+    }
+  }
+</style>

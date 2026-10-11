@@ -1,0 +1,277 @@
+---
+interface Props {
+  side?: 'left' | 'right';
+  height?: number;
+  class?: string;
+}
+
+const {
+  side = 'left',
+  height = 540,
+  class: className = ''
+} = Astro.props;
+---
+
+<div 
+  class={`scroll-vine-wrapper vine-${side} ${className}`} 
+  data-scroll-vine
+  aria-hidden="true"
+>
+  <svg 
+    viewBox="0 0 120 540" 
+    class="scroll-vine-svg"
+    style={`--vine-h: ${height}px;`}
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <defs>
+      <!-- Gradient for the main stem -->
+      <linearGradient id={`vineGrad-${side}`} x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#C29B4D" stop-opacity="0.95" />
+        <stop offset="30%" stop-color="#9B79DE" stop-opacity="1" />
+        <stop offset="70%" stop-color="#54398A" stop-opacity="0.95" />
+        <stop offset="100%" stop-color="#C29B4D" stop-opacity="0.9" />
+      </linearGradient>
+
+      <!-- Soft leaf gradient -->
+      <linearGradient id={`leafGrad-${side}`} x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#A583E6" stop-opacity="0.9" />
+        <stop offset="60%" stop-color="#7A57B8" stop-opacity="0.95" />
+        <stop offset="100%" stop-color="#488E62" stop-opacity="0.85" />
+      </linearGradient>
+
+      <!-- Golden glow filter -->
+      <filter id={`budGlow-${side}`} x="-50%" y="-50%" width="200%" height="200%">
+        <feDropShadow dx="0" dy="0" stdDeviation="2.5" flood-color="#C29B4D" flood-opacity="0.6"/>
+      </filter>
+    </defs>
+
+    <g class="vine-group">
+      <!-- Main winding stem -->
+      <path 
+        class="vine-stem" 
+        d="M 15 0 C 45 90, 75 140, 45 230 C 15 320, 70 380, 35 470 C 20 510, 35 530, 40 540" 
+        stroke={`url(#vineGrad-${side})`} 
+        stroke-linecap="round"
+      />
+
+      <!-- Secondary delicate spiral tendrils -->
+      <path 
+        class="vine-tendril tendril-1" 
+        d="M 52 160 C 75 170, 85 190, 72 205 C 62 215, 55 205, 60 195" 
+        stroke="#C29B4D" 
+        stroke-linecap="round"
+      />
+      <path 
+        class="vine-tendril tendril-2" 
+        d="M 40 350 C 65 355, 80 375, 68 395 C 58 405, 50 395, 56 385" 
+        stroke="#C29B4D" 
+        stroke-linecap="round"
+      />
+
+      <!-- Botanical Sprouting Leaves -->
+      <g class="vine-leaf leaf-1" style="transform-origin: 30px 65px;">
+        <path d="M 30 65 Q 60 55, 65 35 Q 50 65, 30 65 Z" fill={`url(#leafGrad-${side})`} />
+      </g>
+      <g class="vine-leaf leaf-2" style="transform-origin: 58px 125px;">
+        <path d="M 58 125 Q 90 120, 95 100 Q 80 130, 58 125 Z" fill={`url(#leafGrad-${side})`} />
+      </g>
+      <g class="vine-leaf leaf-3" style="transform-origin: 46px 210px;">
+        <path d="M 46 210 Q 20 220, 10 240 Q 30 215, 46 210 Z" fill={`url(#leafGrad-${side})`} />
+      </g>
+      <g class="vine-leaf leaf-4" style="transform-origin: 22px 290px;">
+        <path d="M 22 290 Q -5 305, 0 325 Q 15 295, 22 290 Z" fill={`url(#leafGrad-${side})`} />
+      </g>
+      <g class="vine-leaf leaf-5" style="transform-origin: 55px 365px;">
+        <path d="M 55 365 Q 85 360, 90 340 Q 75 370, 55 365 Z" fill={`url(#leafGrad-${side})`} />
+      </g>
+      <g class="vine-leaf leaf-6" style="transform-origin: 35px 440px;">
+        <path d="M 35 440 Q 65 445, 75 470 Q 50 445, 35 440 Z" fill={`url(#leafGrad-${side})`} />
+      </g>
+
+      <!-- Golden Botanical Flower Buds & Stardust -->
+      <circle class="vine-bud bud-1" cx="65" cy="35" r="4" fill="#C29B4D" filter={`url(#budGlow-${side})`} />
+      <circle class="vine-bud bud-2" cx="95" cy="100" r="3.5" fill="#D4AF60" filter={`url(#budGlow-${side})`} />
+      <circle class="vine-bud bud-3" cx="60" cy="195" r="3.5" fill="#C29B4D" filter={`url(#budGlow-${side})`} />
+      <circle class="vine-bud bud-4" cx="5" cy="325" r="3.5" fill="#D4AF60" filter={`url(#budGlow-${side})`} />
+      <circle class="vine-bud bud-5" cx="90" cy="340" r="4" fill="#C29B4D" filter={`url(#budGlow-${side})`} />
+      <circle class="vine-bud bud-6" cx="75" cy="470" r="3.5" fill="#C29B4D" filter={`url(#budGlow-${side})`} />
+    </g>
+  </svg>
+</div>
+
+<style>
+  .scroll-vine-wrapper {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.15;
+    transition: opacity 0.8s ease;
+  }
+
+  .vine-left {
+    left: clamp(2px, 1.5vw, 24px);
+  }
+
+  .vine-right {
+    right: clamp(2px, 1.5vw, 24px);
+    transform: translateY(-50%) scaleX(-1);
+  }
+
+  .scroll-vine-svg {
+    display: block;
+    width: clamp(65px, 7.5vw, 95px);
+    height: var(--vine-h, 540px);
+    max-height: 85vh;
+    overflow: visible;
+  }
+
+  /* Stem drawing animation */
+  .vine-stem {
+    stroke-width: 3.2px;
+    stroke-dasharray: 650;
+    stroke-dashoffset: 650;
+    transition: stroke-dashoffset 1.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .vine-tendril {
+    stroke-width: 1.8px;
+    stroke-dasharray: 120;
+    stroke-dashoffset: 120;
+    transition: stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .tendril-1 { transition-delay: 0.4s; }
+  .tendril-2 { transition-delay: 0.8s; }
+
+  /* Leaf sprouting */
+  .vine-leaf {
+    transform: scale(0) rotate(-15deg);
+    opacity: 0;
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+    filter: drop-shadow(0 2px 4px rgba(84, 57, 138, 0.25));
+  }
+
+  .leaf-1 { transition-delay: 0.3s; }
+  .leaf-2 { transition-delay: 0.5s; }
+  .leaf-3 { transition-delay: 0.75s; }
+  .leaf-4 { transition-delay: 0.95s; }
+  .leaf-5 { transition-delay: 1.15s; }
+  .leaf-6 { transition-delay: 1.35s; }
+
+  /* Golden Buds blooming */
+  .vine-bud {
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(0);
+    opacity: 0;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+  }
+
+  .bud-1 { transition-delay: 0.4s; }
+  .bud-2 { transition-delay: 0.6s; }
+  .bud-3 { transition-delay: 0.85s; }
+  .bud-4 { transition-delay: 1.05s; }
+  .bud-5 { transition-delay: 1.25s; }
+  .bud-6 { transition-delay: 1.45s; }
+
+  /* Active In-View State */
+  .scroll-vine-wrapper.vine-in-view {
+    opacity: 0.88;
+  }
+
+  :global(.vine-in-view) .vine-stem,
+  .vine-in-view .vine-stem {
+    stroke-dashoffset: 0;
+  }
+
+  :global(.vine-in-view) .vine-tendril,
+  .vine-in-view .vine-tendril {
+    stroke-dashoffset: 0;
+  }
+
+  :global(.vine-in-view) .vine-leaf,
+  .vine-in-view .vine-leaf {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+
+  :global(.vine-in-view) .vine-bud,
+  .vine-in-view .vine-bud {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  /* Responsive Mobile Refinements */
+  @media (max-width: 840px) {
+    .scroll-vine-wrapper {
+      z-index: 2;
+    }
+    .scroll-vine-wrapper.vine-in-view {
+      opacity: 0.85;
+    }
+    .vine-left {
+      left: 2px;
+    }
+    .vine-right {
+      right: 2px;
+      transform: translateY(-50%) scaleX(-1);
+    }
+    .scroll-vine-svg {
+      width: clamp(40px, 11vw, 54px);
+      max-height: 75vh;
+    }
+    .vine-stem {
+      stroke-width: 3.5px;
+    }
+    .vine-tendril {
+      stroke-width: 2.2px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-vine-wrapper {
+      opacity: 0.85 !important;
+    }
+    .vine-stem, .vine-tendril {
+      stroke-dashoffset: 0 !important;
+      transition: none !important;
+    }
+    .vine-leaf, .vine-bud {
+      transform: scale(1) rotate(0deg) !important;
+      opacity: 1 !important;
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  function initScrollVines() {
+    const vines = document.querySelectorAll('[data-scroll-vine]');
+    if (!vines.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('vine-in-view');
+          }
+        });
+      },
+      {
+        threshold: 0.05,
+        rootMargin: '80px 0px 80px 0px'
+      }
+    );
+
+    vines.forEach((vine) => observer.observe(vine));
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScrollVines);
+  } else {
+    initScrollVines();
+  }
+</script>
