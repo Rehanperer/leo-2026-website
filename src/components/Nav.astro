@@ -457,10 +457,20 @@ import { siteConfig } from '../data/site';
     });
 
     // Replay intro handlers
-    function handleReplay() {
+    function handleReplay(e?: Event) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
       closeMenu();
+
+      // Scroll smoothly to top so hero section reveals cleanly
+      window.scrollTo({ top: 0, behavior: 'instant' });
+
       if (typeof (window as any).replayCinematicIntro === 'function') {
         (window as any).replayCinematicIntro();
+      } else {
+        window.dispatchEvent(new CustomEvent('replay-cinematic-intro'));
       }
     }
 

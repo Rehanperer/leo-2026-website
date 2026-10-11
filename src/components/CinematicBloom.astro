@@ -530,76 +530,134 @@
 </style>
 
 <script>
-  // Seamless orchestration & auto-dismiss
+  let dismissTimer: ReturnType<typeof setTimeout> | null = null;
+  let isIntroActive = false;
+
+  function dismissIntro() {
+    if (!isIntroActive) return;
+    isIntroActive = false;
+
+    if (dismissTimer) {
+      clearTimeout(dismissTimer);
+      dismissTimer = null;
+    }
+
+    const overlay = document.getElementById('cinematic-intro');
+    if (overlay) {
+      overlay.classList.add('dismissed');
+      overlay.classList.remove('is-active');
+      setTimeout(() => {
+        if (overlay && overlay.classList.contains('dismissed')) {
+          overlay.style.display = 'none';
+        }
+      }, 520);
+    }
+
+    try {
+      sessionStorage.setItem('leo_eic_intro_seen', 'true');
+    } catch (e) {}
+
+    document.body.classList.remove('intro-active');
+    window.dispatchEvent(new CustomEvent('cinematic-intro-complete'));
+  }
+
+  function startIntroSequence() {
+    const overlay = document.getElementById('cinematic-intro');
+    if (!overlay) return;
+
+    if (dismissTimer) {
+      clearTimeout(dismissTimer);
+      dismissTimer = null;
+    }
+
+    isIntroActive = true;
+    try {
+      sessionStorage.removeItem('leo_eic_intro_seen');
+    } catch (e) {}
+
+    document.body.classList.add('intro-active');
+
+    // Ensure overlay is visible and active
+    overlay.style.display = 'flex';
+    overlay.classList.remove('dismissed');
+    overlay.classList.remove('is-active');
+    void overlay.offsetWidth; // Force DOM reflow so CSS animations reset cleanly
+    overlay.classList.add('is-active');
+
+    // Restart and play video
+    const vid = document.getElementById('bloom-video') as HTMLVideoElement | null;
+    if (vid) {
+      try {
+        vid.currentTime = 0;
+        vid.muted = true;
+        const playPromise = vid.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((err) => {
+            console.warn('Cinematic video autoplay notice:', err);
+          });
+        }
+      } catch (err) {
+        console.warn('Video reset error:', err);
+      }
+
+      vid.onended = () => {
+        dismissIntro();
+      };
+    }
+
+    // Auto-dismiss sequence gracefully after 4.8 seconds
+    dismissTimer = setTimeout(dismissIntro, 4800);
+  }
+
+  // Define and expose replay handler globally immediately on script execution
+  function replayCinematicIntro() {
+    // Scroll window smoothly to top so hero reveals properly
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    startIntroSequence();
+  }
+
+  // Register globally & listen for custom events immediately upon script evaluation
+  (window as any).replayCinematicIntro = replayCinematicIntro;
+  window.addEventListener('replay-cinematic-intro', replayCinematicIntro);
+
   function initCinematicIntro() {
     const overlay = document.getElementById('cinematic-intro');
     const skipBtn = document.getElementById('skip-intro-btn');
     if (!overlay) return;
 
+    // Attach skip button handler
+    skipBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dismissIntro();
+    });
+
+    // Escape key listener (active whenever intro is showing)
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isIntroActive) {
+        dismissIntro();
+      }
+    });
+
     // Check if user already saw intro in current browser session or passed ?intro=0
+    let hasSeen = false;
+    try {
+      hasSeen = sessionStorage.getItem('leo_eic_intro_seen') === 'true';
+    } catch (e) {}
+
     const urlParams = new URLSearchParams(window.location.search);
-    const hasSeen = sessionStorage.getItem('leo_eic_intro_seen');
-    if (hasSeen === 'true' || urlParams.get('intro') === '0') {
+    if (hasSeen || urlParams.get('intro') === '0') {
       overlay.classList.add('dismissed');
       overlay.style.display = 'none';
+      isIntroActive = false;
+      document.body.classList.remove('intro-active');
       return;
     }
 
-    function dismiss() {
-      if (overlay) {
-        overlay.classList.add('dismissed');
-        setTimeout(() => {
-          if (overlay && overlay.classList.contains('dismissed')) {
-            overlay.style.display = 'none';
-          }
-        }, 520);
-      }
-      sessionStorage.setItem('leo_eic_intro_seen', 'true');
-      document.body.classList.remove('intro-active');
-      // Dispatch custom event so Hero can animate smoothly
-      window.dispatchEvent(new CustomEvent('cinematic-intro-complete'));
-    }
-
-    document.body.classList.add('intro-active');
-
-    if (skipBtn) {
-      skipBtn.addEventListener('click', dismiss);
-    }
-
-    // Auto-complete after bloom sequence finishes gracefully (2.8s)
-    const videoElem = document.getElementById('bloom-video') as HTMLVideoElement | null;
-    if (videoElem) {
-      videoElem.play().catch(() => {});
-    }
-    const timer = setTimeout(dismiss, 4600);
-
-    // Allow user to click anywhere outside or press Escape to skip immediately
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        clearTimeout(timer);
-        dismiss();
-      }
-    }, { once: true });
-
-    // Expose replay function globally for the "✦ Replay Intro" badge
-    (window as any).replayCinematicIntro = function() {
-      sessionStorage.removeItem('leo_eic_intro_seen');
-      if (overlay) {
-        overlay.style.display = 'flex';
-        void overlay.offsetHeight;
-        overlay.classList.remove('dismissed');
-      }
-      const vid = document.getElementById('bloom-video') as HTMLVideoElement | null;
-      if (vid) {
-        vid.currentTime = 0;
-        vid.play().catch(() => {});
-      }
-      document.body.classList.add('intro-active');
-      setTimeout(dismiss, 4600);
-    };
+    // First time in session: run sequence automatically
+    startIntroSequence();
   }
 
-  // Initialize on load or Astro page transitions
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initCinematicIntro);
   } else {
