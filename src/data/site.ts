@@ -20,6 +20,7 @@ export const siteConfig = {
     { label: "What We Do", href: "#pillars" },
     { label: "Impact", href: "#impact" },
     { label: "Leadership", href: "#leaders" },
-    { label: "Projects", href: "#projects" }
+    { label: "Projects", href: "#projects" },
+    { label: "Gallery", href: "#gallery" }
   ]
 };

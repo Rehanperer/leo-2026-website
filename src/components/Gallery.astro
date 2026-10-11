@@ -1,0 +1,241 @@
+---
+import InfiniteSpiral from './InfiniteSpiral';
+import BotanicalAccent from './BotanicalAccent.astro';
+import ScrollVine from './ScrollVine.astro';
+
+// Curated 3D spiral visual assets representing projects, fellowship & identity
+const galleryItems = [
+  {
+    id: "project-1",
+    src: "/images/one.jpg",
+    alt: "Project Blooming Hope — Community Welfare & Medical Outreach",
+    label: "Project Blooming Hope • Community Welfare & Medical Outreach"
+  },
+  {
+    id: "project-2",
+    src: "/images/two.jpg",
+    alt: "EcoGrace Canopy — Urban Biodiversity & Tree Revitalization",
+    label: "EcoGrace Canopy • Environmental Stewardship"
+  },
+  {
+    id: "project-3",
+    src: "/images/three.jpg",
+    alt: "Leadership Academy — Youth Governance & Ethical Masterclass",
+    label: "Leadership Academy • Youth Leadership & Governance"
+  },
+  {
+    id: "project-4",
+    src: "/images/four.jpg",
+    alt: "Project Vidura — Rural Classroom & STEM Education Aid",
+    label: "Project Vidura • Educational Empowerment"
+  },
+  {
+    id: "project-5",
+    src: "/images/five.jpg",
+    alt: "Fellowship Night — Charter Installation & Youth Bond",
+    label: "Fellowship Night • Charter Celebration & Fellowship"
+  },
+  {
+    id: "project-6",
+    src: "/images/six.jpg",
+    alt: "Iris of Integrity — Ethical Stewardship & Centennial Grace",
+    label: "Iris of Integrity • Centennial Grace"
+  },
+  {
+    id: "crest-emblem",
+    src: "/crest.png",
+    alt: "Leo Club of EIC Official Ceremonial Crest",
+    label: "Official Crest • Leading with Grace, Serving with Integrity"
+  },
+  {
+    id: "blooming-iris-globe",
+    src: "/blooming-iris-globe.png",
+    alt: "Global Fellowship & Botanical Harmony",
+    label: "Planetary Stewardship • Global Fellowship"
+  }
+];
+---
+
+<section id="gallery" class="section gallery-section" aria-label="Interactive 3D Spiral Gallery">
+  <!-- Scroll-triggered growing botanical vine on the right -->
+  <ScrollVine side="right" height={600} />
+
+  <!-- Botanical watercolor accents framing the gallery -->
+  <BotanicalAccent position="top-left" size="clamp(220px, 26vw, 360px)" opacity={0.32} />
+  <BotanicalAccent position="bottom-right" size="clamp(200px, 24vw, 340px)" opacity={0.3} />
+
+  <div class="container gallery-container">
+    <!-- Section Header -->
+    <div class="gallery-header text-center">
+      <span class="eyebrow">
+        <span class="sparkle-gold">✦</span>
+        Living Fellowship Archive
+      </span>
+      <h2 class="section-title">
+        Moments of <em>Grace</em> & Action
+      </h2>
+      <p class="section-subtitle">
+        Explore our service footprints, youth fellowship milestones, and signature humanitarian initiatives across District 306 D2 in an interactive 3D spiral helix.
+      </p>
+
+      <!-- Interaction Hint Pill -->
+      <div class="gallery-hint-pill" aria-hidden="true">
+        <span class="hint-dot"></span>
+        <span>Drag or scroll to orbit • Hover to inspect</span>
+      </div>
+    </div>
+
+    <!-- 3D Infinite Spiral Interactive Stage -->
+    <div class="spiral-stage-wrapper">
+      <!-- Ambient Backglow -->
+      <div class="spiral-glow" aria-hidden="true"></div>
+
+      <!-- Orbital decorative rings in background -->
+      <div class="spiral-orbit-ring ring-1" aria-hidden="true"></div>
+      <div class="spiral-orbit-ring ring-2" aria-hidden="true"></div>
+
+      <InfiniteSpiral
+        client:visible
+        items={galleryItems}
+        speed={0.46}
+        direction="up"
+        animationMode="all"
+        radius={215}
+        cardWidth={210}
+        cardHeight={138}
+        verticalSpacing={68}
+        perspective={980}
+        cardsPerTurn={7}
+        rotation={0}
+        cardTilt={-3}
+        cardRadius={14}
+        centerScale={1.22}
+        edgeFade={0.32}
+        edgeBlur={5}
+        pauseOnHover={true}
+        imageFit="cover"
+        className="gallery-spiral-instance"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .gallery-section {
+    position: relative;
+    padding-top: clamp(5rem, 9vw, 7.5rem);
+    padding-bottom: clamp(5rem, 9vw, 7.5rem);
+    overflow: hidden;
+    background: radial-gradient(ellipse 75% 55% at 50% 50%, rgba(243, 237, 250, 0.45) 0%, transparent 75%);
+  }
+
+  .gallery-container {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .gallery-header {
+    max-width: 680px;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .gallery-hint-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(194, 155, 77, 0.35);
+    border-radius: var(--radius-full, 9999px);
+    font-size: var(--fs-xs, 0.78rem);
+    font-weight: 500;
+    color: var(--c-text-secondary);
+    letter-spacing: 0.04em;
+    box-shadow: 0 4px 16px -2px rgba(122, 87, 184, 0.1);
+    backdrop-filter: blur(8px);
+    margin-top: 0.5rem;
+  }
+
+  .hint-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--c-gold);
+    box-shadow: 0 0 6px var(--c-gold);
+    animation: hintPulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes hintPulse {
+    0%, 100% { opacity: 0.4; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.25); }
+  }
+
+  /* 3D Stage Wrapper */
+  .spiral-stage-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 980px;
+    height: clamp(520px, 65vh, 660px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 28px;
+    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.6) 0%, rgba(248, 244, 253, 0.3) 60%, transparent 100%);
+    border: 1px solid rgba(194, 155, 77, 0.15);
+    box-shadow: 0 20px 60px -20px rgba(122, 87, 184, 0.12);
+  }
+
+  /* Glow */
+  .spiral-glow {
+    position: absolute;
+    width: 440px;
+    height: 440px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(168, 128, 230, 0.22) 0%, rgba(255, 235, 185, 0.18) 45%, transparent 70%);
+    filter: blur(50px);
+    pointer-events: none;
+  }
+
+  /* Orbital Rings */
+  .spiral-orbit-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .ring-1 {
+    width: 520px;
+    height: 520px;
+    border: 1px dashed rgba(194, 155, 77, 0.22);
+    animation: rotateSpiralRing 80s linear infinite;
+  }
+
+  .ring-2 {
+    width: 380px;
+    height: 380px;
+    border: 1px solid rgba(122, 87, 184, 0.12);
+  }
+
+  @keyframes rotateSpiralRing {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  :global(.gallery-spiral-instance) {
+    height: 100%;
+  }
+</style>
