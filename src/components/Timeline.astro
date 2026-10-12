@@ -1,0 +1,671 @@
+---
+interface JourneyItem {
+  id: string;
+  year: string;
+  month: string;
+  content: string;
+}
+
+interface Props {
+  title?: string;
+  periodLabel?: string;
+  activeColor?: string;
+  imageUrl?: string;
+  imageAlt?: string;
+}
+
+const {
+  title = "Our Living Storyline",
+  periodLabel = "2022 — 2027 Charter Arc",
+  imageUrl = "/history/history-22-23.png",
+  imageAlt = "Charter Era — Leo Club of Ethos International"
+} = Astro.props;
+
+const topJourneyData: JourneyItem[] = [
+  {
+    id: "2022-march",
+    year: "2022",
+    month: "March",
+    content: "Charter Dawn: Officially founded under Lions Club of Colombo West (District 306 D2) led by Rachel Desilva."
+  },
+  {
+    id: "2023-april",
+    year: "2023",
+    month: "April",
+    content: "Serve. Inspire. Grow: Rapid membership expansion into schools, colleges, and university campuses."
+  },
+  {
+    id: "2024-july",
+    year: "2024",
+    month: "July",
+    content: "Expanding Horizons: Flagship 'Service with Spice' project and large-scale youth welfare initiatives."
+  },
+  {
+    id: "2026-may",
+    year: "2026",
+    month: "May",
+    content: "The Future Awaits: 2026/2027 cabinet installations, digital platforms, and lasting social impact."
+  }
+];
+
+const bottomJourneyData: JourneyItem[] = [
+  {
+    id: "2022-november",
+    year: "2022",
+    month: "November",
+    content: "Inaugural community medical camps, club constitution bylaws, and ceremonial crest adoption."
+  },
+  {
+    id: "2023-october",
+    year: "2023",
+    month: "October",
+    content: "Tree canopy conservation drives and recurring compassionate eldercare home sanctuaries."
+  },
+  {
+    id: "2025-march",
+    year: "2025",
+    month: "March",
+    content: "Hosted District 306 D2 Youth Orientation Summit and forged international Leo fellowships."
+  }
+];
+
+---
+
+
+<section id="journey" class="timeline-section" aria-label="Club Historical Journey">
+  <!-- Pinned / Sticky Viewport -->
+  <div class="timeline-sticky-viewport">
+    <!-- Top Micro Header & Ambient Aura -->
+    <div class="timeline-aura" aria-hidden="true"></div>
+
+    <div class="whole-slider-track" id="whole-slider-track">
+      <!-- Left Featured Milestone Picture -->
+      <div class="timeline-featured-card">
+        <div class="featured-media-frame">
+          <img src={imageUrl} alt={imageAlt} class="featured-img" loading="lazy" decoding="async" />
+          <div class="featured-sheen" aria-hidden="true"></div>
+          <div class="featured-badge">
+            <span class="badge-sparkle">✦</span>
+            <span>Est. 2022 • Colombo 7</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Horizontal Timeline Canvas -->
+      <div class="timeline-content-stage">
+        <!-- Central Horizontal Connecting Line -->
+        <div class="timeline-axis-line-container" aria-hidden="true">
+          <div class="axis-node-dot start-dot"></div>
+          <div class="journey-line"></div>
+          <div class="axis-node-dot end-dot"></div>
+        </div>
+
+        <!-- Upper Half: Top Milestones -->
+        <div class="timeline-half top-half">
+          <div class="title-column">
+            <span class="eyebrow eyebrow-gold">Historical Tapestry</span>
+            <h2 class="timeline-main-title">
+              {title}
+            </h2>
+          </div>
+
+          <div class="milestones-row top-milestones-row">
+            {topJourneyData.map((item) => (
+              <div class="milestone-item top-item" data-id={item.id}>
+                <!-- Vertical Stem and Dot -->
+                <div class="stem-container top-stem">
+                  <div class={`stem-dot jd-${item.id}`}></div>
+                  <div class={`stem-line jl-${item.id}`}></div>
+                </div>
+
+                <!-- Text Block -->
+                <div class="milestone-text-block">
+                  <h4 class={`milestone-date title-${item.id}`}>
+                    <span class="date-year">{item.year}</span>
+                    <span class="date-month">{item.month}</span>
+                  </h4>
+                  <p class={`milestone-content description-${item.id}`}>
+                    {item.content}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Lower Half: Bottom Milestones -->
+        <div class="timeline-half bottom-half">
+          <div class="period-column">
+            <span class="period-pill">{periodLabel}</span>
+            <p class="period-sub">Scroll to travel through our history</p>
+          </div>
+
+          <div class="milestones-row bottom-milestones-row">
+            {bottomJourneyData.map((item) => (
+              <div class="milestone-item bottom-item" data-id={item.id}>
+                <!-- Vertical Stem and Dot -->
+                <div class="stem-container bottom-stem">
+                  <div class={`stem-line jl-${item.id}`}></div>
+                  <div class={`stem-dot jd-${item.id}`}></div>
+                </div>
+
+                <!-- Text Block -->
+                <div class="milestone-text-block bottom-text-block">
+                  <h4 class={`milestone-date title-${item.id}`}>
+                    <span class="date-year">{item.year}</span>
+                    <span class="date-month">{item.month}</span>
+                  </h4>
+                  <p class={`milestone-content description-${item.id}`}>
+                    {item.content}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Outer Section creates the vertical scroll track */
+  .timeline-section {
+    position: relative;
+    width: 100%;
+    height: 220vw;
+    background: var(--c-bg, #FAF8FD);
+    color: var(--c-text-primary, #211638);
+    overflow: clip;
+  }
+
+  /* Pinned Sticky Stage */
+  .timeline-sticky-viewport {
+    position: sticky;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding-top: 2vh;
+  }
+
+  .timeline-aura {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1200px;
+    height: 600px;
+    background: radial-gradient(ellipse 60% 40% at 50% 50%, rgba(122, 87, 184, 0.08) 0%, rgba(194, 155, 77, 0.06) 45%, transparent 75%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Horizontal Slider */
+  .whole-slider-track {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 36vw;
+    min-height: 460px;
+    width: 250vw;
+    gap: 4vw;
+    padding: 0 4vw;
+    will-change: transform;
+    z-index: 1;
+  }
+
+  /* Featured Left Image Card */
+  .timeline-featured-card {
+    width: 26vw;
+    height: 100%;
+    flex-shrink: 0;
+  }
+
+  .featured-media-frame {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(194, 155, 77, 0.35);
+    box-shadow: 0 20px 50px rgba(33, 22, 56, 0.12), 0 0 30px rgba(122, 87, 184, 0.1);
+    background: #0E071A;
+  }
+
+  .featured-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .featured-sheen {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgba(14, 7, 26, 0.75) 100%);
+    pointer-events: none;
+  }
+
+  .featured-badge {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: rgba(14, 7, 26, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(194, 155, 77, 0.4);
+    border-radius: 9999px;
+    color: #FAF8FD;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .badge-sparkle { color: #C29B4D; }
+
+  /* Content Stage */
+  .timeline-content-stage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Central Axis Line */
+  .timeline-axis-line-container {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .axis-node-dot {
+    width: 0.75vw;
+    height: 0.75vw;
+    min-width: 8px;
+    min-height: 8px;
+    border-radius: 50%;
+    background: #C29B4D;
+    box-shadow: 0 0 12px #C29B4D;
+    flex-shrink: 0;
+  }
+
+  .journey-line {
+    height: 2px;
+    width: 0%;
+    background: linear-gradient(90deg, #C29B4D 0%, #7A57B8 50%, #C29B4D 100%);
+    border-radius: 9999px;
+    will-change: width;
+  }
+
+  /* Half Rows */
+  .timeline-half {
+    position: relative;
+    width: 100%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+  }
+
+  .top-half {
+    align-items: flex-end;
+    padding-bottom: 1.5vw;
+  }
+
+  .bottom-half {
+    align-items: flex-start;
+    padding-top: 1.5vw;
+  }
+
+  /* Header Columns */
+  .title-column {
+    width: 18vw;
+    flex-shrink: 0;
+    padding-right: 2vw;
+  }
+
+  .timeline-main-title {
+    font-family: var(--font-serif, serif);
+    font-size: clamp(1.8rem, 2.6vw, 3rem);
+    line-height: 1.1;
+    color: var(--c-text-primary, #211638);
+    margin: 4px 0 0;
+  }
+
+  .period-column {
+    width: 18vw;
+    flex-shrink: 0;
+    padding-right: 2vw;
+  }
+
+  .period-pill {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--c-iris-soft, #EDE6F9);
+    border: 1px solid rgba(122, 87, 184, 0.25);
+    border-radius: 9999px;
+    color: var(--c-iris-deep, #54398A);
+    font-size: 0.8125rem;
+    font-weight: 700;
+  }
+
+  .period-sub {
+    font-size: 0.75rem;
+    color: var(--c-text-tertiary, #8C82A2);
+    margin: 6px 0 0;
+  }
+
+  /* Milestone Rows */
+  .milestones-row {
+    display: flex;
+    gap: 12vw;
+  }
+
+  .top-milestones-row {
+    padding-left: 1vw;
+  }
+
+  .bottom-milestones-row {
+    padding-left: 8vw;
+  }
+
+  .milestone-item {
+    position: relative;
+    width: 22vw;
+    flex-shrink: 0;
+  }
+
+  /* Stems and Dots */
+  .stem-container {
+    position: absolute;
+    left: 0;
+    width: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .top-stem {
+    bottom: -1.5vw;
+    height: 10vw;
+    justify-content: flex-end;
+  }
+
+  .bottom-stem {
+    top: -1.5vw;
+    height: 10vw;
+    justify-content: flex-start;
+  }
+
+  .stem-dot {
+    width: 0.85vw;
+    height: 0.85vw;
+    min-width: 10px;
+    min-height: 10px;
+    border-radius: 50%;
+    background: #C29B4D;
+    box-shadow: 0 0 10px #C29B4D;
+    transform: translateX(-50%) scale(0);
+    will-change: transform;
+    flex-shrink: 0;
+  }
+
+  .stem-line {
+    width: 2px;
+    height: 100%;
+    background: #C29B4D;
+    transform: scaleY(0);
+    will-change: transform;
+  }
+
+  .top-stem .stem-line { transform-origin: bottom bottom; }
+  .bottom-stem .stem-line { transform-origin: top top; }
+
+  /* Milestone Text Blocks */
+  .milestone-text-block {
+    padding-left: 2vw;
+    padding-bottom: 2vw;
+    will-change: transform, opacity;
+  }
+
+  .bottom-text-block {
+    padding-top: 2vw;
+    padding-bottom: 0;
+  }
+
+  .milestone-date {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin: 0 0 6px;
+    line-height: 1;
+  }
+
+  .date-year {
+    font-family: var(--font-serif, serif);
+    font-size: clamp(1.4rem, 2vw, 2.2rem);
+    font-weight: 700;
+    color: var(--c-iris-deep, #54398A);
+  }
+
+  .date-month {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #9F7B2F;
+  }
+
+  .milestone-content {
+    font-size: clamp(0.8125rem, 1vw, 0.95rem);
+    color: var(--c-text-secondary, #5C5272);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* Mobile Responsiveness */
+  @media (max-width: 768px) {
+    .timeline-section {
+      height: 380vh;
+    }
+
+    .timeline-sticky-viewport {
+      padding-top: 6vh;
+    }
+
+    .whole-slider-track {
+      height: 75vh;
+      width: 720vw;
+      gap: 8vw;
+      padding: 0 6vw;
+    }
+
+    .timeline-featured-card {
+      width: 65vw;
+      height: 60vh;
+    }
+
+    .title-column {
+      width: 50vw;
+    }
+
+    .timeline-main-title {
+      font-size: 7vw;
+    }
+
+    .period-column {
+      width: 45vw;
+    }
+
+    .milestones-row {
+      gap: 30vw;
+    }
+
+    .milestone-item {
+      width: 65vw;
+    }
+
+    .top-stem,
+    .bottom-stem {
+      height: 18vh;
+    }
+
+    .top-stem {
+      bottom: -3vh;
+    }
+
+    .bottom-stem {
+      top: -3vh;
+    }
+
+    .stem-dot {
+      width: 14px;
+      height: 14px;
+    }
+
+    .date-year {
+      font-size: 5.5vw;
+    }
+
+    .milestone-content {
+      font-size: 3.8vw;
+      line-height: 1.45;
+    }
+  }
+</style>
+
+<script>
+  function initTimelineScrub() {
+    const section = document.getElementById('journey');
+    const track = document.getElementById('whole-slider-track');
+    const journeyLine = section?.querySelector('.journey-line') as HTMLElement | null;
+    if (!section || !track || !journeyLine) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Timeline items list in chronological order
+    const itemIds = [
+      '2022-march',
+      '2022-november',
+      '2023-april',
+      '2023-october',
+      '2024-july',
+      '2025-march',
+      '2026-may'
+    ];
+
+    if (reduceMotion) {
+      journeyLine.style.width = '100%';
+      itemIds.forEach(id => {
+        const line = section.querySelector(`.jl-${id}`) as HTMLElement | null;
+        const dot = section.querySelector(`.jd-${id}`) as HTMLElement | null;
+        const title = section.querySelector(`.title-${id}`) as HTMLElement | null;
+        const desc = section.querySelector(`.description-${id}`) as HTMLElement | null;
+        if (line) line.style.transform = 'scaleY(1)';
+        if (dot) dot.style.transform = 'translateX(-50%) scale(1)';
+        if (title) { title.style.transform = 'none'; title.style.opacity = '1'; }
+        if (desc) { desc.style.transform = 'none'; desc.style.opacity = '1'; }
+      });
+      return;
+    }
+
+    let isVisible = true;
+    let raf = 0;
+
+    const desktopPositions = [
+      [0.05, 0.18],
+      [0.15, 0.28],
+      [0.26, 0.40],
+      [0.38, 0.52],
+      [0.50, 0.65],
+      [0.62, 0.77],
+      [0.74, 0.88]
+    ];
+
+    const mobilePositions = [
+      [0.08, 0.18],
+      [0.18, 0.30],
+      [0.30, 0.42],
+      [0.42, 0.55],
+      [0.55, 0.68],
+      [0.68, 0.80],
+      [0.80, 0.92]
+    ];
+
+    const updateFrame = () => {
+      raf = 0;
+      if (!isVisible) return;
+
+      const rect = section.getBoundingClientRect();
+      const maxScroll = rect.height - window.innerHeight;
+      if (maxScroll <= 0) return;
+
+      const progress = Math.max(0, Math.min(1, -rect.top / maxScroll));
+      const isMobile = window.innerWidth < 768;
+
+      const slidePercent = isMobile ? -62 : -60;
+      const lineWidth = isMobile ? 80 : 96;
+      const positions = isMobile ? mobilePositions : desktopPositions;
+
+      // 1. Horizontal track motion
+      track.style.transform = `translateX(${progress * slidePercent}%)`;
+
+      // 2. Central axis line expanding
+      journeyLine.style.width = `${progress * lineWidth}%`;
+
+      // 3. Staggered reveal for stems, dots, and text
+      itemIds.forEach((id, index) => {
+        const [start, end] = positions[index] || [0.1, 0.3];
+        const itemP = Math.max(0, Math.min(1, (progress - start) / (end - start)));
+
+        const line = section.querySelector(`.jl-${id}`) as HTMLElement | null;
+        const dot = section.querySelector(`.jd-${id}`) as HTMLElement | null;
+        const title = section.querySelector(`.title-${id}`) as HTMLElement | null;
+        const desc = section.querySelector(`.description-${id}`) as HTMLElement | null;
+
+        if (line) line.style.transform = `scaleY(${itemP})`;
+        if (dot) dot.style.transform = `translateX(-50%) scale(${itemP})`;
+
+        const yShift = (1 - itemP) * 30;
+        const op = itemP > 0.1 ? itemP : 0;
+        if (title) {
+          title.style.transform = `translateY(${yShift}px)`;
+          title.style.opacity = `${op}`;
+        }
+        if (desc) {
+          desc.style.transform = `translateY(${yShift}px)`;
+          desc.style.opacity = `${op}`;
+        }
+      });
+    };
+
+    const onScroll = () => {
+      if (!raf && isVisible) {
+        raf = requestAnimationFrame(updateFrame);
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) onScroll();
+    });
+    observer.observe(section);
+
+    updateFrame();
+  }
+
+  initTimelineScrub();
+</script>

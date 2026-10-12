@@ -1,0 +1,373 @@
+---
+interface ImageItem {
+  src: string;
+  alt?: string;
+}
+
+interface Props {
+  images?: ImageItem[];
+  speed?: number;
+  tileHeight?: number;
+  aspectRatio?: number;
+  gap?: number;
+  axis?: number;
+  curve?: number;
+  fade?: number;
+  className?: string;
+}
+
+const defaultImages: ImageItem[] = [
+  { src: "/gallery/gallery-image-1.jpg", alt: "Annual Installation Ceremony" },
+  { src: "/gallery/gallery-image-2.jpg", alt: "Community Healthcare Camp" },
+  { src: "/gallery/gallery-image-3.jpg", alt: "Beach Cleanup & Eco Drive" },
+  { src: "/gallery/gallery-image-4.jpg", alt: "Youth Leadership Summit" },
+  { src: "/gallery/gallery-image-5.jpg", alt: "Elderly Care Home Visit" },
+  { src: "/gallery/gallery-image-6.jpg", alt: "Book Donation & Literacy Drive" },
+  { src: "/gallery/gallery-image-7.jpg", alt: "Food Relief & Spice Kitchen" },
+  { src: "/gallery/gallery-image-8.jpg", alt: "Leo Orientation Gathering" },
+  { src: "/gallery/gallery-image-9.jpg", alt: "Inter-District Fellowship Night" },
+  { src: "/gallery/gallery-image-10.jpg", alt: "Tree Planting Conservation" },
+  { src: "/gallery/gallery-image-11.jpg", alt: "Fundraising Gala Banquet" },
+  { src: "/gallery/gallery-image-12.jpg", alt: "Skills Development Workshop" }
+];
+
+const {
+  images = defaultImages,
+  speed = 4.2,
+  tileHeight = 56,
+  aspectRatio = 16 / 9,
+  gap = 6,
+  axis = 50,
+  curve = 78,
+  fade = 12,
+  className = ""
+} = Astro.props;
+
+const config = JSON.stringify({
+  images,
+  speed,
+  tileHeight,
+  aspectRatio,
+  gap,
+  axis,
+  curve,
+  fade
+});
+---
+
+<section 
+  class={`tilted-grid-section ${className}`.trim()} 
+  aria-label="Vibrant Moments in Motion"
+  data-tilted-grid-config={config}
+>
+  <!-- Ambient Botanical & Gold Sheen Backdrop -->
+  <div class="tilted-grid-aura" aria-hidden="true"></div>
+
+  <!-- Section Header / Micro Eyebrow -->
+  <div class="container tilted-header-container">
+    <div class="tilted-header-inner text-center">
+      <span class="eyebrow eyebrow-gold">Living Moments • District 306 D2</span>
+      <h2 class="tilted-subheading">
+        Youth in <em>Action & Fellowship</em>
+      </h2>
+    </div>
+  </div>
+
+  <!-- The 3D Curved Cylindrical Stream Viewport -->
+  <div class="tilted-grid-viewport" id="tilted-grid-stage">
+    <!-- Dynamic client style and tiles will be injected here -->
+    <div class="tilted-grid-stream" aria-hidden="true"></div>
+  </div>
+</section>
+
+<style>
+  .tilted-grid-section {
+    position: relative;
+    width: 100%;
+    padding: 30px 0 50px;
+    background: var(--c-bg, #FAF8FD);
+    overflow: hidden;
+  }
+
+  .tilted-grid-aura {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 900px;
+    height: 380px;
+    background: radial-gradient(ellipse 60% 40% at 50% 50%, rgba(122, 87, 184, 0.08) 0%, rgba(194, 155, 77, 0.06) 45%, transparent 75%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .tilted-header-container {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 24px;
+  }
+
+  .tilted-subheading {
+    font-family: var(--font-serif, serif);
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    color: var(--c-text-primary, #211638);
+    margin: 6px 0 0;
+  }
+
+  .tilted-subheading em {
+    font-style: italic;
+    color: var(--c-iris, #7A57B8);
+  }
+
+  /* 3D Cylindrical Viewport */
+  .tilted-grid-viewport {
+    position: relative;
+    width: 100%;
+    height: clamp(260px, 34vh, 380px);
+    overflow: hidden;
+    container-type: size;
+    z-index: 1;
+  }
+
+  .tilted-grid-stream {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.6s ease-out;
+  }
+
+  .tilted-grid-stream.ready {
+    opacity: 1;
+  }
+
+  @media (max-width: 640px) {
+    .tilted-grid-section {
+      padding: 20px 0 40px;
+    }
+    .tilted-grid-viewport {
+      height: 240px;
+    }
+  }
+</style>
+
+<script>
+  const SLICES = 16;
+  const CAMERA = 1.6;
+  const MAX_WIDTH = 55;
+
+  function arc(bend: number) {
+    return (CAMERA - 1 + Math.cos(bend)) / (2 * CAMERA * Math.sin(bend));
+  }
+
+  function measure(
+    width: number,
+    height: number,
+    tile: number,
+    aspect: number,
+    gap: number,
+    bend: number
+  ) {
+    const h = Math.min(
+      (tile / 100) * height,
+      ((MAX_WIDTH / 100) * width) / aspect
+    );
+    const radius = width * arc(bend);
+    if (!(h > 0) || !(radius > 0)) {
+      return { columns: 2, sweep: 0, unit: 0, limit: 0 };
+    }
+    const deg = (rad: number) => (rad * 180) / Math.PI;
+    const unit = deg(h / radius);
+    const pitch = (aspect + gap / 100) * unit;
+    const limit = deg(bend) + (aspect * unit) / 2;
+    const columns = Math.min(60, Math.max(2, Math.ceil((2 * limit) / pitch)));
+    const round = (n: number) => +n.toFixed(4);
+    const sweep = round((columns * pitch) / 2);
+    return {
+      columns,
+      sweep,
+      unit: round(unit),
+      limit: round(Math.min(sweep, limit))
+    };
+  }
+
+  function initTiltedGrid(section: HTMLElement) {
+    const stage = section.querySelector('.tilted-grid-viewport') as HTMLElement | null;
+    const stream = section.querySelector('.tilted-grid-stream') as HTMLElement | null;
+    if (!stage || !stream) return;
+
+    const rawConfig = section.getAttribute('data-tilted-grid-config');
+    if (!rawConfig) return;
+    const cfg = JSON.parse(rawConfig);
+
+    const bend = (Math.min(85, Math.max(5, cfg.curve)) * Math.PI) / 180;
+    const id = Math.random().toString(36).slice(2, 9);
+    const orbit = `tgh-o-${id}`;
+    const tileClass = `tgh-t-${id}`;
+
+    // Preload images
+    cfg.images.forEach((img: { src: string }) => {
+      const preload = new Image();
+      preload.src = img.src;
+    });
+
+    let currentColumns = 0;
+    let currentSweep = 0;
+    let currentUnit = 0;
+    const shown: Record<number, number> = {};
+    let styleTag: HTMLStyleElement | null = null;
+
+    const updateLayout = () => {
+      const width = stage.clientWidth;
+      const height = stage.clientHeight;
+      if (width <= 0 || height <= 0) return;
+
+      const next = measure(width, height, cfg.tileHeight, cfg.aspectRatio, cfg.gap, bend);
+      if (
+        next.columns === currentColumns &&
+        next.sweep === currentSweep &&
+        next.unit === currentUnit
+      ) {
+        return;
+      }
+
+      currentColumns = next.columns;
+      currentSweep = next.sweep;
+      currentUnit = next.unit;
+      const { columns, sweep, unit, limit } = next;
+
+      const u = (n: number) =>
+        `calc(${+n.toFixed(4)} * min(${cfg.tileHeight}cqh, ${+(MAX_WIDTH / cfg.aspectRatio).toFixed(4)}cqw))`;
+
+      const r = 100 * arc(bend);
+      const radius = `${+r.toFixed(3)}cqw`;
+      const turn = (deg: number) =>
+        `translateZ(${radius}) rotateY(${+deg.toFixed(4)}deg) translateZ(-${radius})`;
+
+      const hide = +(((sweep - limit) / (2 * sweep || 1)) * 100).toFixed(4);
+
+      const css = `
+        @keyframes ${orbit} {
+          from { transform: ${turn(-sweep)}; }
+          to { transform: ${turn(sweep)}; }
+          0%, ${hide}%, ${100 - hide}%, 100% { visibility: hidden; }
+          ${hide + 0.001}%, ${100 - hide - 0.001}% { visibility: visible; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .${tileClass} { animation-play-state: paused !important; }
+        }
+      `;
+
+      if (!styleTag) {
+        styleTag = document.createElement('style');
+        document.head.appendChild(styleTag);
+      }
+      styleTag.textContent = css;
+
+      const mask = `linear-gradient(90deg, transparent, #000 ${cfg.fade}%, #000 ${100 - cfg.fade}%, transparent)`;
+      stream.style.perspective = `${+(r * CAMERA).toFixed(3)}cqw`;
+      stream.style.perspectiveOrigin = `50% ${cfg.axis}%`;
+      stream.style.maskImage = mask;
+      stream.style.setProperty('-webkit-mask-image', mask);
+
+      const share = cfg.aspectRatio / SLICES;
+      const duration = columns * cfg.speed;
+
+      stream.innerHTML = '';
+
+      for (let t = 0; t < columns; t++) {
+        const first = columns - 1 - t;
+        const currentIdx = (shown[t] ?? first) % Math.max(cfg.images.length, 1);
+        const imgItem = cfg.images[currentIdx];
+
+        const tileEl = document.createElement('div');
+        tileEl.className = `${tileClass} absolute-tile`;
+        tileEl.style.position = 'absolute';
+        tileEl.style.left = `calc(50% - ${u(cfg.aspectRatio / 2)})`;
+        tileEl.style.top = `calc(${cfg.axis}% - ${u(0.5)})`;
+        tileEl.style.width = u(cfg.aspectRatio);
+        tileEl.style.height = u(1);
+        tileEl.style.transformStyle = 'preserve-3d';
+        tileEl.style.setProperty('-webkit-transform-style', 'preserve-3d');
+        tileEl.style.willChange = 'transform';
+        tileEl.style.animation = `${orbit} ${duration}s linear ${-t * cfg.speed}s infinite`;
+
+        tileEl.addEventListener('animationiteration', (e: AnimationEvent) => {
+          const lap = Math.round(e.elapsedTime / duration);
+          const nextIdx = (lap * columns + first) % cfg.images.length;
+          shown[t] = nextIdx;
+          const nextImg = cfg.images[nextIdx];
+          if (nextImg) {
+            tileEl.querySelectorAll('img').forEach((imgNode) => {
+              imgNode.src = nextImg.src;
+            });
+          }
+        });
+
+        // 16 Slices inside each tile
+        for (let k = 0; k < SLICES; k++) {
+          const sliceDiv = document.createElement('div');
+          sliceDiv.style.position = 'absolute';
+          sliceDiv.style.top = '0';
+          sliceDiv.style.overflow = 'hidden';
+          sliceDiv.style.backgroundColor = '#150A26';
+          sliceDiv.style.left = u((cfg.aspectRatio - share) / 2);
+          sliceDiv.style.width = k === SLICES - 1 ? u(share) : `calc(${u(share)} + 1px)`;
+          sliceDiv.style.height = u(1);
+          const sliceTurn = turn((cfg.aspectRatio / 2 - (k + 0.5) * share) * unit);
+          sliceDiv.style.transform = sliceTurn;
+          sliceDiv.style.setProperty('-webkit-transform', sliceTurn);
+          sliceDiv.style.backfaceVisibility = 'hidden';
+          sliceDiv.style.setProperty('-webkit-backface-visibility', 'hidden');
+
+          if (k === 0) sliceDiv.style.borderTopLeftRadius = '10px';
+          if (k === 0) sliceDiv.style.borderBottomLeftRadius = '10px';
+          if (k === SLICES - 1) sliceDiv.style.borderTopRightRadius = '10px';
+          if (k === SLICES - 1) sliceDiv.style.borderBottomRightRadius = '10px';
+
+          if (imgItem) {
+            const imgNode = document.createElement('img');
+            imgNode.src = imgItem.src;
+            imgNode.alt = k === 0 ? (imgItem.alt || '') : '';
+            imgNode.draggable = false;
+            imgNode.style.position = 'absolute';
+            imgNode.style.top = '0';
+            imgNode.style.left = u(-k * share);
+            imgNode.style.width = u(cfg.aspectRatio);
+            imgNode.style.height = u(1);
+            imgNode.style.maxWidth = 'none';
+            imgNode.style.objectFit = 'cover';
+            imgNode.style.userSelect = 'none';
+            imgNode.style.pointerEvents = 'none';
+            sliceDiv.appendChild(imgNode);
+          }
+
+          tileEl.appendChild(sliceDiv);
+        }
+
+        stream.appendChild(tileEl);
+      }
+
+      stream.classList.add('ready');
+    };
+
+    const ro = new ResizeObserver(() => {
+      updateLayout();
+    });
+    ro.observe(stage);
+    updateLayout();
+
+    // Pause on offscreen for battery/GPU performance
+    const io = new IntersectionObserver(([entry]) => {
+      const tiles = stream.querySelectorAll<HTMLElement>(`.${tileClass}`);
+      if (entry.isIntersecting) {
+        tiles.forEach(tile => { tile.style.animationPlayState = 'running'; });
+      } else {
+        tiles.forEach(tile => { tile.style.animationPlayState = 'paused'; });
+      }
+    });
+    io.observe(section);
+  }
+
+  document.querySelectorAll<HTMLElement>('.tilted-grid-section').forEach(initTiltedGrid);
+</script>

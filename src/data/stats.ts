@@ -9,30 +9,30 @@ export interface StatItem {
 export const impactStats: StatItem[] = [
   {
     id: "beneficiaries",
-    value: 1850,
-    suffix: "+",
+    value: 0,
+    suffix: "",
     label: "Lives Enriched",
-    detail: "Individuals directly supported through health clinics, meal drives, and educational donations."
+    detail: "Incoming 2026/2027 humanitarian initiatives commencing upon official executive installation."
   },
   {
     id: "projects",
-    value: 28,
-    suffix: "+",
+    value: 0,
+    suffix: "",
     label: "Signature Initiatives",
-    detail: "High-impact service and leadership projects successfully executed across Sri Lanka."
+    detail: "High-impact civic service, health camps, and ecological projects scheduled for the new term."
   },
   {
     id: "hours",
-    value: 450,
-    suffix: "+",
+    value: 0,
+    suffix: "",
     label: "Volunteer Hours",
-    detail: "Selfless hours invested by passionate youth leaders devoted to ethical community service."
+    detail: "Selfless service hours invested by youth members embarking on our new administrative journey."
   },
   {
     id: "members",
-    value: 42,
+    value: 0,
     suffix: "",
     label: "Active Youth Leaders",
-    detail: "Committed members united under our guiding charter of grace, integrity, and fellowship."
+    detail: "Incoming executive committee and general membership roll undergoing charter induction."
   }
 ];

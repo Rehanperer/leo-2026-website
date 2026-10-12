@@ -1,0 +1,48 @@
+---
+/**
+ * Gallery Index Page
+ * Hanging Polaroid Carousel Exhibition
+ * Recreates the 21st.dev PolaroidLineCarousel with sagging twine, wooden pegs,
+ * pendulum swing physics, touch/wheel scrolling, and full mobile responsiveness.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PolaroidLineCarousel from '../../components/PolaroidLineCarousel.astro';
+import { galleryItems } from '../../data/gallery';
+
+const pageTitle = "Photographic Gallery — Leo Club of EIC";
+const pageDescription = "Explore the vibrant humanitarian moments and service milestones of the Leo Club of Ethos International in our hanging polaroid exhibition.";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription} showIntro={false} showFooter={false}>
+  <div class="gallery-page-container">
+    <!-- Hanging Polaroid Carousel Stage -->
+    <section class="gallery-stage" aria-label="Hanging Polaroid Photographic Exhibition">
+      <PolaroidLineCarousel
+        slides={galleryItems}
+        height="100vh"
+        cardWidth={310}
+        sag={46}
+        swing={1}
+        autoplay={4500}
+      />
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .gallery-page-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+    background: #090a0f;
+  }
+
+  /* Carousel Stage */
+  .gallery-stage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+</style>

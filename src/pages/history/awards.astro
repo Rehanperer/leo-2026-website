@@ -1,0 +1,858 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { awardsArchive, awardsStats } from '../../data/awards';
+
+const pageTitle = "Club Awards & Honors — Leo Club of EIC";
+const pageDescription = "Explore the distinguished history of awards, district triumphs, and leadership recognitions bestowed upon the Leo Club of Ethos International from 2022 to the present.";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription} showIntro={false}>
+  <main class="awards-page" id="main-content">
+    <!-- Ambient Golden Glow -->
+    <div class="awards-ambient-glow" aria-hidden="true"></div>
+
+    <div class="container">
+      <!-- Breadcrumbs -->
+      <nav class="editorial-breadcrumbs" aria-label="Breadcrumb">
+        <a href="/" class="crumb-link">Home</a>
+        <span class="crumb-sep">/</span>
+        <a href="/history/leaders" class="crumb-link">Leadership History</a>
+        <span class="crumb-sep">/</span>
+        <span class="crumb-current" aria-current="page">Club Awards</span>
+      </nav>
+
+      <!-- Hero Header -->
+      <header class="awards-hero text-center">
+        <div class="header-pill-badge">
+          <span class="pill-sparkle">✦</span>
+          <span>District 306 D2 Accolades</span>
+        </div>
+        <h1 class="awards-title">
+          Hall of <em>Distinction & Honors</em>
+        </h1>
+        <p class="awards-subtitle">
+          Recognizing the relentless devotion of our members, executive officers, and mentors who have led our club to three consecutive years of premier district honors.
+        </p>
+
+        <!-- Stats Counter Strip -->
+        <div class="awards-stats-strip" role="region" aria-label="Awards summary">
+          <div class="stat-pill">
+            <span class="stat-number">{awardsArchive.length}</span>
+            <span class="stat-label">Total Accolades</span>
+          </div>
+          <div class="stat-pill-divider" aria-hidden="true"></div>
+          <div class="stat-pill">
+            <span class="stat-number">3x</span>
+            <span class="stat-label">Most Outstanding School Club</span>
+          </div>
+          <div class="stat-pill-divider" aria-hidden="true"></div>
+          <div class="stat-pill">
+            <span class="stat-number">{awardsStats.districtTrophies}</span>
+            <span class="stat-label">Pinnacle Crown Trophies</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Interactive Filter Controls -->
+      <section class="awards-controls" aria-label="Filter awards">
+        <div class="filter-group">
+          <span class="filter-label">Term / Year:</span>
+          <div class="filter-pills" id="year-filter-group" role="tablist" aria-label="Filter by Year">
+            <button type="button" class="filter-btn active" data-filter-year="all" role="tab" aria-selected="true">All Years</button>
+            <button type="button" class="filter-btn" data-filter-year="2024/2025" role="tab" aria-selected="false">2024 / 2025</button>
+            <button type="button" class="filter-btn" data-filter-year="2023/2024" role="tab" aria-selected="false">2023 / 2024</button>
+            <button type="button" class="filter-btn" data-filter-year="2022/2023" role="tab" aria-selected="false">2022 / 2023 (Charter)</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <span class="filter-label">Honor Tier:</span>
+          <div class="filter-pills" id="category-filter-group" role="tablist" aria-label="Filter by Category">
+            <button type="button" class="filter-btn active" data-filter-cat="all" role="tab" aria-selected="true">All Honors</button>
+            <button type="button" class="filter-btn" data-filter-cat="club" role="tab" aria-selected="false">Club Honors</button>
+            <button type="button" class="filter-btn" data-filter-cat="individual" role="tab" aria-selected="false">Individual Honors</button>
+            <button type="button" class="filter-btn" data-filter-cat="project" role="tab" aria-selected="false">Project Awards</button>
+            <button type="button" class="filter-btn" data-filter-cat="appreciation" role="tab" aria-selected="false">DP Appreciation</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Awards Gallery Grid -->
+      <section class="awards-grid-container" aria-label="Awards collection">
+        <div class="awards-grid" id="awards-card-grid">
+          {awardsArchive.map((award) => (
+            <article 
+              class={`award-card tier-${award.tier}`}
+              data-year={award.year}
+              data-category={award.category}
+            >
+              <div class="award-card-inner">
+                <div class="card-glow-aura" aria-hidden="true"></div>
+                
+                <header class="award-card-header">
+                  <div class="award-badge-cluster">
+                    <span class="award-year-tag">{award.year}</span>
+                    <span class={`award-category-tag tag-${award.category}`}>{award.categoryLabel}</span>
+                  </div>
+                  {award.badge && (
+                    <span class="award-special-badge">
+                      <span class="sparkle">✦</span> {award.badge}
+                    </span>
+                  )}
+                </header>
+
+                <div class="award-icon-box" aria-hidden="true">
+                  <span class="award-icon-char">{award.icon}</span>
+                  <div class="award-icon-ring"></div>
+                </div>
+
+                <div class="award-card-body">
+                  <h2 class="award-title">{award.title}</h2>
+                  
+                  {award.recipient && (
+                    <div class="award-recipient-box">
+                      <span class="recipient-label">Conferred to:</span>
+                      <strong class="recipient-name">{award.recipient}</strong>
+                      {award.role && <span class="recipient-role">({award.role})</span>}
+                    </div>
+                  )}
+
+                  <p class="award-description">{award.description}</p>
+                </div>
+
+                <footer class="award-card-footer">
+                  <div class="laurel-leaf-watermark" aria-hidden="true">
+                    <span>◈ District 306 D2 ◈</span>
+                  </div>
+                </footer>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <!-- Empty State Filter Feedback -->
+        <div class="awards-empty-feedback" id="awards-empty-state" style="display: none;" role="status">
+          <div class="empty-icon">🎖️</div>
+          <h3 class="empty-title">No honors found for this selection</h3>
+          <p class="empty-desc">Try selecting "All Years" or "All Honors" to explore the full accolades archive.</p>
+          <button type="button" class="reset-filter-btn" id="reset-awards-filter">Reset Filters</button>
+        </div>
+      </section>
+
+      <!-- Historical Citation Banner -->
+      <section class="citation-banner" aria-label="Historical Note">
+        <div class="citation-inner">
+          <div class="citation-crest-box">
+            <img src="/crest.png" alt="Leo Club Crest" class="citation-crest-img" width="72" height="72" loading="lazy" decoding="async" />
+          </div>
+          <div class="citation-copy">
+            <h3 class="citation-heading">Three Consecutive Terms of District Excellence</h3>
+            <p class="citation-text">
+              Since its chartering in 2022 under the sponsorship of the Lions Club of Colombo West, the Leo Club of Ethos International has been awarded <em>Most Outstanding School Leo Club</em> by District 306 D2 across every single operational term in club history.
+            </p>
+            <div class="citation-links">
+              <a href="/history/leaders" class="citation-nav-link">
+                <span>View Historical Leaders & Cabinets</span>
+                <span class="arrow" aria-hidden="true">→</span>
+              </a>
+              <a href="/inspiration" class="citation-nav-link">
+                <span>Discover Source of Inspiration</span>
+                <span class="arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .awards-page {
+    position: relative;
+    padding-top: calc(var(--nav-height, 72px) + 32px);
+    padding-bottom: 100px;
+    background: radial-gradient(circle at 50% 0%, rgba(122, 87, 184, 0.08) 0%, transparent 60%),
+                radial-gradient(circle at 80% 20%, rgba(194, 155, 77, 0.06) 0%, transparent 40%),
+                var(--c-surface-ivory, #FAF8FD);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .awards-ambient-glow {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1000px;
+    max-width: 100vw;
+    height: 500px;
+    background: radial-gradient(circle, rgba(194, 155, 77, 0.12) 0%, rgba(122, 87, 184, 0.08) 45%, transparent 70%);
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Breadcrumbs */
+  .editorial-breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    margin-bottom: 36px;
+    color: var(--c-text-muted, #7B728E);
+  }
+
+  .crumb-link {
+    color: var(--c-iris, #7A57B8);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .crumb-link:hover {
+    color: var(--c-gold-primary, #C29B4D);
+  }
+
+  .crumb-sep {
+    opacity: 0.4;
+  }
+
+  .crumb-current {
+    color: var(--c-text-primary, #211638);
+    font-weight: 500;
+  }
+
+  /* Hero Section */
+  .awards-hero {
+    max-width: 820px;
+    margin: 0 auto 52px;
+  }
+
+  .header-pill-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(194, 155, 77, 0.12);
+    border: 1px solid rgba(194, 155, 77, 0.4);
+    padding: 6px 18px;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--c-gold-primary, #9B772A);
+    margin-bottom: 18px;
+  }
+
+  .pill-sparkle {
+    color: var(--c-gold-primary, #C29B4D);
+    animation: spin-sparkle 8s linear infinite;
+  }
+
+  @keyframes spin-sparkle {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .awards-title {
+    font-family: var(--font-serif, serif);
+    font-size: clamp(2.4rem, 5.2vw, 4rem);
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--c-text-primary, #211638);
+    margin: 0 0 18px;
+  }
+
+  .awards-title em {
+    font-style: italic;
+    color: var(--c-gold-primary, #C29B4D);
+    background: linear-gradient(135deg, #B58B35 0%, #E6C875 50%, #B58B35 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .awards-subtitle {
+    font-size: clamp(1rem, 1.8vw, 1.15rem);
+    line-height: 1.65;
+    color: var(--c-text-secondary, #5C5272);
+    margin: 0 auto 36px;
+    max-width: 680px;
+  }
+
+  /* Stats Counter Strip */
+  .awards-stats-strip {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(194, 155, 77, 0.3);
+    border-radius: 9999px;
+    padding: 10px 24px;
+    box-shadow: 0 12px 30px -10px rgba(65, 41, 107, 0.1);
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .stat-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 12px;
+    white-space: nowrap;
+  }
+
+  .stat-number {
+    font-family: var(--font-serif, serif);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--c-gold-primary, #9B772A);
+  }
+
+  .stat-label {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--c-text-secondary, #5C5272);
+  }
+
+  .stat-pill-divider {
+    width: 1px;
+    height: 24px;
+    background: rgba(194, 155, 77, 0.25);
+  }
+
+  /* Filter Controls */
+  .awards-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 980px;
+    margin: 0 auto 48px;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(122, 87, 184, 0.15);
+    border-radius: 20px;
+    padding: 20px 24px;
+    box-shadow: 0 10px 28px -8px rgba(65, 41, 107, 0.06);
+  }
+
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .filter-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--c-text-muted, #7B728E);
+    min-width: 90px;
+  }
+
+  .filter-pills {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    border: 1px solid rgba(122, 87, 184, 0.2);
+    background: #FFFFFF;
+    color: var(--c-text-secondary, #5C5272);
+    padding: 6px 16px;
+    border-radius: 9999px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .filter-btn:hover {
+    border-color: var(--c-iris, #7A57B8);
+    color: var(--c-iris, #7A57B8);
+    transform: translateY(-1px);
+  }
+
+  .filter-btn.active {
+    background: var(--c-iris, #7A57B8);
+    border-color: var(--c-iris, #7A57B8);
+    color: #FAF8FD;
+    box-shadow: 0 4px 12px rgba(122, 87, 184, 0.3);
+  }
+
+  /* Awards Grid */
+  .awards-grid-container {
+    position: relative;
+    margin-bottom: 72px;
+  }
+
+  .awards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    transition: opacity 0.3s ease;
+  }
+
+  .award-card {
+    position: relative;
+    border-radius: 20px;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+  }
+
+  .award-card:hover {
+    transform: translateY(-6px);
+  }
+
+  .award-card-inner {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 26px 24px;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(122, 87, 184, 0.15);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px -10px rgba(65, 41, 107, 0.08);
+    overflow: hidden;
+  }
+
+  /* Tier Aesthetics */
+  .award-card.tier-crown .award-card-inner {
+    border-color: rgba(194, 155, 77, 0.45);
+    background: linear-gradient(170deg, rgba(255, 255, 255, 0.95) 0%, rgba(253, 248, 237, 0.88) 100%);
+    box-shadow: 0 14px 40px -10px rgba(194, 155, 77, 0.2), 0 0 0 1px rgba(194, 155, 77, 0.25);
+  }
+
+  .award-card.tier-gold .award-card-inner {
+    border-color: rgba(194, 155, 77, 0.3);
+  }
+
+  .card-glow-aura {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, rgba(194, 155, 77, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Header inside Card */
+  .award-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+
+  .award-badge-cluster {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .award-year-tag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: rgba(122, 87, 184, 0.1);
+    color: var(--c-iris, #7A57B8);
+    padding: 3px 10px;
+    border-radius: 9999px;
+    border: 1px solid rgba(122, 87, 184, 0.2);
+  }
+
+  .award-category-tag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 9999px;
+  }
+
+  .tag-club {
+    background: rgba(194, 155, 77, 0.15);
+    color: #8C6518;
+    border: 1px solid rgba(194, 155, 77, 0.3);
+  }
+
+  .tag-individual {
+    background: rgba(122, 87, 184, 0.12);
+    color: #633FA5;
+    border: 1px solid rgba(122, 87, 184, 0.25);
+  }
+
+  .tag-project {
+    background: rgba(46, 125, 50, 0.1);
+    color: #2E7D32;
+    border: 1px solid rgba(46, 125, 50, 0.25);
+  }
+
+  .tag-appreciation {
+    background: rgba(224, 86, 36, 0.1);
+    color: #D34612;
+    border: 1px solid rgba(224, 86, 36, 0.25);
+  }
+
+  .award-special-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #8C6518;
+    background: rgba(194, 155, 77, 0.18);
+    border: 1px solid rgba(194, 155, 77, 0.5);
+    padding: 3px 10px;
+    border-radius: 9999px;
+  }
+
+  /* Icon Box */
+  .award-icon-box {
+    position: relative;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(194, 155, 77, 0.3);
+    border-radius: 14px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(65, 41, 107, 0.08);
+  }
+
+  .award-icon-char {
+    font-size: 1.6rem;
+  }
+
+  /* Card Body */
+  .award-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .award-title {
+    font-family: var(--font-serif, serif);
+    font-size: 1.35rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--c-text-primary, #211638);
+    margin: 0 0 12px;
+  }
+
+  .award-recipient-box {
+    background: rgba(122, 87, 184, 0.06);
+    border-left: 3px solid var(--c-gold-primary, #C29B4D);
+    padding: 8px 12px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 14px;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  .recipient-label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--c-text-muted, #7B728E);
+    margin-bottom: 2px;
+  }
+
+  .recipient-name {
+    color: var(--c-text-primary, #211638);
+    font-weight: 600;
+  }
+
+  .recipient-role {
+    color: var(--c-text-secondary, #5C5272);
+    font-size: 0.8rem;
+    margin-left: 4px;
+  }
+
+  .award-description {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--c-text-secondary, #5C5272);
+    margin: 0 0 16px;
+  }
+
+  /* Card Footer */
+  .award-card-footer {
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid rgba(122, 87, 184, 0.1);
+  }
+
+  .laurel-leaf-watermark {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(194, 155, 77, 0.75);
+    text-align: right;
+  }
+
+  /* Empty State */
+  .awards-empty-feedback {
+    text-align: center;
+    padding: 64px 20px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    border: 1px dashed rgba(122, 87, 184, 0.25);
+    max-width: 500px;
+    margin: 20px auto;
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 14px;
+  }
+
+  .empty-title {
+    font-family: var(--font-serif, serif);
+    font-size: 1.4rem;
+    color: var(--c-text-primary, #211638);
+    margin: 0 0 8px;
+  }
+
+  .empty-desc {
+    font-size: 0.9rem;
+    color: var(--c-text-secondary, #5C5272);
+    margin: 0 0 20px;
+  }
+
+  .reset-filter-btn {
+    background: var(--c-iris, #7A57B8);
+    color: #FAF8FD;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  .reset-filter-btn:hover {
+    background: var(--c-gold-primary, #9B772A);
+    transform: translateY(-1px);
+  }
+
+  /* Citation Banner */
+  .citation-banner {
+    margin-top: 32px;
+  }
+
+  .citation-inner {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(247, 242, 255, 0.85) 100%);
+    border: 1px solid rgba(194, 155, 77, 0.4);
+    box-shadow: 0 16px 40px -10px rgba(65, 41, 107, 0.1), 0 0 30px rgba(194, 155, 77, 0.1);
+    border-radius: 24px;
+    padding: 36px 40px;
+  }
+
+  .citation-crest-box {
+    flex-shrink: 0;
+    width: 88px;
+    height: 88px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    border-radius: 50%;
+    border: 1.5px solid rgba(194, 155, 77, 0.45);
+    box-shadow: 0 8px 24px rgba(194, 155, 77, 0.18);
+  }
+
+  .citation-crest-img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+  }
+
+  .citation-copy {
+    flex: 1;
+  }
+
+  .citation-heading {
+    font-family: var(--font-serif, serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--c-text-primary, #211638);
+    margin: 0 0 10px;
+  }
+
+  .citation-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--c-text-secondary, #5C5272);
+    margin: 0 0 20px;
+  }
+
+  .citation-text em {
+    font-style: italic;
+    color: var(--c-iris, #7A57B8);
+    font-weight: 600;
+  }
+
+  .citation-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .citation-nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--c-gold-primary, #9B772A);
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: gap 0.2s ease, color 0.2s ease;
+  }
+
+  .citation-nav-link:hover {
+    color: var(--c-iris, #7A57B8);
+    gap: 10px;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .awards-controls {
+      padding: 16px;
+    }
+
+    .filter-group {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .awards-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .citation-inner {
+      flex-direction: column;
+      text-align: center;
+      padding: 28px 20px;
+      gap: 20px;
+    }
+
+    .citation-links {
+      justify-content: center;
+    }
+
+    .awards-stats-strip {
+      flex-direction: column;
+      border-radius: 20px;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .stat-pill-divider {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  function initAwardsFilter() {
+    const yearButtons = document.querySelectorAll<HTMLButtonElement>('[data-filter-year]');
+    const catButtons = document.querySelectorAll<HTMLButtonElement>('[data-filter-cat]');
+    const cards = document.querySelectorAll<HTMLElement>('.award-card');
+    const emptyState = document.getElementById('awards-empty-state');
+    const resetBtn = document.getElementById('reset-awards-filter');
+
+    let currentYear = 'all';
+    let currentCat = 'all';
+
+    function applyFilter() {
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const cardYear = card.getAttribute('data-year');
+        const cardCat = card.getAttribute('data-category');
+
+        const matchYear = currentYear === 'all' || cardYear === currentYear;
+        const matchCat = currentCat === 'all' || cardCat === currentCat;
+
+        if (matchYear && matchCat) {
+          card.style.display = 'block';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      if (emptyState) {
+        emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+    }
+
+    yearButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        yearButtons.forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        currentYear = btn.getAttribute('data-filter-year') || 'all';
+        applyFilter();
+      });
+    });
+
+    catButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        catButtons.forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        currentCat = btn.getAttribute('data-filter-cat') || 'all';
+        applyFilter();
+      });
+    });
+
+    resetBtn?.addEventListener('click', () => {
+      currentYear = 'all';
+      currentCat = 'all';
+      yearButtons.forEach(b => {
+        const isAll = b.getAttribute('data-filter-year') === 'all';
+        b.classList.toggle('active', isAll);
+        b.setAttribute('aria-selected', isAll ? 'true' : 'false');
+      });
+      catButtons.forEach(b => {
+        const isAll = b.getAttribute('data-filter-cat') === 'all';
+        b.classList.toggle('active', isAll);
+        b.setAttribute('aria-selected', isAll ? 'true' : 'false');
+      });
+      applyFilter();
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAwardsFilter);
+  } else {
+    initAwardsFilter();
+  }
+  document.addEventListener('astro:page-load', initAwardsFilter);
+</script>

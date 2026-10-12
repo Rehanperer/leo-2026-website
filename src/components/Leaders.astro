@@ -1,7 +1,12 @@
 ---
-import { executiveBoard } from '../data/leaders';
+import { executiveOfficers, lionAdvisor } from '../data/team';
 import BotanicalAccent from './BotanicalAccent.astro';
 import ScrollVine from './ScrollVine.astro';
+
+const displayLeaders = [
+  ...executiveOfficers.filter(m => m.id !== lionAdvisor.id).slice(0, 5),
+  lionAdvisor
+];
 ---
 
 <section id="leaders" class="section leaders-section" aria-label="Executive Leadership">
@@ -26,13 +31,17 @@ import ScrollVine from './ScrollVine.astro';
     <!-- Leaders Grid / Horizontal Snap on Mobile -->
     <div class="leaders-container">
       <div class="leaders-track">
-        {executiveBoard.map((leader) => (
+        {displayLeaders.map((leader) => (
           <div class="leader-card card-glass">
             <div class="leader-avatar-wrapper">
               <div class="avatar-ring">
-                <div class="avatar-monogram">
-                  <span>{leader.initials}</span>
-                </div>
+                {leader.image ? (
+                  <img src={leader.image} alt={leader.name} class="avatar-photo" loading="lazy" decoding="async" />
+                ) : (
+                  <div class="avatar-monogram">
+                    <span>{leader.initials}</span>
+                  </div>
+                )}
               </div>
               <span class="role-badge">{leader.role}</span>
             </div>
@@ -51,15 +60,30 @@ import ScrollVine from './ScrollVine.astro';
       </div>
     </div>
 
-    <!-- Curator note -->
-    <div class="leaders-curator-note">
-      <span class="curator-dot"></span>
-      <p>
-        Official 2026 Executive Portraits & Roster update in progress. Full cabinet listings will be available upon installation.
-      </p>
+    <!-- Curator note & Full Directory Links -->
+    <div class="leaders-bottom-bar">
+      <div class="leaders-curator-note">
+        <span class="curator-dot"></span>
+        <p>
+          2026/2027 Executive Board & Cabinet in progress. Leo Advisor verified.
+        </p>
+      </div>
+
+      <div class="leaders-directory-actions">
+        <a href="/team" class="btn btn-primary">
+          Meet Full Cabinet (18 Members) →
+        </a>
+        <a href="/history/leaders" class="btn btn-secondary">
+          Former Leaders Archive
+        </a>
+        <a href="/inspiration" class="btn btn-secondary">
+          Source of Inspiration
+        </a>
+      </div>
     </div>
   </div>
 </section>
+
 
 <style>
   .leaders-section {
@@ -158,6 +182,13 @@ import ScrollVine from './ScrollVine.astro';
     box-shadow: 0 2px 8px rgba(84, 57, 138, 0.3);
   }
 
+  .avatar-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
   .leader-info {
     display: flex;
     flex-direction: column;
@@ -189,8 +220,15 @@ import ScrollVine from './ScrollVine.astro';
     max-width: 240px;
   }
 
+  .leaders-bottom-bar {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
   .leaders-curator-note {
-    margin-top: 2.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -206,4 +244,12 @@ import ScrollVine from './ScrollVine.astro';
     border-radius: 50%;
     background-color: var(--c-gold);
   }
+
+  .leaders-directory-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 </style>
+

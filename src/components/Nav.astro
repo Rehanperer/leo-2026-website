@@ -1,12 +1,21 @@
 ---
-import { siteConfig } from '../data/site';
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+const isHome = currentPath === '/';
+
+const resolveHref = (href: string) => {
+  if (href.startsWith('#')) {
+    return isHome ? href : `/${href}`;
+  }
+  return href;
+};
 ---
 
 <header class="nav-wrapper" id="site-header">
   <div class="nav-container">
     <nav class="nav-island" aria-label="Primary Navigation">
       <!-- Brand Crest & Title -->
-      <a href="#hero" class="brand-link" aria-label="Leo Club of EIC — Return to top">
+      <a href={isHome ? '#hero' : '/#hero'} class="brand-link" aria-label="Leo Club of EIC — Return to top">
         <div class="crest-frame">
           <img 
             src="/crest.webp" 
@@ -26,13 +35,77 @@ import { siteConfig } from '../data/site';
 
       <!-- Desktop Nav Links -->
       <ul class="nav-links" role="menubar">
-        {siteConfig.navLinks.map((item) => (
-          <li role="none">
-            <a href={item.href} class="nav-item" role="menuitem">
-              {item.label}
+        <li role="none">
+          <a href={resolveHref('#hero')} class={`nav-item ${isHome ? 'active' : ''}`} role="menuitem">
+            Home
+          </a>
+        </li>
+        <li role="none">
+          <a href={resolveHref('#about')} class="nav-item" role="menuitem">
+            About
+          </a>
+        </li>
+
+        <!-- Leadership & Ethos Dropdown -->
+        <li role="none" class="nav-dropdown-wrapper">
+          <button 
+            type="button" 
+            class={`nav-item dropdown-trigger ${currentPath.startsWith('/team') || currentPath.startsWith('/history') || currentPath.startsWith('/inspiration') ? 'active' : ''}`}
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <span>Leadership</span>
+            <svg class="dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="nav-dropdown-menu" role="menu">
+            <a href="/team" class={`dropdown-item ${currentPath.startsWith('/team') ? 'active' : ''}`} role="menuitem">
+              <span class="dp-icon">✦</span>
+              <div class="dp-text">
+                <span class="dp-title">Our Full Team</span>
+                <span class="dp-desc">2026 / 2027 Executive Board & Cabinet</span>
+              </div>
             </a>
-          </li>
-        ))}
+            <a href="/history/leaders" class={`dropdown-item ${currentPath.startsWith('/history/leaders') ? 'active' : ''}`} role="menuitem">
+              <span class="dp-icon">⚜</span>
+              <div class="dp-text">
+                <span class="dp-title">Former Leaders</span>
+                <span class="dp-desc">Historical Cabinets (2022–2026)</span>
+              </div>
+            </a>
+            <a href="/inspiration" class={`dropdown-item ${currentPath.startsWith('/inspiration') ? 'active' : ''}`} role="menuitem">
+              <span class="dp-icon">🔥</span>
+              <div class="dp-text">
+                <span class="dp-title">Source of Inspiration</span>
+                <span class="dp-desc">Founding Ethos & Living Legacy</span>
+              </div>
+            </a>
+            <a href="/history/awards" class={`dropdown-item ${currentPath.startsWith('/history/awards') ? 'active' : ''}`} role="menuitem">
+              <span class="dp-icon">🏆</span>
+              <div class="dp-text">
+                <span class="dp-title">Club Awards</span>
+                <span class="dp-desc">Excellence & District Recognition</span>
+              </div>
+            </a>
+          </div>
+        </li>
+
+        <li role="none">
+          <a href="/projects" class={`nav-item ${currentPath.startsWith('/projects') ? 'active' : ''}`} role="menuitem">
+            Projects
+          </a>
+        </li>
+        <li role="none">
+          <a href="/gallery" class={`nav-item ${currentPath.startsWith('/gallery') ? 'active' : ''}`} role="menuitem">
+            Gallery
+          </a>
+        </li>
+        <li role="none">
+          <a href="/newsletter" class={`nav-item ${currentPath.startsWith('/newsletter') ? 'active' : ''}`} role="menuitem">
+            Newsletter
+          </a>
+        </li>
       </ul>
 
       <!-- Action Pill Group -->
@@ -49,7 +122,7 @@ import { siteConfig } from '../data/site';
           <span class="replay-label">Replay Intro</span>
         </button>
 
-        <a href="#join" class="btn btn-primary nav-cta">
+        <a href={resolveHref('#join')} class="btn btn-primary nav-cta">
           Join Us
         </a>
 
@@ -73,23 +146,67 @@ import { siteConfig } from '../data/site';
   <div id="mobile-nav-menu" class="mobile-menu-drawer" aria-hidden="true">
     <div class="mobile-menu-inner">
       <ul class="mobile-menu-list">
-        {siteConfig.navLinks.map((item) => (
-          <li>
-            <a href={item.href} class="mobile-menu-link">
-              <span>{item.label}</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m9 18 6-6-6-6"/>
-              </svg>
-            </a>
-          </li>
-        ))}
+        <li>
+          <a href={resolveHref('#hero')} class={`mobile-menu-link ${isHome ? 'active' : ''}`}>
+            <span>Home</span>
+            <span class="mobile-link-arrow">›</span>
+          </a>
+        </li>
+        <li>
+          <a href={resolveHref('#about')} class="mobile-menu-link">
+            <span>About Us</span>
+            <span class="mobile-link-arrow">›</span>
+          </a>
+        </li>
+        <li>
+          <a href="/team" class={`mobile-menu-link ${currentPath.startsWith('/team') ? 'active' : ''}`}>
+            <span>Our Full Team (2026/27)</span>
+            <span class="mobile-link-arrow">›</span>
+          </a>
+        </li>
+        <li>
+          <a href="/history/leaders" class={`mobile-menu-link ${currentPath.startsWith('/history/leaders') ? 'active' : ''}`}>
+            <span>Former Leaders Archive</span>
+            <span class="mobile-link-arrow">›</span>
+          </a>
+        </li>
+        <li>
+          <a href="/inspiration" class={`mobile-menu-link ${currentPath.startsWith('/inspiration') ? 'active' : ''}`}>
+            <span>Source of Inspiration</span>
+            <span class="mobile-link-arrow">›</span>
+          </a>
+        </li>
+        <li>
+          <a href="/history/awards" class={`mobile-menu-link ${currentPath.startsWith('/history/awards') ? 'active' : ''}`}>
+            <span>Club Awards Archive</span>
+            <span class="mobile-link-arrow">›</span>
+          </a>
+        </li>
+        <li>
+          <a href="/projects" class={`mobile-menu-link ${currentPath.startsWith('/projects') ? 'active' : ''}`}>
+            <span>Our Projects</span>
+            <span class="mobile-link-arrow">›</span>
+          </a>
+        </li>
+        <li>
+          <a href="/gallery" class={`mobile-menu-link ${currentPath.startsWith('/gallery') ? 'active' : ''}`}>
+            <span>3D Photo Gallery</span>
+            <span class="mobile-link-arrow">›</span>
+          </a>
+        </li>
+        <li>
+          <a href="/newsletter" class={`mobile-menu-link ${currentPath.startsWith('/newsletter') ? 'active' : ''}`}>
+            <span>Newsletter Archive</span>
+            <span class="mobile-link-arrow">›</span>
+          </a>
+        </li>
       </ul>
 
       <div class="mobile-menu-footer">
         <button id="mobile-replay-bloom-btn" class="btn btn-secondary w-full" type="button">
           <span>✦ Replay Cinematic Bloom</span>
         </button>
-        <a href="#join" class="btn btn-primary w-full mobile-join-btn">
+        <a href={resolveHref('#join')} class="btn btn-primary w-full mobile-join-btn">
           Join Leo Club of EIC
         </a>
       </div>
@@ -225,9 +342,119 @@ import { siteConfig } from '../data/site';
     transition: all var(--duration-fast) ease;
   }
 
-  .nav-item:hover {
+  .nav-item:hover,
+  .nav-item.active {
     color: var(--c-iris-deep);
     background: var(--c-iris-mist);
+  }
+
+  .nav-item.active {
+    font-weight: 600;
+    box-shadow: inset 0 0 0 1px rgba(194, 155, 77, 0.4);
+  }
+
+  /* Dropdown Styles */
+  .nav-dropdown-wrapper {
+    position: relative;
+  }
+
+  .dropdown-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .dropdown-chevron {
+    transition: transform 0.2s ease;
+  }
+
+  .nav-dropdown-wrapper:hover .dropdown-chevron,
+  .nav-dropdown-wrapper:focus-within .dropdown-chevron,
+  .nav-dropdown-wrapper.is-open .dropdown-chevron {
+    transform: rotate(180deg);
+  }
+
+  .nav-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    width: 300px;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--c-border-gold, rgba(194, 155, 77, 0.3));
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: 0 16px 40px rgba(33, 22, 56, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 100;
+  }
+
+  /* Invisible hover bridge to eliminate gap */
+  .nav-dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -18px;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: transparent;
+  }
+
+  .nav-dropdown-wrapper:hover .nav-dropdown-menu,
+  .nav-dropdown-wrapper:focus-within .nav-dropdown-menu,
+  .nav-dropdown-menu.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .dropdown-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+  }
+
+  .dropdown-item:hover,
+  .dropdown-item.active {
+    background: var(--c-bg-subtle, #F3EDFA);
+  }
+
+  .dp-icon {
+    font-size: 1rem;
+    color: var(--c-gold, #C29B4D);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .dp-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dp-title {
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: var(--c-text-primary, #211638);
+  }
+
+  .dp-desc {
+    font-size: 0.6875rem;
+    color: var(--c-text-secondary, #5C5272);
+    margin-top: 1px;
   }
 
   /* Actions */
@@ -398,9 +625,14 @@ import { siteConfig } from '../data/site';
     transition: background var(--duration-fast) ease;
   }
 
-  .mobile-menu-link:hover {
+  .mobile-menu-link:hover,
+  .mobile-menu-link.active {
     background: var(--c-iris-mist);
     color: var(--c-iris-deep);
+  }
+
+  .mobile-menu-link.active {
+    font-weight: 600;
   }
 
   .mobile-menu-footer {
@@ -455,6 +687,39 @@ import { siteConfig } from '../data/site';
     // Close when clicking nav links
     menu?.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', closeMenu);
+    });
+
+    // Desktop Dropdown mouse buffer & click toggle
+    const dropdownWrapper = document.querySelector('.nav-dropdown-wrapper');
+    const dropdownTrigger = document.querySelector('.dropdown-trigger');
+    const dropdownMenu = document.querySelector('.nav-dropdown-menu');
+
+    let dropdownTimer: any = null;
+
+    dropdownWrapper?.addEventListener('mouseenter', () => {
+      clearTimeout(dropdownTimer);
+      dropdownMenu?.classList.add('is-open');
+      dropdownWrapper.classList.add('is-open');
+    });
+
+    dropdownWrapper?.addEventListener('mouseleave', () => {
+      dropdownTimer = setTimeout(() => {
+        dropdownMenu?.classList.remove('is-open');
+        dropdownWrapper?.classList.remove('is-open');
+      }, 250);
+    });
+
+    dropdownTrigger?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = dropdownMenu?.classList.toggle('is-open');
+      dropdownWrapper?.classList.toggle('is-open', isOpen);
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!dropdownWrapper?.contains(e.target as Node)) {
+        dropdownMenu?.classList.remove('is-open');
+        dropdownWrapper?.classList.remove('is-open');
+      }
     });
 
     // Replay intro handlers

@@ -1,0 +1,380 @@
+---
+import RippleWaveLoader from '../RippleWaveLoader.astro';
+---
+
+<dialog id="newsletter-reader-dialog" class="reader-dialog" aria-label="Virtual Magazine Reader">
+  <!-- Dialog backdrop blur container -->
+  <div class="reader-shell">
+    <!-- Top Floating Toolbar -->
+    <header class="reader-toolbar">
+      <div class="toolbar-brand">
+        <div class="toolbar-crest">
+          <img src="/crest.webp" alt="" width="28" height="28" class="crest-mini" />
+        </div>
+        <div class="toolbar-titles">
+          <h2 id="reader-title" class="reader-title">Newsletter Reader</h2>
+          <span id="reader-subtitle" class="reader-subtitle">Leo Club of EIC • Virtual Magazine</span>
+        </div>
+      </div>
+
+      <div class="toolbar-actions">
+        <!-- Open in new tab -->
+        <a 
+          id="reader-external-btn" 
+          href="#" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="toolbar-btn"
+          title="Open in new browser window"
+          aria-label="Open flipbook in new window"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+          <span class="btn-label-desktop">Full Page</span>
+        </a>
+
+        <!-- Close Button -->
+        <button 
+          id="reader-close-btn" 
+          type="button" 
+          class="toolbar-btn btn-close" 
+          title="Close reader (Esc)"
+          aria-label="Close reader"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Stage Area -->
+    <div class="reader-stage-wrapper">
+      <!-- Loading Shimmer State -->
+      <div id="reader-loader" class="reader-loader" aria-hidden="true">
+        <div class="loader-box">
+          <RippleWaveLoader size="md" color="gold" />
+          <p class="loader-text">Loading Virtual Magazine...</p>
+        </div>
+      </div>
+
+      <!-- AnyFlip Embedded Iframe -->
+      <iframe 
+        id="reader-iframe" 
+        src="about:blank" 
+        class="reader-iframe" 
+        seamless="seamless"
+        scrolling="no"
+        frameborder="0"
+        allowtransparency="true"
+        allowfullscreen="true" 
+        loading="lazy"
+        title="Interactive Virtual Magazine Reader"
+      ></iframe>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  /* =========================================================================
+     Fullscreen Cinematic Reader Dialog
+     ========================================================================= */
+  .reader-dialog {
+    margin: auto;
+    padding: 0;
+    border: none;
+    background: transparent;
+    max-width: 96vw;
+    width: 1440px;
+    height: 94vh;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 
+      0 40px 100px -20px rgba(14, 7, 26, 0.85),
+      0 0 0 1px rgba(194, 155, 77, 0.35);
+  }
+
+  .reader-dialog::backdrop {
+    background: rgba(14, 7, 26, 0.82);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    animation: fadeInBackdrop 0.3s ease forwards;
+  }
+
+  @keyframes fadeInBackdrop {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .reader-shell {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background: #120A1E;
+    color: #FFFFFF;
+  }
+
+  /* Toolbar */
+  .reader-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 1.4rem;
+    background: rgba(22, 13, 38, 0.95);
+    border-bottom: 1px solid rgba(194, 155, 77, 0.25);
+    z-index: 10;
+  }
+
+  .toolbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .toolbar-crest {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid rgba(194, 155, 77, 0.5);
+    background: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .crest-mini {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .toolbar-titles {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .reader-title {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #FFFFFF;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+  }
+
+  .reader-subtitle {
+    font-size: 0.72rem;
+    color: var(--c-gold);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .toolbar-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.9rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: var(--radius-full, 9999px);
+    color: #FFFFFF;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s var(--ease-apple);
+    text-decoration: none;
+  }
+
+  .toolbar-btn:hover {
+    background: rgba(122, 87, 184, 0.4);
+    border-color: rgba(194, 155, 77, 0.6);
+    color: var(--c-gold-light);
+    transform: translateY(-1px);
+  }
+
+  .btn-close {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  .btn-close:hover {
+    background: rgba(220, 38, 38, 0.4);
+    border-color: rgba(239, 68, 68, 0.6);
+    color: #FFFFFF;
+  }
+
+  .btn-label-desktop {
+    display: inline;
+  }
+
+  @media (max-width: 640px) {
+    .btn-label-desktop {
+      display: none;
+    }
+  }
+
+  /* Stage & Iframe */
+  .reader-stage-wrapper {
+    position: relative;
+    flex-grow: 1;
+    width: 100%;
+    height: calc(100% - 58px);
+    background: #08030F;
+    overflow: hidden;
+  }
+
+  .reader-loader {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0E071A;
+    z-index: 1;
+    transition: opacity 0.4s ease;
+  }
+
+  .reader-loader.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .loader-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .loader-text {
+    font-size: 0.85rem;
+    color: #F4E8C9;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .reader-iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    z-index: 2;
+  }
+</style>
+
+<script>
+  function setupNewsletterReader() {
+    const dialog = document.getElementById('newsletter-reader-dialog') as HTMLDialogElement | null;
+    const iframe = document.getElementById('reader-iframe') as HTMLIFrameElement | null;
+    const loader = document.getElementById('reader-loader');
+    const titleEl = document.getElementById('reader-title');
+    const subtitleEl = document.getElementById('reader-subtitle');
+    const externalBtn = document.getElementById('reader-external-btn') as HTMLAnchorElement | null;
+    const closeBtn = document.getElementById('reader-close-btn');
+
+    if (!dialog || !iframe) return;
+
+    function openReader(data: { title: string; subtitle: string; date: string; embedUrl: string }) {
+      if (!dialog || !iframe) return;
+
+      if (titleEl) titleEl.textContent = data.title;
+      if (subtitleEl) subtitleEl.textContent = `${data.subtitle} • ${data.date}`;
+      if (externalBtn) externalBtn.href = data.embedUrl;
+
+      // Show loader while loading
+      if (loader) loader.classList.remove('hidden');
+
+      // Set iframe src to AnyFlip URL
+      iframe.src = data.embedUrl;
+      iframe.onload = () => {
+        if (loader) loader.classList.add('hidden');
+      };
+
+      // Open native modal dialog
+      if (typeof dialog.showModal === 'function') {
+        dialog.showModal();
+      } else {
+        dialog.setAttribute('open', '');
+      }
+
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeReader() {
+      if (!dialog || !iframe) return;
+
+      if (typeof dialog.close === 'function') {
+        dialog.close();
+      } else {
+        dialog.removeAttribute('open');
+      }
+
+      // Reset iframe to stop audio / memory consumption
+      iframe.src = 'about:blank';
+      document.body.style.overflow = '';
+    }
+
+    // Attach click listeners to cards
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+
+      const trigger = target.closest<HTMLElement>('[data-open-reader]');
+      if (!trigger) return;
+
+      e.preventDefault();
+      const card = trigger.closest<HTMLElement>('.newsletter-card');
+      if (!card) return;
+
+      const title = card.getAttribute('data-title') || 'Newsletter';
+      const subtitle = card.getAttribute('data-subtitle') || '';
+      const date = card.getAttribute('data-date') || '';
+      const embedUrl = card.getAttribute('data-embed') || 'https://online.anyflip.com/mpvfm/qwnx/index.html';
+
+      openReader({ title, subtitle, date, embedUrl });
+    });
+
+    // Close button
+    closeBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeReader();
+    });
+
+    // Light dismiss: click on dialog backdrop closes it
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) {
+        closeReader();
+      }
+    });
+
+    // Escape key
+    dialog.addEventListener('cancel', () => {
+      if (iframe) iframe.src = 'about:blank';
+      document.body.style.overflow = '';
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupNewsletterReader);
+  } else {
+    setupNewsletterReader();
+  }
+</script>

@@ -1,0 +1,918 @@
+---
+import type { GalleryItem } from '../data/gallery';
+
+interface Props {
+  items: GalleryItem[];
+  className?: string;
+  speed?: number;
+  columns?: number;
+}
+
+const {
+  items,
+  className = '',
+  speed = 0.08,
+  columns = 3
+} = Astro.props;
+
+const itemsJson = JSON.stringify(items);
+---
+
+<div class={`flying-posters-viewport ${className}`.trim()} data-posters-config={itemsJson} data-speed={speed} data-columns={columns}>
+  <!-- Fullscreen WebGL2 Canvas -->
+  <canvas class="flying-posters-canvas" aria-label="3D Interactive Flying Posters Gallery"></canvas>
+
+  <!-- Interactive Controls Overlay -->
+  <div class="flying-controls-bar" role="toolbar" aria-label="Gallery Controls">
+    <div class="control-glass-pill">
+      <span class="control-hint">
+        <span class="pulse-dot"></span>
+        <span class="hint-text">Drag or scroll to navigate 3D archive</span>
+      </span>
+      <div class="control-divider"></div>
+      <button type="button" class="ctrl-btn" id="fp-speed-toggle" title="Toggle Auto Cruise" aria-label="Toggle Auto Cruise">
+        <span class="btn-icon">⚡</span>
+        <span class="btn-txt">Cruise: On</span>
+      </button>
+      <button type="button" class="ctrl-btn" id="fp-grid-view-btn" title="Open Grid Overview" aria-label="Open Grid Overview">
+        <span class="btn-icon">▦</span>
+        <span class="btn-txt">All Photos</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Interactive Lightbox Modal -->
+  <dialog id="poster-lightbox-modal" class="lightbox-dialog" aria-modal="true" aria-labelledby="lightbox-title">
+    <div class="lightbox-card">
+      <button type="button" class="lightbox-close-btn" id="lightbox-close" aria-label="Close photo view">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="lightbox-media-frame">
+        <img id="lightbox-img" src="" alt="High resolution view" class="lightbox-photo" />
+      </div>
+      <div class="lightbox-meta">
+        <span class="lightbox-category" id="lightbox-category">Community Service</span>
+        <h3 class="lightbox-title" id="lightbox-title">Event Title</h3>
+        <p class="lightbox-desc">Leo Club of Ethos International • Colombo West Charter</p>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Grid Overview Drawer/Modal -->
+  <dialog id="gallery-grid-modal" class="grid-dialog" aria-modal="true" aria-labelledby="grid-modal-title">
+    <div class="grid-modal-content">
+      <div class="grid-modal-header">
+        <div>
+          <span class="eyebrow eyebrow-gold">Complete Photographic Archive</span>
+          <h2 id="grid-modal-title" class="grid-title">All Gallery Memories</h2>
+        </div>
+        <button type="button" class="lightbox-close-btn" id="grid-modal-close" aria-label="Close overview">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="grid-photos-mosaic">
+        {items.map((item, idx) => (
+          <button 
+            type="button" 
+            class="mosaic-item" 
+            data-index={idx}
+            data-src={item.image}
+            data-title={item.title}
+            data-cat={item.category}
+          >
+            <img src={item.image} alt={item.alt} loading="lazy" decoding="async" />
+            <div class="mosaic-hover">
+              <span class="mosaic-tag">{item.category}</span>
+              <p class="mosaic-name">{item.title}</p>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+  </dialog>
+</div>
+
+<style>
+  .flying-posters-viewport {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 600px;
+    background: #090412;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .flying-posters-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    cursor: grab;
+    touch-action: none;
+  }
+
+  .flying-posters-canvas:active {
+    cursor: grabbing;
+  }
+
+  /* Bottom Controls Bar */
+  .flying-controls-bar {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    pointer-events: none;
+    width: max-content;
+    max-width: 90vw;
+  }
+
+  .control-glass-pill {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 20px;
+    background: rgba(19, 10, 34, 0.78);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(194, 155, 77, 0.28);
+    border-radius: 9999px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(122, 87, 184, 0.2);
+  }
+
+  .control-hint {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(243, 237, 250, 0.8);
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+
+  .pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #C29B4D;
+    box-shadow: 0 0 10px #C29B4D;
+    animation: goldPulse 2s infinite ease-in-out;
+  }
+
+  @keyframes goldPulse {
+    0%, 100% { opacity: 0.4; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+
+  .control-divider {
+    width: 1px;
+    height: 18px;
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .ctrl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(122, 87, 184, 0.18);
+    border: 1px solid rgba(194, 155, 77, 0.3);
+    border-radius: 9999px;
+    color: #FAF8FD;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .ctrl-btn:hover {
+    background: rgba(194, 155, 77, 0.25);
+    border-color: #C29B4D;
+    transform: translateY(-1px);
+  }
+
+  /* Lightbox Modal */
+  .lightbox-dialog {
+    border: none;
+    padding: 0;
+    background: transparent;
+    max-width: 92vw;
+    max-height: 92vh;
+    outline: none;
+  }
+
+  .lightbox-dialog::backdrop {
+    background: rgba(8, 4, 15, 0.88);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+
+  .lightbox-card {
+    position: relative;
+    background: #140A24;
+    border: 1px solid rgba(194, 155, 77, 0.35);
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.8), 0 0 50px rgba(122, 87, 184, 0.3);
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    margin: auto;
+  }
+
+  .lightbox-close-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #FFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.2s;
+  }
+
+  .lightbox-close-btn:hover {
+    background: rgba(194, 155, 77, 0.4);
+  }
+
+  .lightbox-media-frame {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #000;
+    max-height: 65vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lightbox-photo {
+    max-width: 100%;
+    max-height: 65vh;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  .lightbox-meta {
+    padding: 16px 8px 4px;
+  }
+
+  .lightbox-category {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #C29B4D;
+    margin-bottom: 4px;
+  }
+
+  .lightbox-title {
+    font-family: var(--font-serif, serif);
+    font-size: 1.5rem;
+    color: #FAF8FD;
+    margin: 0 0 4px;
+  }
+
+  .lightbox-desc {
+    font-size: 0.8125rem;
+    color: rgba(243, 237, 250, 0.6);
+    margin: 0;
+  }
+
+  /* Grid Overview Modal */
+  .grid-dialog {
+    border: none;
+    padding: 0;
+    background: transparent;
+    width: 94vw;
+    max-width: 1200px;
+    height: 90vh;
+    outline: none;
+  }
+
+  .grid-dialog::backdrop {
+    background: rgba(8, 4, 15, 0.92);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+  }
+
+  .grid-modal-content {
+    background: #140A24;
+    border: 1px solid rgba(194, 155, 77, 0.35);
+    border-radius: 24px;
+    padding: 28px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .grid-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+  }
+
+  .grid-title {
+    font-family: var(--font-serif, serif);
+    font-size: 2rem;
+    color: #FAF8FD;
+    margin: 4px 0 0;
+  }
+
+  .grid-photos-mosaic {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    overflow-y: auto;
+    padding-right: 8px;
+  }
+
+  .mosaic-item {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #000;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .mosaic-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .mosaic-hover {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(14, 7, 26, 0.9) 0%, transparent 60%);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .mosaic-item:hover img {
+    transform: scale(1.08);
+  }
+
+  .mosaic-item:hover .mosaic-hover {
+    opacity: 1;
+  }
+
+  .mosaic-tag {
+    font-size: 0.625rem;
+    color: #C29B4D;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .mosaic-name {
+    font-size: 0.8125rem;
+    color: #FFF;
+    margin: 2px 0 0;
+    font-weight: 600;
+  }
+
+  @media (max-width: 640px) {
+    .control-hint { display: none; }
+    .flying-controls-bar { bottom: 20px; }
+    .grid-photos-mosaic { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  }
+</style>
+
+<script>
+  interface GalleryItemPayload {
+    id: number;
+    image: string;
+    title: string;
+    category: string;
+    alt: string;
+  }
+
+  const VERTEX_SHADER = `#version 300 es
+    in vec2 aPosition;
+    in vec4 aPoster;
+    uniform mat4 uProjection;
+    uniform float uCamera;
+    uniform vec2 uPoster;
+    uniform float uDepth;
+    uniform float uSpacing;
+    uniform float uLoop;
+    uniform float uColumnGap;
+    uniform float uColumns;
+    uniform float uScroll;
+    uniform float uAlternate;
+    uniform float uViewHeight;
+    uniform float uRotation;
+    uniform float uDistortion;
+    uniform vec3 uAxis;
+    uniform float uLean;
+    out vec2 vUv;
+    out float vItem;
+    out float vFacing;
+    out float vScreenY;
+
+    mat4 rotationMatrix(vec3 axis, float angle) {
+      axis = normalize(axis);
+      float s = sin(angle);
+      float c = cos(angle);
+      float oc = 1.0 - c;
+      return mat4(
+        oc * axis.x * axis.x + c, oc * axis.x * axis.y - axis.z * s, oc * axis.z * axis.x + axis.y * s, 0.0,
+        oc * axis.x * axis.y + axis.z * s, oc * axis.y * axis.y + c, oc * axis.y * axis.z - axis.x * s, 0.0,
+        oc * axis.z * axis.x - axis.y * s, oc * axis.y * axis.z + axis.x * s, oc * axis.z * axis.z + c, 0.0,
+        0.0, 0.0, 0.0, 1.0
+      );
+    }
+
+    vec3 rotate(vec3 v, vec3 axis, float angle) {
+      return (rotationMatrix(axis, angle) * vec4(v, 1.0)).xyz;
+    }
+
+    float qinticInOut(float t) {
+      return t < 0.5 ? 16.0 * pow(t, 5.0) : -0.5 * abs(pow(2.0 * t - 2.0, 5.0)) + 1.0;
+    }
+
+    void main() {
+      float column = aPoster.x;
+      float direction = uAlternate > 0.5 && mod(column, 2.0) > 0.5 ? -1.0 : 1.0;
+      float base = -uLoop * 0.5 + (aPoster.y + 0.5) * uSpacing + column * 0.41 * uSpacing;
+      float y = mod(base - uScroll * direction + uLoop * 0.5, uLoop) - uLoop * 0.5;
+      float x = (column - (uColumns - 1.0) * 0.5) * uColumnGap;
+      float position = 5.0 + (y + uViewHeight) / (2.0 * uViewHeight) * 10.0;
+      float offset = (dot(vec2(1.0, 1.0), aPosition) + 0.25) / 0.5;
+      float progress = clamp(
+        (clamp(position * 0.05, 0.0, 1.0) - 0.01 * uDistortion * offset) / (1.0 - 0.01 * uDistortion),
+        0.0,
+        2.0
+      );
+      float angle = qinticInOut(progress) * uRotation;
+      vec3 local = rotate(vec3(aPosition, 0.0), uAxis, angle);
+      vec3 normal = rotate(vec3(0.0, 0.0, 1.0), uAxis, angle);
+      local = rotate(local * vec3(uPoster, uDepth), vec3(1.0, 0.0, 0.0), uLean * direction);
+      normal = rotate(normal, vec3(1.0, 0.0, 0.0), uLean * direction);
+      vec3 world = local + vec3(x, y, 0.0);
+      gl_Position = uProjection * vec4(world.xy, world.z - uCamera, 1.0);
+      vUv = aPosition + 0.5;
+      vItem = aPoster.z;
+      vFacing = normal.z;
+      vScreenY = gl_Position.y / gl_Position.w;
+    }
+  `;
+
+  const FRAGMENT_SHADER = `#version 300 es
+    precision highp float;
+    uniform sampler2D uAtlas;
+    uniform float uCells;
+    uniform float uInset;
+    uniform vec2 uPoster;
+    uniform float uRadius;
+    uniform float uFade;
+    uniform float uShading;
+    uniform float uReveal;
+    in vec2 vUv;
+    in float vItem;
+    in float vFacing;
+    in float vScreenY;
+    out vec4 outColor;
+
+    void main() {
+      vec2 p = (vUv - 0.5) * uPoster;
+      float r = min(uRadius, 0.5 * min(uPoster.x, uPoster.y));
+      vec2 q = abs(p) - (0.5 * uPoster - r);
+      float d = length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r;
+      float aa = max(fwidth(d), 0.0001);
+      float mask = r > 0.0 ? 1.0 - smoothstep(-aa, aa, d) : 1.0;
+      vec2 cell = vec2(mod(vItem, uCells), floor(vItem / uCells));
+      vec2 local = vec2(vUv.x, 1.0 - vUv.y);
+      vec4 sampled = texture(uAtlas, (cell + uInset + local * (1.0 - 2.0 * uInset)) / uCells);
+      vec3 color = sampled.rgb;
+      color *= mix(1.0, 0.4 + 0.6 * abs(vFacing), uShading);
+      float t = clamp((1.0 - abs(vScreenY)) / max(uFade, 0.0001), 0.0, 1.0);
+      float fade = uFade > 0.0 ? t * t * t * (t * (t * 6.0 - 15.0) + 10.0) : 1.0;
+      float alpha = sampled.a * mask * fade * uReveal;
+      if (alpha < 0.002) discard;
+      outColor = vec4(color * alpha, alpha);
+    }
+  `;
+
+  function initFlyingPosters(viewport: HTMLElement) {
+    const canvas = viewport.querySelector('.flying-posters-canvas') as HTMLCanvasElement | null;
+    if (!canvas) return;
+
+    const gl = canvas.getContext('webgl2', { alpha: true, premultipliedAlpha: true, antialias: true, powerPreference: 'high-performance' });
+    if (!gl) return;
+
+    const rawItems = viewport.getAttribute('data-posters-config');
+    const items: GalleryItemPayload[] = rawItems ? JSON.parse(rawItems) : [];
+    if (items.length === 0) return;
+
+    let autoSpeed = parseFloat(viewport.getAttribute('data-speed') || '0.08');
+    let cruiseActive = true;
+    let targetColumns = parseInt(viewport.getAttribute('data-columns') || '3', 10);
+
+    const isMobile = window.innerWidth < 768;
+    const actualColumns = isMobile ? Math.min(targetColumns, 2) : targetColumns;
+    const planeW = isMobile ? 220 : 320;
+    const planeH = isMobile ? 220 : 320;
+
+    const compileShader = (type: number, src: string) => {
+      const shader = gl.createShader(type)!;
+      gl.shaderSource(shader, src);
+      gl.compileShader(shader);
+      return shader;
+    };
+
+    const program = gl.createProgram()!;
+    gl.attachShader(program, compileShader(gl.VERTEX_SHADER, VERTEX_SHADER));
+    gl.attachShader(program, compileShader(gl.FRAGMENT_SHADER, FRAGMENT_SHADER));
+    gl.linkProgram(program);
+    gl.useProgram(program);
+
+    // Grid Mesh
+    const GRID_X = 64;
+    const GRID_Y = 1;
+    const positions: number[] = [];
+    const indices: number[] = [];
+
+    for (let y = 0; y <= GRID_Y; y++) {
+      for (let x = 0; x <= GRID_X; x++) positions.push(x / GRID_X - 0.5, y / GRID_Y - 0.5);
+    }
+    for (let y = 0; y < GRID_Y; y++) {
+      for (let x = 0; x < GRID_X; x++) {
+        const i = y * (GRID_X + 1) + x;
+        indices.push(i + GRID_X + 1, i, i + GRID_X + 2, i, i + 1, i + GRID_X + 2);
+      }
+    }
+
+    const vao = gl.createVertexArray()!;
+    gl.bindVertexArray(vao);
+
+    const posBuf = gl.createBuffer()!;
+    gl.bindBuffer(gl.ARRAY_BUFFER, posBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+    const aPos = gl.getAttribLocation(program, 'aPosition');
+    gl.enableVertexAttribArray(aPos);
+    gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+    const idxBuf = gl.createBuffer()!;
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, idxBuf);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
+
+    const posterBuf = gl.createBuffer()!;
+    gl.bindBuffer(gl.ARRAY_BUFFER, posterBuf);
+    const aPoster = gl.getAttribLocation(program, 'aPoster');
+    gl.enableVertexAttribArray(aPoster);
+    gl.vertexAttribPointer(aPoster, 4, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribDivisor(aPoster, 1);
+    gl.bindVertexArray(null);
+
+    // Uniform locations cache
+    const u: Record<string, WebGLUniformLocation | null> = {};
+    [
+      'uProjection', 'uCamera', 'uPoster', 'uDepth', 'uSpacing', 'uLoop',
+      'uColumnGap', 'uColumns', 'uScroll', 'uAlternate', 'uViewHeight',
+      'uRotation', 'uDistortion', 'uAxis', 'uLean', 'uAtlas', 'uCells',
+      'uInset', 'uRadius', 'uFade', 'uShading', 'uReveal'
+    ].forEach(name => { u[name] = gl.getUniformLocation(program, name); });
+
+    // Texture Atlas
+    const atlasTex = gl.createTexture()!;
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, atlasTex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+    const atlasCanvas = document.createElement('canvas');
+    const atlasCtx = atlasCanvas.getContext('2d')!;
+    const totalItems = items.length;
+    const atlasCells = Math.ceil(Math.sqrt(totalItems));
+    const cellResolution = 512;
+    atlasCanvas.width = atlasCells * cellResolution;
+    atlasCanvas.height = atlasCells * cellResolution;
+
+    const loadedImages: (HTMLImageElement | null)[] = Array(totalItems).fill(null);
+
+    items.forEach((item, index) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        loadedImages[index] = img;
+        const x = (index % atlasCells) * cellResolution;
+        const y = Math.floor(index / atlasCells) * cellResolution;
+        atlasCtx.drawImage(img, x, y, cellResolution, cellResolution);
+
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, atlasTex);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, atlasCanvas);
+        gl.generateMipmap(gl.TEXTURE_2D);
+        wake();
+      };
+      img.src = item.image;
+    });
+
+    const state = {
+      width: 1,
+      height: 1,
+      dpr: 1,
+      scroll: 0,
+      target: 0,
+      velocity: 0,
+      lean: 0,
+      reveal: 0,
+      slots: 0,
+      count: 0
+    };
+
+    const metrics = () => {
+      const fov = (45 * Math.PI) / 180;
+      const unit = state.height / (2 * Math.tan(((45 * Math.PI) / 180) / 2) * 20);
+      const distance = 20 * unit;
+      const spacing = planeH + 30;
+      const scale = (2 * distance * Math.tan(fov / 2)) / state.height;
+      return { fov, unit, spacing, distance, scale };
+    };
+
+    const updateLayout = () => {
+      const { spacing, scale } = metrics();
+      const slots = Math.max(items.length, Math.ceil((state.height * scale + planeH) / spacing) + 2);
+      state.slots = slots;
+      state.count = slots * actualColumns;
+
+      const data = new Float32Array(state.count * 4);
+      for (let col = 0; col < actualColumns; col++) {
+        for (let slot = 0; slot < slots; slot++) {
+          data.set([col, slot, (slot + col * 2) % items.length, 0], (col * slots + slot) * 4);
+        }
+      }
+      gl.bindBuffer(gl.ARRAY_BUFFER, posterBuf);
+      gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+    };
+
+    const resize = () => {
+      state.dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      state.width = Math.max(1, viewport.clientWidth);
+      state.height = Math.max(1, viewport.clientHeight);
+      canvas.width = Math.round(state.width * state.dpr);
+      canvas.height = Math.round(state.height * state.dpr);
+      updateLayout();
+      wake();
+    };
+
+    // Pointer Interaction
+    let pointerActive = false;
+    let pointerStartY = 0;
+    let pointerStartX = 0;
+    let pointerOrigin = 0;
+    let pointerStartTime = 0;
+
+    const onPointerDown = (e: PointerEvent) => {
+      pointerActive = true;
+      pointerStartX = e.clientX;
+      pointerStartY = e.clientY;
+      pointerOrigin = state.scroll;
+      pointerStartTime = performance.now();
+      canvas.setPointerCapture?.(e.pointerId);
+      wake();
+    };
+
+    const onPointerMove = (e: PointerEvent) => {
+      if (!pointerActive) return;
+      const deltaY = pointerStartY - e.clientY;
+      state.target = pointerOrigin + deltaY * 0.12 * metrics().unit;
+      wake();
+    };
+
+    const onPointerUp = (e: PointerEvent) => {
+      if (!pointerActive) return;
+      pointerActive = false;
+      canvas.releasePointerCapture?.(e.pointerId);
+
+      const tap = Math.hypot(e.clientX - pointerStartX, e.clientY - pointerStartY) < 6 && (performance.now() - pointerStartTime) < 300;
+      if (tap) {
+        // Inspect clicked poster
+        const posterIdx = getPosterAt(e.clientX, e.clientY);
+        if (posterIdx >= 0 && items[posterIdx]) {
+          openLightbox(items[posterIdx]);
+        }
+      }
+      wake();
+    };
+
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      state.target += e.deltaY * 0.3 * metrics().unit;
+      wake();
+    };
+
+    const getPosterAt = (clientX: number, clientY: number): number => {
+      const rect = canvas.getBoundingClientRect();
+      const { spacing, scale } = metrics();
+      const x = (clientX - rect.left - rect.width / 2) * scale;
+      const y = (rect.height / 2 - (clientY - rect.top)) * scale;
+      const loop = state.slots * spacing;
+      const colGap = planeW + 40;
+
+      for (let col = 0; col < actualColumns; col++) {
+        const dir = col % 2 === 1 ? -1 : 1;
+        const cx = (col - (actualColumns - 1) / 2) * colGap;
+        if (Math.abs(x - cx) > planeW / 2) continue;
+        for (let slot = 0; slot < state.slots; slot++) {
+          const base = -loop / 2 + (slot + 0.5) * spacing + col * 0.41 * spacing;
+          const raw = base - state.scroll * dir + loop / 2;
+          const cy = (((raw % loop) + loop) % loop) - loop / 2;
+          if (Math.abs(y - cy) <= planeH / 2) {
+            return (slot + col * 2) % items.length;
+          }
+        }
+      }
+      return -1;
+    };
+
+    canvas.addEventListener('pointerdown', onPointerDown);
+    canvas.addEventListener('pointermove', onPointerMove);
+    canvas.addEventListener('pointerup', onPointerUp);
+    canvas.addEventListener('pointercancel', onPointerUp);
+    canvas.addEventListener('wheel', onWheel, { passive: false });
+
+    // Render loop
+    let raf = 0;
+    let lastTime = 0;
+    let isVisible = true;
+
+    const render = (now: number) => {
+      raf = 0;
+      if (!isVisible) return;
+
+      const dt = lastTime ? Math.min(0.05, (now - lastTime) / 1000) : 1 / 60;
+      lastTime = now;
+
+      state.reveal = Math.min(1, state.reveal + dt / 0.8);
+      if (!pointerActive && cruiseActive) {
+        state.target -= autoSpeed * dt * 250;
+      }
+
+      const prev = state.scroll;
+      state.scroll += (state.target - state.scroll) * (1 - Math.pow(0.985, dt * 60));
+      state.velocity += ((state.scroll - prev) / dt - state.velocity) * (1 - Math.exp(-dt * 8));
+
+      const leanTarget = Math.max(-0.4, Math.min(0.4, -state.velocity * 0.0005));
+      state.lean += (leanTarget - state.lean) * (1 - Math.exp(-dt * 6));
+
+      const { fov, unit, spacing, distance } = metrics();
+      const aspect = state.width / state.height;
+      const f = 1 / Math.tan(fov / 2);
+      const near = Math.max(0.5, distance * 0.02);
+      const far = distance * 4;
+
+      const proj = new Float32Array(16);
+      proj[0] = f / aspect;
+      proj[5] = f;
+      proj[10] = (far + near) / (near - far);
+      proj[11] = -1;
+      proj[14] = (2 * far * near) / (near - far);
+
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.clearColor(9 / 255, 4 / 255, 18 / 255, 1);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+      gl.useProgram(program);
+
+      gl.uniformMatrix4fv(u.uProjection, false, proj);
+      gl.uniform1f(u.uCamera, distance);
+      gl.uniform2f(u.uPoster, planeW, planeH);
+      gl.uniform1f(u.uDepth, unit);
+      gl.uniform1f(u.uSpacing, spacing);
+      gl.uniform1f(u.uLoop, state.slots * spacing);
+      gl.uniform1f(u.uColumnGap, planeW + 40);
+      gl.uniform1f(u.uColumns, actualColumns);
+      gl.uniform1f(u.uScroll, state.scroll);
+      gl.uniform1f(u.uAlternate, 1);
+      gl.uniform1f(u.uViewHeight, state.height);
+      gl.uniform1f(u.uRotation, Math.PI);
+      gl.uniform1f(u.uDistortion, 3.0);
+      gl.uniform3f(u.uAxis, 0, 1, 0);
+      gl.uniform1f(u.uLean, state.lean);
+      gl.uniform1f(u.uCells, atlasCells);
+      gl.uniform1f(u.uInset, 1.5 / cellResolution);
+      gl.uniform1f(u.uRadius, 20);
+      gl.uniform1f(u.uFade, 0.65);
+      gl.uniform1f(u.uShading, 0.75);
+      gl.uniform1f(u.uReveal, state.reveal);
+
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, atlasTex);
+      gl.uniform1i(u.uAtlas, 0);
+
+      gl.bindVertexArray(vao);
+      gl.drawElementsInstanced(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0, state.count);
+      gl.bindVertexArray(null);
+
+      const moving = Math.abs(state.target - state.scroll) > 0.05 || Math.abs(state.lean) > 0.001 || cruiseActive;
+      if (moving) raf = requestAnimationFrame(render);
+      else lastTime = 0;
+    };
+
+    const wake = () => {
+      if (!raf && isVisible) {
+        lastTime = performance.now();
+        raf = requestAnimationFrame(render);
+      }
+    };
+
+    // UI Buttons
+    const speedBtn = viewport.querySelector('#fp-speed-toggle') as HTMLButtonElement | null;
+    speedBtn?.addEventListener('click', () => {
+      cruiseActive = !cruiseActive;
+      speedBtn.querySelector('.btn-txt')!.textContent = `Cruise: ${cruiseActive ? 'On' : 'Off'}`;
+      wake();
+    });
+
+    const gridBtn = viewport.querySelector('#fp-grid-view-btn') as HTMLButtonElement | null;
+    const gridModal = viewport.querySelector('#gallery-grid-modal') as HTMLDialogElement | null;
+    const gridClose = viewport.querySelector('#grid-modal-close') as HTMLButtonElement | null;
+
+    gridBtn?.addEventListener('click', () => gridModal?.showModal());
+    gridClose?.addEventListener('click', () => gridModal?.close());
+    gridModal?.addEventListener('click', (e) => {
+      if (e.target === gridModal) gridModal.close();
+    });
+
+    // Lightbox Modal
+    const lightboxModal = viewport.querySelector('#poster-lightbox-modal') as HTMLDialogElement | null;
+    const lightboxClose = viewport.querySelector('#lightbox-close') as HTMLButtonElement | null;
+    const lightboxImg = viewport.querySelector('#lightbox-img') as HTMLImageElement | null;
+    const lightboxTitle = viewport.querySelector('#lightbox-title') as HTMLElement | null;
+    const lightboxCat = viewport.querySelector('#lightbox-category') as HTMLElement | null;
+
+    function openLightbox(item: GalleryItemPayload) {
+      if (!lightboxModal || !lightboxImg || !lightboxTitle || !lightboxCat) return;
+      lightboxImg.src = item.image;
+      lightboxImg.alt = item.alt;
+      lightboxTitle.textContent = item.title;
+      lightboxCat.textContent = item.category;
+      lightboxModal.showModal();
+    }
+
+    lightboxClose?.addEventListener('click', () => lightboxModal?.close());
+    lightboxModal?.addEventListener('click', (e) => {
+      if (e.target === lightboxModal) lightboxModal.close();
+    });
+
+    // Mosaic item clicks in grid overview
+    viewport.querySelectorAll<HTMLButtonElement>('.mosaic-item').forEach(btn => {
+      btn.addEventListener('click', () => {
+        gridModal?.close();
+        const src = btn.getAttribute('data-src') || '';
+        const title = btn.getAttribute('data-title') || '';
+        const category = btn.getAttribute('data-cat') || '';
+        openLightbox({ id: 0, image: src, title, category, alt: title });
+      });
+    });
+
+    const ro = new ResizeObserver(resize);
+    ro.observe(viewport);
+    resize();
+
+    const io = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) wake();
+      else if (raf) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
+    });
+    io.observe(viewport);
+  }
+
+  document.querySelectorAll<HTMLElement>('.flying-posters-viewport').forEach(initFlyingPosters);
+</script>

@@ -1,0 +1,562 @@
+---
+interface Props {
+  src: string;
+  alt?: string;
+  brushSize?: number;
+  strength?: number;
+  swirl?: number;
+  rings?: number;
+  spread?: number;
+  fade?: number;
+  spacing?: number;
+  dispersion?: number;
+  glint?: number;
+  tint?: string;
+  tintAmount?: number;
+  grayscale?: boolean;
+  highlightColor?: string;
+  trigger?: 'hover' | 'click' | 'both';
+  clickStrength?: number;
+  className?: string;
+  aspectRatio?: string;
+  background?: string;
+}
+
+const {
+  src,
+  alt = "Cinematic Visual",
+  brushSize = 130,
+  strength = 0.22,
+  swirl = 0.8,
+  rings = 4,
+  spread = 4.5,
+  fade = 2.8,
+  spacing = 14,
+  dispersion = 0.012,
+  glint = 0.45,
+  tint = '#7A57B8',
+  tintAmount = 0.18,
+  grayscale = false,
+  highlightColor = '#FFFFFF',
+  trigger = 'both',
+  clickStrength = 2.2,
+  className = '',
+  aspectRatio = '4 / 5',
+  background = 'transparent'
+} = Astro.props;
+
+const configJson = JSON.stringify({
+  src,
+  brushSize,
+  strength,
+  swirl,
+  rings,
+  spread,
+  fade,
+  spacing,
+  dispersion,
+  glint,
+  tint,
+  tintAmount,
+  grayscale,
+  highlightColor,
+  trigger,
+  clickStrength
+});
+---
+
+<div 
+  class={`ripple-distortion-wrapper ${className}`.trim()} 
+  style={`aspect-ratio: ${aspectRatio}; --ripple-bg: ${background};`}
+  data-ripple-config={configJson}
+>
+  <!-- Fast semantic LCP Image placeholder -->
+  <img 
+    src={src} 
+    alt={alt}
+    class="ripple-fallback-img" 
+    loading="eager" 
+    decoding="async" 
+    fetchpriority="high"
+  />
+  <div class="ripple-mount-point" aria-hidden="true"></div>
+</div>
+
+<style>
+  .ripple-distortion-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: var(--ripple-bg, transparent);
+    border-radius: inherit;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .ripple-fallback-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    transition: opacity 0.6s ease;
+  }
+
+  .ripple-mount-point {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: auto;
+  }
+
+  .ripple-mount-point canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.4s ease-out;
+  }
+
+  .ripple-mount-point.ready canvas {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  const MAX_WAVES = 64;
+  const START_SCALE = 1.5;
+  const LIFE_CONSTANT = Math.log(500);
+
+  const hexToRGB = (hex: string): [number, number, number] => {
+    const clean = hex.replace('#', '');
+    const full = clean.length === 3 ? clean.split('').map(c => c + c).join('') : clean;
+    const n = parseInt(full, 16);
+    if (Number.isNaN(n)) return [1, 1, 1];
+    return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
+  };
+
+  const waveVertex = `
+    attribute vec2 position;
+    attribute vec2 uv;
+    attribute vec2 iOffset;
+    attribute vec2 iScale;
+    attribute float iOpacity;
+    varying vec2 vUv;
+    varying float vOpacity;
+    void main() {
+      vUv = uv;
+      vOpacity = iOpacity;
+      gl_Position = vec4(iOffset + position * iScale, 0.0, 1.0);
+    }
+  `;
+
+  const waveFragment = `
+    precision highp float;
+    varying vec2 vUv;
+    varying float vOpacity;
+    uniform float uRings;
+    const float PI = 3.141592653589793;
+    const float EDGE = 0.006737947;
+    void main() {
+      vec2 p = vUv * 2.0 - 1.0;
+      float r = dot(p, p);
+      if (r > 1.0) discard;
+      float brush = (exp(-r * 5.0) - EDGE) / (1.0 - EDGE);
+      brush *= 0.55 + 0.45 * cos(sqrt(r) * PI * 2.0 * uRings);
+      gl_FragColor = vec4(vec3(brush * vOpacity * vOpacity), 1.0);
+    }
+  `;
+
+  const screenVertex = `
+    attribute vec2 position;
+    varying vec2 vUv;
+    void main() {
+      vUv = position * 0.5 + 0.5;
+      gl_Position = vec4(position, 0.0, 1.0);
+    }
+  `;
+
+  const compositeFragment = `
+    precision highp float;
+    varying vec2 vUv;
+    uniform sampler2D uTexture;
+    uniform sampler2D uDisplacement;
+    uniform vec2 uResolution;
+    uniform vec2 uTextureSize;
+    uniform vec2 uTexel;
+    uniform vec3 uTint;
+    uniform vec3 uHighlight;
+    uniform float uStrength;
+    uniform float uSwirl;
+    uniform float uDispersion;
+    uniform float uGlint;
+    uniform float uTintAmount;
+    uniform float uGrayscale;
+    const float TAU = 6.283185307179586;
+
+    vec2 coverUV(vec2 uv) {
+      vec2 safe = max(uTextureSize, vec2(1.0));
+      vec2 s = uResolution / safe;
+      vec2 scaledSize = safe * max(s.x, s.y);
+      vec2 offset = (uResolution - scaledSize) * 0.5;
+      return (uv * uResolution - offset) / scaledSize;
+    }
+
+    void main() {
+      float amount = texture2D(uDisplacement, vUv).r;
+      vec2 base = coverUV(vUv);
+      float theta = amount * uSwirl * TAU;
+      vec2 dir = vec2(sin(theta), cos(theta));
+      vec2 push = dir * amount * uStrength;
+
+      vec4 texColor;
+      if (uDispersion > 0.001) {
+        float split = uDispersion * 0.25;
+        texColor.r = texture2D(uTexture, base + push * (1.0 + split)).r;
+        texColor.g = texture2D(uTexture, base + push).g;
+        texColor.b = texture2D(uTexture, base + push * (1.0 - split)).b;
+        texColor.a = texture2D(uTexture, base + push).a;
+      } else {
+        texColor = texture2D(uTexture, base + push);
+      }
+      vec3 color = texColor.rgb;
+
+      if (uGrayscale > 0.001) {
+        color = mix(color, vec3(dot(color, vec3(0.2126, 0.7152, 0.0722))), uGrayscale);
+      }
+
+      if (uTintAmount > 0.001) {
+        color = mix(color, color * uTint * 1.9, clamp(amount * 1.6, 0.0, 1.0) * uTintAmount);
+      }
+
+      if (uGlint > 0.001) {
+        float ex = texture2D(uDisplacement, vUv + vec2(uTexel.x, 0.0)).r - texture2D(uDisplacement, vUv - vec2(uTexel.x, 0.0)).r;
+        float ey = texture2D(uDisplacement, vUv + vec2(0.0, uTexel.y)).r - texture2D(uDisplacement, vUv - vec2(0.0, uTexel.y)).r;
+        vec3 normal = normalize(vec3(-ex * 26.0, -ey * 26.0, 1.0));
+        vec3 light = normalize(vec3(-0.35, 0.55, 1.0));
+        float raw = pow(max(dot(normal, light), 0.0), 22.0);
+        float flatSpec = pow(max(light.z, 0.0), 22.0);
+        color += uHighlight * clamp((raw - flatSpec) / max(1.0 - flatSpec, 0.0001), 0.0, 1.0) * uGlint;
+      }
+
+      gl_FragColor = vec4(color * texColor.a, texColor.a);
+    }
+  `;
+
+  function initRipple(wrapper: HTMLElement) {
+    const mount = wrapper.querySelector('.ripple-mount-point') as HTMLElement | null;
+    if (!mount) return;
+
+    const rawConfig = wrapper.getAttribute('data-ripple-config');
+    if (!rawConfig) return;
+    const cfg = JSON.parse(rawConfig);
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) return; // Retain crisp image on reduced motion
+
+    const canvas = document.createElement('canvas');
+    mount.appendChild(canvas);
+
+    const gl = canvas.getContext('webgl', { alpha: true, antialias: false, powerPreference: 'low-power' });
+    if (!gl) return;
+
+    const extInst = gl.getExtension('ANGLE_instanced_arrays');
+    if (!extInst) return;
+
+    // Helper: Compile Shader
+    const compile = (type: number, src: string) => {
+      const s = gl.createShader(type)!;
+      gl.shaderSource(s, src);
+      gl.compileShader(s);
+      return s;
+    };
+
+    const waveProg = gl.createProgram()!;
+    gl.attachShader(waveProg, compile(gl.VERTEX_SHADER, waveVertex));
+    gl.attachShader(waveProg, compile(gl.FRAGMENT_SHADER, waveFragment));
+    gl.linkProgram(waveProg);
+
+    const compProg = gl.createProgram()!;
+    gl.attachShader(compProg, compile(gl.VERTEX_SHADER, screenVertex));
+    gl.attachShader(compProg, compile(gl.FRAGMENT_SHADER, compositeFragment));
+    gl.linkProgram(compProg);
+
+    // Wave Instanced Buffers
+    const quadVertices = new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]);
+    const quadUVs = new Float32Array([0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1]);
+
+    const offsets = new Float32Array(MAX_WAVES * 2);
+    const scales = new Float32Array(MAX_WAVES * 2);
+    const opacities = new Float32Array(MAX_WAVES);
+
+    interface Wave { x: number; y: number; scale: number; target: number; size: number; opacity: number; }
+    const waves: Wave[] = Array.from({ length: MAX_WAVES }, () => ({
+      x: 0, y: 0, scale: START_SCALE, target: START_SCALE, size: 1, opacity: 0
+    }));
+    let currentWave = 0;
+
+    const posBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, posBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, quadVertices, gl.STATIC_DRAW);
+
+    const uvBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, uvBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, quadUVs, gl.STATIC_DRAW);
+
+    const offBuf = gl.createBuffer();
+    const scaBuf = gl.createBuffer();
+    const opaBuf = gl.createBuffer();
+
+    // Render target for displacement
+    const dispTex = gl.createTexture()!;
+    gl.bindTexture(gl.TEXTURE_2D, dispTex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+    const fbo = gl.createFramebuffer()!;
+
+    // Image Texture
+    const imgTex = gl.createTexture()!;
+    gl.bindTexture(gl.TEXTURE_2D, imgTex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    let imgWidth = 1;
+    let imgHeight = 1;
+    img.onload = () => {
+      gl.bindTexture(gl.TEXTURE_2D, imgTex);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+      imgWidth = img.naturalWidth || 1;
+      imgHeight = img.naturalHeight || 1;
+      mount.classList.add('ready');
+      wake();
+    };
+    img.src = cfg.src;
+
+    let width = 1;
+    let height = 1;
+    let dispW = 2;
+    let dispH = 2;
+
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      width = Math.max(1, Math.round(mount.clientWidth * dpr));
+      height = Math.max(1, Math.round(mount.clientHeight * dpr));
+      canvas.width = width;
+      canvas.height = height;
+
+      dispW = Math.max(2, Math.round(width * 0.5));
+      dispH = Math.max(2, Math.round(height * 0.5));
+
+      gl.bindTexture(gl.TEXTURE_2D, dispTex);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, dispW, dispH, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+
+      gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, dispTex, 0);
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    };
+
+    const addWave = (x: number, y: number, power: number) => {
+      const w = waves[currentWave];
+      currentWave = (currentWave + 1) % MAX_WAVES;
+      w.x = x;
+      w.y = y;
+      w.scale = START_SCALE * power;
+      w.target = START_SCALE * Math.max(1, cfg.spread) * power;
+      w.size = Math.max(1, cfg.brushSize);
+      w.opacity = 1;
+      wake();
+    };
+
+    let prevX = 0;
+    let prevY = 0;
+
+    const onPointerMove = (e: PointerEvent) => {
+      const rect = mount.getBoundingClientRect();
+      const x = (e.clientX - rect.left) * (width / rect.width);
+      const y = (rect.height - (e.clientY - rect.top)) * (height / rect.height);
+      const dist = Math.hypot(x - prevX, y - prevY);
+      if (dist > cfg.spacing) {
+        addWave(x, y, 1.0);
+        prevX = x;
+        prevY = y;
+      }
+    };
+
+    const onPointerDown = (e: PointerEvent) => {
+      const rect = mount.getBoundingClientRect();
+      const x = (e.clientX - rect.left) * (width / rect.width);
+      const y = (rect.height - (e.clientY - rect.top)) * (height / rect.height);
+      addWave(x, y, cfg.clickStrength);
+    };
+
+    wrapper.addEventListener('pointermove', onPointerMove, { passive: true });
+    wrapper.addEventListener('pointerdown', onPointerDown, { passive: true });
+
+    let raf = 0;
+    let lastTime = 0;
+    let isVisible = true;
+
+    const render = (now: number) => {
+      raf = 0;
+      if (!isVisible) return;
+
+      const delta = lastTime ? Math.min(0.05, (now - lastTime) / 1000) : 1 / 60;
+      lastTime = now;
+
+      let activeCount = 0;
+      const growth = 1 - Math.exp(-delta * 1.09);
+      const decay = Math.exp((-delta * LIFE_CONSTANT) / Math.max(0.15, cfg.fade));
+
+      for (let i = 0; i < MAX_WAVES; i++) {
+        const w = waves[i];
+        if (w.opacity <= 0) continue;
+
+        w.opacity *= decay;
+        w.scale += (w.target - w.scale) * growth;
+
+        if (w.opacity < 0.003) {
+          w.opacity = 0;
+          opacities[i] = 0;
+          continue;
+        }
+
+        activeCount++;
+        const half = (w.scale * w.size) / 2;
+        offsets[i * 2] = (w.x / width) * 2 - 1;
+        offsets[i * 2 + 1] = (w.y / height) * 2 - 1;
+        scales[i * 2] = (half / width) * 2;
+        scales[i * 2 + 1] = (half / height) * 2;
+        opacities[i] = w.opacity;
+      }
+
+      // 1. Draw displacement into FBO
+      gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+      gl.viewport(0, 0, dispW, dispH);
+      gl.clearColor(0, 0, 0, 1);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+
+      if (activeCount > 0) {
+        gl.useProgram(waveProg);
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.ONE, gl.ONE);
+
+        gl.uniform1f(gl.getUniformLocation(waveProg, 'uRings'), cfg.rings);
+
+        const aPos = gl.getAttribLocation(waveProg, 'position');
+        gl.bindBuffer(gl.ARRAY_BUFFER, posBuf);
+        gl.enableVertexAttribArray(aPos);
+        gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+        const aUv = gl.getAttribLocation(waveProg, 'uv');
+        gl.bindBuffer(gl.ARRAY_BUFFER, uvBuf);
+        gl.enableVertexAttribArray(aUv);
+        gl.vertexAttribPointer(aUv, 2, gl.FLOAT, false, 0, 0);
+
+        const aOff = gl.getAttribLocation(waveProg, 'iOffset');
+        gl.bindBuffer(gl.ARRAY_BUFFER, offBuf);
+        gl.bufferData(gl.ARRAY_BUFFER, offsets, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(aOff);
+        gl.vertexAttribPointer(aOff, 2, gl.FLOAT, false, 0, 0);
+        extInst.vertexAttribDivisorANGLE(aOff, 1);
+
+        const aSca = gl.getAttribLocation(waveProg, 'iScale');
+        gl.bindBuffer(gl.ARRAY_BUFFER, scaBuf);
+        gl.bufferData(gl.ARRAY_BUFFER, scales, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(aSca);
+        gl.vertexAttribPointer(aSca, 2, gl.FLOAT, false, 0, 0);
+        extInst.vertexAttribDivisorANGLE(aSca, 1);
+
+        const aOpa = gl.getAttribLocation(waveProg, 'iOpacity');
+        gl.bindBuffer(gl.ARRAY_BUFFER, opaBuf);
+        gl.bufferData(gl.ARRAY_BUFFER, opacities, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(aOpa);
+        gl.vertexAttribPointer(aOpa, 1, gl.FLOAT, false, 0, 0);
+        extInst.vertexAttribDivisorANGLE(aOpa, 1);
+
+        extInst.drawArraysInstancedANGLE(gl.TRIANGLES, 0, 6, MAX_WAVES);
+
+        extInst.vertexAttribDivisorANGLE(aOff, 0);
+        extInst.vertexAttribDivisorANGLE(aSca, 0);
+        extInst.vertexAttribDivisorANGLE(aOpa, 0);
+      }
+
+      // 2. Draw composite to canvas screen
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      gl.viewport(0, 0, width, height);
+      gl.disable(gl.BLEND);
+
+      gl.useProgram(compProg);
+
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, imgTex);
+      gl.uniform1i(gl.getUniformLocation(compProg, 'uTexture'), 0);
+
+      gl.activeTexture(gl.TEXTURE1);
+      gl.bindTexture(gl.TEXTURE_2D, dispTex);
+      gl.uniform1i(gl.getUniformLocation(compProg, 'uDisplacement'), 1);
+
+      gl.uniform2f(gl.getUniformLocation(compProg, 'uResolution'), width, height);
+      gl.uniform2f(gl.getUniformLocation(compProg, 'uTextureSize'), imgWidth, imgHeight);
+      gl.uniform2f(gl.getUniformLocation(compProg, 'uTexel'), 1 / dispW, 1 / dispH);
+      gl.uniform3fv(gl.getUniformLocation(compProg, 'uTint'), hexToRGB(cfg.tint));
+      gl.uniform3fv(gl.getUniformLocation(compProg, 'uHighlight'), hexToRGB(cfg.highlightColor));
+      gl.uniform1f(gl.getUniformLocation(compProg, 'uStrength'), cfg.strength);
+      gl.uniform1f(gl.getUniformLocation(compProg, 'uSwirl'), cfg.swirl);
+      gl.uniform1f(gl.getUniformLocation(compProg, 'uDispersion'), cfg.dispersion);
+      gl.uniform1f(gl.getUniformLocation(compProg, 'uGlint'), cfg.glint);
+      gl.uniform1f(gl.getUniformLocation(compProg, 'uTintAmount'), cfg.tintAmount);
+      gl.uniform1f(gl.getUniformLocation(compProg, 'uGrayscale'), cfg.grayscale ? 1 : 0);
+
+      const aPosComp = gl.getAttribLocation(compProg, 'position');
+      gl.bindBuffer(gl.ARRAY_BUFFER, posBuf);
+      gl.enableVertexAttribArray(aPosComp);
+      gl.vertexAttribPointer(aPosComp, 2, gl.FLOAT, false, 0, 0);
+
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+      if (activeCount > 0) {
+        raf = requestAnimationFrame(render);
+      }
+    };
+
+    const wake = () => {
+      if (!raf && isVisible) {
+        lastTime = performance.now();
+        raf = requestAnimationFrame(render);
+      }
+    };
+
+    const resizeObserver = new ResizeObserver(() => {
+      resize();
+      wake();
+    });
+    resizeObserver.observe(mount);
+    resize();
+
+    const visibility = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) wake();
+      else if (raf) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
+    });
+    visibility.observe(wrapper);
+  }
+
+  // Auto-mount all ripple distortion wrappers
+  document.querySelectorAll<HTMLElement>('.ripple-distortion-wrapper').forEach(initRipple);
+</script>

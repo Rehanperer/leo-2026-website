@@ -50,14 +50,17 @@
           preload="auto"
           poster="/blooming-iris-globe.webp"
         >
+          <source src="/bloom-video-opt.mp4" type="video/mp4" />
           <source src="/bloom-video.mp4" type="video/mp4" />
-          <source src="/Globe_spinning_and_flower_blooming_20261011111216.mp4" type="video/mp4" />
           <img 
             src="/blooming-iris-globe.webp" 
             alt="Blooming Iris on Earth Globe" 
             class="blooming-iris-art" 
             width="360" 
             height="360" 
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
           />
         </video>
 
@@ -117,9 +120,11 @@
   .mist-layer {
     position: absolute;
     border-radius: 50%;
-    filter: blur(80px);
+    filter: blur(24px);
     opacity: 0.6;
     animation: mistFloat 12s ease-in-out infinite alternate;
+    will-change: transform;
+    transform: translateZ(0);
   }
 
   .mist-1 {
@@ -165,9 +170,11 @@
     position: absolute;
     border-radius: 50%;
     background: radial-gradient(circle, #F4E8C9 0%, #C29B4D 100%);
-    box-shadow: 0 0 8px rgba(194, 155, 77, 0.6);
+    box-shadow: 0 0 6px rgba(194, 155, 77, 0.4);
     opacity: 0;
     animation: particleDrift 4s ease-out infinite;
+    will-change: transform, opacity;
+    transform: translateZ(0);
   }
 
   .p-1  { width: 4px; height: 4px; top: 40%; left: 35%; animation-delay: 0.3s; }
@@ -202,9 +209,10 @@
     left: 50%;
     border-radius: 50%;
     border: 1px solid rgba(194, 155, 77, 0.4);
-    transform: translate(-50%, -50%) scale(0.2);
+    transform: translate(-50%, -50%) scale(0.2) translateZ(0);
     opacity: 0;
     pointer-events: none;
+    will-change: transform, opacity;
   }
 
   .ring-1 {
@@ -319,6 +327,8 @@
     -webkit-mask-image: radial-gradient(ellipse 65% 62% at 50% 50%, #000000 30%, rgba(0, 0, 0, 0.6) 55%, transparent 76%);
     mask-image: radial-gradient(ellipse 65% 62% at 50% 50%, #000000 30%, rgba(0, 0, 0, 0.6) 55%, transparent 76%);
     animation: irisBloomUnfurl 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+    will-change: transform, opacity;
+    transform: translateZ(0);
   }
 
   .blooming-iris-video {
@@ -327,6 +337,7 @@
     object-fit: contain;
     display: block;
     mix-blend-mode: multiply;
+    transform: translateZ(0);
   }
 
   .blooming-iris-art {
@@ -403,21 +414,18 @@
   @keyframes irisBloomUnfurl {
     0% {
       opacity: 0;
-      transform: scale(0.18) rotate(-18deg) translateY(40px);
-      filter: blur(8px) brightness(1.2);
+      transform: scale(0.4) translateY(24px) translateZ(0);
     }
-    45% {
+    55% {
       opacity: 1;
-      transform: scale(1.08) rotate(3deg) translateY(-6px);
-      filter: blur(0px) brightness(1.05);
+      transform: scale(1.03) translateY(-3px) translateZ(0);
     }
-    70% {
-      transform: scale(0.97) rotate(-1deg) translateY(2px);
+    80% {
+      transform: scale(0.98) translateY(1px) translateZ(0);
     }
     100% {
       opacity: 1;
-      transform: scale(1) rotate(0deg) translateY(0);
-      filter: blur(0px) brightness(1);
+      transform: scale(1) translateY(0) translateZ(0);
     }
   }
 
@@ -580,26 +588,23 @@
     // Ensure overlay is visible and active
     overlay.style.display = 'flex';
     overlay.classList.remove('dismissed');
-    overlay.classList.remove('is-active');
-    void overlay.offsetWidth; // Force DOM reflow so CSS animations reset cleanly
-    overlay.classList.add('is-active');
+    requestAnimationFrame(() => {
+      overlay.classList.add('is-active');
+    });
 
     // Restart and play video
     const vid = document.getElementById('bloom-video') as HTMLVideoElement | null;
     if (vid) {
+      vid.muted = true;
       try {
-        vid.currentTime = 0;
-        vid.muted = true;
-        const playPromise = vid.play();
-        if (playPromise !== undefined) {
-          playPromise.catch((err) => {
-            console.warn('Cinematic video autoplay notice:', err);
-          });
+        if (vid.readyState >= 2) {
+          vid.currentTime = 0;
         }
-      } catch (err) {
-        console.warn('Video reset error:', err);
+      } catch (e) {}
+      const playPromise = vid.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {});
       }
-
       vid.onended = () => {
         dismissIntro();
       };

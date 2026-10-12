@@ -1,0 +1,594 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formerCabinets } from '../../data/formerLeaders';
+
+const pageTitle = "Former Leaders — Leo Club of EIC";
+const pageDescription = "Honoring the visionary executive committees and past presidents who guided the Leo Club of Ethos International through our formative years.";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription} showIntro={false}>
+  <main class="former-leaders-page" id="main-content">
+    <div class="leaders-ambient-glow" aria-hidden="true"></div>
+
+    <div class="container">
+      <!-- Breadcrumbs -->
+      <nav class="editorial-breadcrumbs" aria-label="Breadcrumb">
+        <a href="/" class="crumb-link">Home</a>
+        <span class="crumb-sep">/</span>
+        <span class="crumb-current" aria-current="page">Former Leaders</span>
+      </nav>
+
+      <!-- Page Header -->
+      <header class="leaders-header text-center">
+        <div class="header-pill-badge">
+          <span class="pill-sparkle">✦</span>
+          <span>Hall of Leadership</span>
+        </div>
+        <h1 class="leaders-title">
+          Honoring Our <em>Past Cabinets</em>
+        </h1>
+        <p class="leaders-subtitle">
+          From our founding charter in 2022 to each historic milestone, we celebrate the dedication of the executive leaders who laid the cornerstone of our club.
+        </p>
+
+        <!-- Year Navigation Tabs -->
+        <div class="years-filter-wrapper">
+          <div class="years-tabs" role="tablist" aria-label="Select Lionistic Year">
+            {formerCabinets.map((cab, idx) => (
+              <button 
+                type="button" 
+                class={`year-tab-btn ${idx === 0 ? 'active' : ''}`}
+                data-year-target={`cabinet-${cab.year.replace(/\s+/g, '-').replace(/[^\w-]/g, '')}`}
+                role="tab"
+                aria-selected={idx === 0 ? 'true' : 'false'}
+              >
+                <span>{cab.year}</span>
+                {cab.isCharter && <span class="charter-micro-badge">Charter</span>}
+              </button>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      <!-- Historical Cabinet Panels -->
+      <div class="cabinets-container">
+        {formerCabinets.map((cab, idx) => {
+          const panelId = `cabinet-${cab.year.replace(/\s+/g, '-').replace(/[^\w-]/g, '')}`;
+          return (
+            <section 
+              id={panelId}
+              class={`cabinet-year-panel ${idx === 0 ? 'active-panel' : 'hidden-panel'}`}
+              aria-label={`Cabinet of ${cab.year}`}
+            >
+              <!-- Year Banner & Presidential Motto -->
+              <div class="cabinet-masthead card-glass">
+                <div class="masthead-left">
+                  <span class="term-badge">Lionistic Term</span>
+                  <h2 class="term-title">{cab.year}</h2>
+                  <p class="term-theme">
+                    {cab.theme}
+                  </p>
+                  {cab.presidentialMotto && (
+                    <div class="presidential-motto-box">
+                      <span class="motto-icon">“</span>
+                      <p class="motto-text">{cab.presidentialMotto}”</p>
+                    </div>
+                  )}
+                </div>
+
+                <div class="masthead-right">
+                  <div class="president-honor-card">
+                    <span class="honor-eyebrow">Presidential Steward</span>
+                    <h3 class="president-name">{cab.president}</h3>
+                    <span class="presidential-status">
+                      {cab.isCharter ? 'Inaugural Charter President' : 'Club President'}
+                    </span>
+                    <div class="laurel-accent" aria-hidden="true">
+                      <span>⚜</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Executive Officers Roster Grid -->
+              <div class="roster-grid">
+                {cab.leaders.map((leader) => (
+                  <div class="historical-leader-card">
+                    <div class="hist-monogram">
+                      <span>
+                        {leader.name.replace(/^Leo\s+/, '').replace(/\(.*?\)/g, '').trim().split(/\s+/).map(n => n[0]).join('').slice(0, 2) || 'LEO'}
+                      </span>
+                    </div>
+                    <div class="hist-details">
+                      <h4 class="hist-name">{leader.name}</h4>
+                      <p class="hist-role">{leader.role}</p>
+                      {leader.badge && (
+                        <span class="hist-badge">{leader.badge}</span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <!-- Achievements & Highlights of the Term -->
+              {cab.highlights && cab.highlights.length > 0 && (
+                <div class="term-milestones-card">
+                  <h4 class="milestones-heading">
+                    <span class="milestone-icon">✦</span>
+                    <span>Key Milestones of the {cab.year} Administration</span>
+                  </h4>
+                  <ul class="milestones-list">
+                    {cab.highlights.map((item) => (
+                      <li>
+                        <span class="list-bullet">›</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </section>
+          );
+        })}
+      </div>
+
+      <!-- Charter Foundation Strip -->
+      <section class="charter-foundation-strip">
+        <div class="foundation-box">
+          <div class="foundation-crest-frame">
+            <img src="/crest.webp" alt="Club Crest" width="64" height="64" loading="lazy" decoding="async" />
+          </div>
+          <div class="foundation-copy">
+            <span class="eyebrow eyebrow-gold">Institutional Heritage</span>
+            <h3 class="foundation-title">Chartered Under Lions Club of Colombo West</h3>
+            <p class="foundation-desc">
+              Officially recognized under Lions Clubs International District 306 D2. Est. 2022 in Colombo 7, Sri Lanka.
+            </p>
+          </div>
+          <div class="foundation-action">
+            <a href="/team" class="btn btn-primary">
+              View Current 2026/27 Team →
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .former-leaders-page {
+    position: relative;
+    padding: 120px 0 100px;
+    background: var(--c-bg, #FAF8FD);
+    color: var(--c-text-primary, #211638);
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  .leaders-ambient-glow {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1000px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(194, 155, 77, 0.1) 0%, rgba(122, 87, 184, 0.08) 50%, transparent 75%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .editorial-breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 32px;
+    font-size: 0.875rem;
+    color: var(--c-text-tertiary, #8C82A2);
+  }
+
+  .crumb-link {
+    color: var(--c-iris, #7A57B8);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .crumb-link:hover { text-decoration: underline; }
+  .crumb-current { color: var(--c-text-secondary, #5C5272); font-weight: 600; }
+
+  /* Header */
+  .leaders-header {
+    max-width: 840px;
+    margin: 0 auto 52px;
+  }
+
+  .header-pill-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 9999px;
+    background: var(--c-gold-light, #F4E8C9);
+    border: 1px solid rgba(194, 155, 77, 0.35);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--c-gold-deep, #9F7B2F);
+    margin-bottom: 16px;
+  }
+
+  .pill-sparkle { color: var(--c-gold, #C29B4D); }
+
+  .leaders-title {
+    font-family: var(--font-serif, serif);
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--c-text-primary, #211638);
+    margin: 0 0 16px;
+  }
+
+  .leaders-title em {
+    font-style: italic;
+    color: var(--c-gold-deep, #9F7B2F);
+  }
+
+  .leaders-subtitle {
+    font-size: clamp(1rem, 1.2vw, 1.15rem);
+    color: var(--c-text-secondary, #5C5272);
+    line-height: 1.6;
+    margin: 0 auto 32px;
+    max-width: 680px;
+  }
+
+  /* Year Tabs */
+  .years-filter-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  .years-tabs {
+    display: inline-flex;
+    flex-wrap: wrap;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--c-border-gold, rgba(194, 155, 77, 0.3));
+    border-radius: 9999px;
+    padding: 6px;
+    gap: 8px;
+    box-shadow: 0 8px 24px rgba(33, 22, 56, 0.05);
+  }
+
+  .year-tab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: 9999px;
+    border: none;
+    background: transparent;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--c-text-secondary, #5C5272);
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .year-tab-btn:hover {
+    color: var(--c-iris-deep, #54398A);
+  }
+
+  .year-tab-btn.active {
+    background: linear-gradient(135deg, #54398A 0%, #351C66 100%);
+    color: #FAF8FD;
+    box-shadow: 0 4px 16px rgba(84, 57, 138, 0.35);
+  }
+
+  .charter-micro-badge {
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    background: #C29B4D;
+    color: #140A24;
+    padding: 2px 6px;
+    border-radius: 9999px;
+  }
+
+  /* Panels */
+  .cabinets-container {
+    margin-bottom: 72px;
+  }
+
+  .cabinet-year-panel {
+    display: none;
+    animation: fadeInPanel 0.4s ease-out forwards;
+  }
+
+  .cabinet-year-panel.active-panel {
+    display: block;
+  }
+
+  @keyframes fadeInPanel {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Masthead */
+  .cabinet-masthead {
+    background: #FFFFFF;
+    border: 1px solid var(--c-border-gold, rgba(194, 155, 77, 0.3));
+    border-radius: 24px;
+    padding: 36px 44px;
+    margin-bottom: 32px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 32px;
+    align-items: center;
+    box-shadow: 0 16px 40px -8px rgba(65, 41, 107, 0.08);
+  }
+
+  .term-badge {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--c-gold-deep, #9F7B2F);
+  }
+
+  .term-title {
+    font-family: var(--font-serif, serif);
+    font-size: 2.6rem;
+    color: var(--c-text-primary, #211638);
+    margin: 4px 0 8px;
+  }
+
+  .term-theme {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--c-iris, #7A57B8);
+    margin: 0 0 16px;
+  }
+
+  .presidential-motto-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 18px;
+    background: var(--c-bg-subtle, #F3EDFA);
+    border-radius: 12px;
+    border-left: 3px solid var(--c-gold, #C29B4D);
+  }
+
+  .motto-icon {
+    font-family: var(--font-serif, serif);
+    font-size: 1.8rem;
+    color: var(--c-gold, #C29B4D);
+    line-height: 1;
+  }
+
+  .motto-text {
+    font-style: italic;
+    font-family: var(--font-serif, serif);
+    font-size: 1.1rem;
+    color: var(--c-text-primary, #211638);
+    margin: 0;
+  }
+
+  .president-honor-card {
+    background: linear-gradient(135deg, #24143D 0%, #170C2A 100%);
+    border: 1px solid rgba(194, 155, 77, 0.4);
+    border-radius: 18px;
+    padding: 28px;
+    text-align: center;
+    color: #FAF8FD;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .honor-eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #C29B4D;
+  }
+
+  .president-name {
+    font-family: var(--font-serif, serif);
+    font-size: 1.6rem;
+    color: #FFFFFF;
+    margin: 6px 0 4px;
+  }
+
+  .presidential-status {
+    font-size: 0.8125rem;
+    color: rgba(243, 237, 250, 0.7);
+  }
+
+  .laurel-accent {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    color: #C29B4D;
+  }
+
+  /* Roster Grid */
+  .roster-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .historical-leader-card {
+    background: #FFFFFF;
+    border: 1px solid var(--c-border-subtle, rgba(122, 87, 184, 0.12));
+    border-radius: 18px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 4px 16px rgba(33, 22, 56, 0.04);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .historical-leader-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px -4px rgba(122, 87, 184, 0.1);
+  }
+
+  .hist-monogram {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #EDE6F9 0%, #E3D7F5 100%);
+    border: 1px solid rgba(122, 87, 184, 0.3);
+    color: var(--c-iris-deep, #54398A);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-serif, serif);
+    font-weight: 700;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .hist-details { flex: 1; }
+  .hist-name { font-size: 1rem; font-weight: 700; color: var(--c-text-primary, #211638); margin: 0 0 2px; }
+  .hist-role { font-size: 0.8125rem; color: var(--c-text-secondary, #5C5272); margin: 0 0 4px; }
+  .hist-badge {
+    display: inline-block;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    background: var(--c-gold-light, #F4E8C9);
+    color: var(--c-gold-deep, #9F7B2F);
+    border-radius: 9999px;
+  }
+
+  /* Term Milestones */
+  .term-milestones-card {
+    background: #FFFFFF;
+    border: 1px solid var(--c-border-subtle, rgba(122, 87, 184, 0.12));
+    border-radius: 18px;
+    padding: 28px 36px;
+    box-shadow: 0 4px 16px rgba(33, 22, 56, 0.04);
+  }
+
+  .milestones-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--c-iris-deep, #54398A);
+    margin: 0 0 16px;
+  }
+
+  .milestone-icon { color: var(--c-gold, #C29B4D); }
+
+  .milestones-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .milestones-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.9375rem;
+    color: var(--c-text-secondary, #5C5272);
+    line-height: 1.5;
+  }
+
+  .list-bullet {
+    color: var(--c-gold, #C29B4D);
+    font-weight: 700;
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+
+  /* Foundation Strip */
+  .charter-foundation-strip {
+    margin-top: 56px;
+  }
+
+  .foundation-box {
+    background: linear-gradient(135deg, rgba(84, 57, 138, 0.05) 0%, rgba(194, 155, 77, 0.08) 100%);
+    border: 1px solid var(--c-border-gold, rgba(194, 155, 77, 0.3));
+    border-radius: 24px;
+    padding: 36px 44px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 28px;
+    align-items: center;
+  }
+
+  .foundation-crest-frame {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #FFF;
+    padding: 4px;
+    box-shadow: 0 8px 24px rgba(122, 87, 184, 0.15);
+  }
+
+  .foundation-crest-frame img { width: 100%; height: 100%; object-fit: contain; }
+
+  .foundation-title {
+    font-family: var(--font-serif, serif);
+    font-size: 1.5rem;
+    color: var(--c-text-primary, #211638);
+    margin: 4px 0;
+  }
+
+  .foundation-desc {
+    font-size: 0.875rem;
+    color: var(--c-text-secondary, #5C5272);
+    margin: 0;
+  }
+
+  @media (max-width: 860px) {
+    .cabinet-masthead { grid-template-columns: 1fr; }
+    .foundation-box { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+  }
+
+  @media (max-width: 640px) {
+    .years-tabs { border-radius: 16px; }
+    .year-tab-btn { flex: 1 1 45%; justify-content: center; }
+    .cabinet-masthead { padding: 24px 20px; }
+    .term-title { font-size: 2rem; }
+  }
+</style>
+
+<script>
+  // Tab switching logic for former leaders
+  const tabBtns = document.querySelectorAll<HTMLButtonElement>('.years-tabs .year-tab-btn');
+  const panels = document.querySelectorAll<HTMLElement>('.cabinet-year-panel');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+
+      const targetId = btn.getAttribute('data-year-target');
+
+      panels.forEach(p => {
+        if (p.id === targetId) {
+          p.classList.remove('hidden-panel');
+          p.classList.add('active-panel');
+        } else {
+          p.classList.remove('active-panel');
+          p.classList.add('hidden-panel');
+        }
+      });
+    });
+  });
+</script>

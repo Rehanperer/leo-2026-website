@@ -8,11 +8,15 @@ import { siteConfig } from '../data/site';
 interface Props {
   title?: string;
   description?: string;
+  showIntro?: boolean;
+  showFooter?: boolean;
 }
 
 const {
   title = `${siteConfig.name} — ${siteConfig.motto}`,
-  description = siteConfig.description
+  description = siteConfig.description,
+  showIntro = true,
+  showFooter = true
 } = Astro.props;
 ---
 
@@ -42,6 +46,7 @@ const {
     <meta name="twitter:image" content={`${siteConfig.url}/crest.png`} />
 
     <!-- Favicon & App Icons -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/icon.png" />
     <link rel="apple-touch-icon" href="/crest.png" />
@@ -49,18 +54,25 @@ const {
     <!-- High-Priority Preloads for Optimal LCP -->
     <link rel="preload" as="image" href="/crest.webp" type="image/webp" fetchpriority="high" />
 
-    <!-- Self-hosted font preconnect & lightweight webfont fallback -->
+    <!-- Font Preconnect & Non-Blocking Google Font Loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" media="print" onload="this.media='all'" />
+    <link 
+      rel="stylesheet" 
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" 
+      media="print" 
+      onload="this.media='all'" 
+    />
     <noscript>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" />
     </noscript>
+
+    <!-- Page-Specific Head Slots (Preloads & Meta) -->
+    <slot name="head" />
   </head>
   <body>
     <!-- The Cinematic Blooming Flower Intro -->
-    <CinematicBloom />
+    {showIntro && <CinematicBloom />}
 
     <!-- Floating Frosted Glass Navigation -->
     <Nav />
@@ -71,6 +83,6 @@ const {
     </main>
 
     <!-- Footer -->
-    <Footer />
+    {showFooter && <Footer />}
   </body>
 </html>

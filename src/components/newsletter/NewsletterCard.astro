@@ -1,0 +1,483 @@
+---
+import type { NewsletterIssue } from '../../data/newsletters';
+import Icon from '../Icon.astro';
+
+interface Props {
+  issue: NewsletterIssue;
+}
+
+const { issue } = Astro.props;
+---
+
+<article 
+  class="newsletter-card" 
+  data-year={issue.year}
+  data-issue-id={issue.id}
+  data-title={issue.title}
+  data-subtitle={issue.subtitle}
+  data-date={issue.date}
+  data-embed={issue.embedUrl}
+>
+  <!-- Ambient glow behind cover -->
+  <div 
+    class="card-glow" 
+    style={`--cover-glow: ${issue.coverTheme.glowColor};`} 
+    aria-hidden="true"
+  ></div>
+
+  <!-- Interactive Magazine Cover Stage -->
+  <div 
+    class="cover-stage" 
+    style={`background: ${issue.coverTheme.gradient}; --accent-c: ${issue.coverTheme.accentColor};`}
+    role="button"
+    tabindex="0"
+    aria-label={`Open interactive reader for ${issue.title} ${issue.subtitle}`}
+    data-open-reader
+  >
+    <!-- Top Foil Badges -->
+    <div class="cover-header">
+      <span class="cover-tag-pill">
+        <span class="sparkle">✦</span>
+        {issue.tag}
+      </span>
+      {issue.badgeText && (
+        <span class="cover-status-badge">
+          {issue.badgeText}
+        </span>
+      )}
+    </div>
+
+    <!-- Centerpiece Typography & Stamp -->
+    <div class="cover-centerpiece">
+      <div class="cover-stamp" aria-hidden="true">
+        <span class="stamp-word">OUT</span>
+        <span class="stamp-word-hollow">NOW</span>
+      </div>
+      <h3 class="cover-title-display">
+        {issue.title}
+      </h3>
+      <p class="cover-subtitle-display">
+        {issue.subtitle}
+      </p>
+    </div>
+
+    <!-- Bottom Watermark & Year -->
+    <div class="cover-footer">
+      <div class="cover-date-pill">
+        <span>{issue.date}</span>
+      </div>
+      <div class="cover-hover-prompt">
+        <span>Read Magazine</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Metallic reflective sheen overlay -->
+    <div class="cover-sheen" aria-hidden="true"></div>
+  </div>
+
+  <!-- Content & Metadata Block -->
+  <div class="card-body">
+    <div class="card-meta-top">
+      <span class="meta-date">{issue.date}</span>
+      <span class="meta-sep">•</span>
+      <span class="meta-year">{issue.year}</span>
+    </div>
+
+    <h4 class="card-title">
+      <span class="title-primary">{issue.title}</span>
+      <span class="title-secondary">{issue.subtitle}</span>
+    </h4>
+
+    <p class="card-description">
+      {issue.description}
+    </p>
+
+    <div class="card-editorial">
+      <span class="editorial-icon">✎</span>
+      <span>{issue.editorialPanel}</span>
+    </div>
+
+    <!-- Actions Row -->
+    <div class="card-actions">
+      <button 
+        type="button" 
+        class="btn-read-magazine"
+        data-open-reader
+        aria-label={`Read ${issue.title} in virtual viewer`}
+      >
+        <span class="btn-icon">📖</span>
+        <span>Read Virtual Magazine</span>
+      </button>
+
+      <a 
+        href={issue.embedUrl} 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="btn-external-link"
+        title="Open flipbook in new window"
+        aria-label={`Open ${issue.title} in new window`}
+      >
+        <Icon name="arrow-right" size={14} class="external-icon" />
+      </a>
+    </div>
+  </div>
+</article>
+
+<style>
+  .newsletter-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(194, 155, 77, 0.22);
+    box-shadow: 
+      0 12px 32px -8px rgba(33, 22, 56, 0.08),
+      0 2px 8px -2px rgba(122, 87, 184, 0.05);
+    overflow: hidden;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.3s ease;
+  }
+
+  .newsletter-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(194, 155, 77, 0.6);
+    box-shadow: 
+      0 24px 50px -12px rgba(122, 87, 184, 0.22),
+      0 8px 20px -4px rgba(194, 155, 77, 0.18),
+      0 0 0 1px rgba(194, 155, 77, 0.4);
+  }
+
+  /* Backglow */
+  .card-glow {
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 160px;
+    background: radial-gradient(ellipse at top, var(--cover-glow, rgba(122, 87, 184, 0.3)) 0%, transparent 70%);
+    opacity: 0;
+    filter: blur(30px);
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+
+  .newsletter-card:hover .card-glow {
+    opacity: 1;
+  }
+
+  /* Cover Stage */
+  .cover-stage {
+    position: relative;
+    aspect-ratio: 16 / 11;
+    width: 100%;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .cover-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .cover-tag-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    backdrop-filter: blur(8px);
+  }
+
+  .sparkle {
+    color: var(--c-gold);
+    font-size: 0.7rem;
+  }
+
+  .cover-status-badge {
+    font-size: 0.66rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: #F4E8C9;
+    background: rgba(194, 155, 77, 0.25);
+    border: 1px solid rgba(194, 155, 77, 0.5);
+    padding: 0.25rem 0.6rem;
+    border-radius: 9999px;
+    box-shadow: 0 0 10px rgba(194, 155, 77, 0.3);
+  }
+
+  /* Centerpiece Typography */
+  .cover-centerpiece {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-block: auto;
+  }
+
+  .cover-stamp {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    font-family: var(--font-sans);
+    font-size: clamp(2.2rem, 5vw, 3rem);
+    font-weight: 900;
+    font-style: italic;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    margin-bottom: 0.35rem;
+    transform: rotate(-1.5deg);
+    transition: transform 0.35s ease;
+  }
+
+  .newsletter-card:hover .cover-stamp {
+    transform: rotate(0deg) scale(1.05);
+  }
+
+  .stamp-word {
+    color: #FFFFFF;
+    text-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+  }
+
+  .stamp-word-hollow {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.85);
+  }
+
+  .cover-title-display {
+    font-family: var(--font-serif);
+    font-size: clamp(1.2rem, 2.5vw, 1.55rem);
+    font-weight: 600;
+    font-style: italic;
+    color: #FFFFFF;
+    letter-spacing: 0.04em;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  .cover-subtitle-display {
+    font-size: 0.76rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--accent-c, #C29B4D);
+    margin-top: 0.2rem;
+  }
+
+  /* Footer */
+  .cover-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+  }
+
+  .cover-date-pill {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .cover-hover-prompt {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #FFFFFF;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(6px);
+    transform: translateY(4px);
+    opacity: 0.85;
+    transition: all 0.3s ease;
+  }
+
+  .newsletter-card:hover .cover-hover-prompt {
+    transform: translateY(0);
+    opacity: 1;
+    background: rgba(122, 87, 184, 0.6);
+    border-color: rgba(194, 155, 77, 0.6);
+  }
+
+  .cover-sheen {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, transparent 45%, rgba(255, 255, 255, 0.08) 100%);
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  /* Body Content */
+  .card-body {
+    padding: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 0.65rem;
+  }
+
+  .card-meta-top {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.74rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-text-tertiary);
+  }
+
+  .meta-sep {
+    color: var(--c-gold);
+    opacity: 0.6;
+  }
+
+  .card-title {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--c-text-primary);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .title-primary {
+    color: var(--c-text-primary);
+  }
+
+  .title-secondary {
+    font-size: 0.88rem;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    color: var(--c-iris);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.15rem;
+  }
+
+  .card-description {
+    font-size: 0.86rem;
+    color: var(--c-text-secondary);
+    line-height: 1.6;
+    margin-top: 0.2rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-editorial {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.74rem;
+    color: var(--c-text-tertiary);
+    font-style: italic;
+    margin-top: auto;
+    padding-top: 0.5rem;
+    border-top: 1px dashed rgba(194, 155, 77, 0.2);
+  }
+
+  .editorial-icon {
+    color: var(--c-gold);
+    font-style: normal;
+  }
+
+  /* Actions */
+  .card-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-top: 0.75rem;
+  }
+
+  .btn-read-magazine {
+    flex-grow: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius-full, 9999px);
+    background: linear-gradient(135deg, var(--c-iris) 0%, var(--c-iris-deep) 100%);
+    color: #FFFFFF;
+    font-size: 0.84rem;
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(84, 57, 138, 0.25);
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s var(--ease-apple);
+  }
+
+  .btn-read-magazine:hover {
+    background: linear-gradient(135deg, var(--c-iris-light) 0%, var(--c-iris) 100%);
+    box-shadow: 0 8px 20px rgba(84, 57, 138, 0.35);
+    transform: translateY(-1px);
+  }
+
+  .btn-read-magazine:active {
+    transform: scale(0.98);
+  }
+
+  .btn-external-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(194, 155, 77, 0.35);
+    color: var(--c-text-secondary);
+    transition: all 0.25s var(--ease-apple);
+    flex-shrink: 0;
+  }
+
+  .btn-external-link:hover {
+    background: #FAF8FD;
+    border-color: var(--c-gold);
+    color: var(--c-iris-deep);
+    transform: scale(1.08);
+    box-shadow: 0 4px 12px rgba(194, 155, 77, 0.2);
+  }
+
+  .external-icon {
+    transform: rotate(-45deg);
+    transition: transform 0.2s ease;
+  }
+
+  .btn-external-link:hover .external-icon {
+    transform: rotate(0deg);
+  }
+</style>

@@ -1,0 +1,728 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RippleDistortion from '../../components/RippleDistortion.astro';
+import { allTeamMembers, lionAdvisor } from '../../data/team';
+
+const pageTitle = "Our Team — Leo Club of EIC";
+const pageDescription = "Meet the stewards, executive officers, and directors of the Leo Club of Ethos International for the 2026/2027 Lionistic year.";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription} showIntro={false}>
+  <link rel="preload" as="image" href="/team/anthony_sepion.avif" type="image/avif" fetchpriority="high" slot="head" />
+  <main class="team-page" id="main-content">
+    <!-- Ambient Botanical Backdrops -->
+    <div class="team-ambient-glow" aria-hidden="true"></div>
+
+    <div class="container">
+      <!-- Breadcrumb Navigation -->
+      <nav class="editorial-breadcrumbs" aria-label="Breadcrumb">
+        <a href="/" class="crumb-link">Home</a>
+        <span class="crumb-sep">/</span>
+        <span class="crumb-current" aria-current="page">Our Team</span>
+      </nav>
+
+      <!-- Page Header -->
+      <header class="team-header text-center">
+        <div class="header-pill-badge">
+          <span class="pill-sparkle">✦</span>
+          <span>Stewards of Youth Leadership</span>
+        </div>
+        <h1 class="team-title">
+          The 2026 / 2027 <em>Executive Board</em>
+        </h1>
+        <p class="team-subtitle">
+          United by empathy, integrity, and visionary community purpose. Guiding our club across District 306 D2.
+        </p>
+
+        <!-- Official Notice Banner -->
+        <div class="cabinet-status-notice">
+          <span class="status-pulse-dot"></span>
+          <p>
+            <strong>2026/2027 Term In-Progress:</strong> Executive cabinet appointments and official portrait studio sessions are actively underway. Full individual rosters will be published upon installation. Leo Advisor credentials confirmed.
+          </p>
+        </div>
+      </header>
+
+      <!-- Executive Spotlight: Leo Advisor & Bureau -->
+      <section class="spotlight-section" aria-label="Advisor Spotlight">
+        <div class="spotlight-grid">
+          <!-- Advisor Card with Interactive RippleDistortion -->
+          <div class="spotlight-card advisor-spotlight">
+            <div class="spotlight-media-col">
+              <div class="distortion-frame">
+                <RippleDistortion 
+                  src={lionAdvisor.image || "/team/anthony_sepion.png"} 
+                  alt={lionAdvisor.name}
+                  aspectRatio="1 / 1"
+                  brushSize={140}
+                  strength={0.2}
+                  tint="#7A57B8"
+                  tintAmount={0.22}
+                />
+                <span class="verified-badge">
+                  <span class="verified-icon">✓</span>
+                  <span>Confirmed Advisor</span>
+                </span>
+              </div>
+            </div>
+            <div class="spotlight-info-col">
+              <span class="eyebrow eyebrow-gold">Guiding Pillar</span>
+              <h2 class="spotlight-name">{lionAdvisor.name}</h2>
+              <p class="spotlight-role">{lionAdvisor.role}</p>
+              <p class="spotlight-dept">{lionAdvisor.department}</p>
+              <blockquote class="spotlight-quote">
+                "{lionAdvisor.quote}"
+              </blockquote>
+              <div class="spotlight-affiliations">
+                <span class="tag-pill">Lions Club of Colombo West</span>
+                <span class="tag-pill">Charter Mentor</span>
+                <span class="tag-pill">District 306 D2</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bureau Vision Card -->
+          <div class="spotlight-card bureau-vision">
+            <div class="bureau-card-inner">
+              <span class="eyebrow eyebrow-gold">Cabinet Horizon</span>
+              <h3 class="bureau-title">Leadership Through Purpose</h3>
+              <p class="bureau-copy">
+                The incoming 2026/2027 administration inherits an inspiring legacy of service. Our leadership cabinet brings together dedicated minds across humanitarian welfare, environmental sustainability, digital media, and youth empowerment.
+              </p>
+              <div class="bureau-stats">
+                <div class="b-stat">
+                  <span class="b-num">18</span>
+                  <span class="b-lbl">Leadership Posts</span>
+                </div>
+                <div class="b-stat">
+                  <span class="b-num">8</span>
+                  <span class="b-lbl">Directorates</span>
+                </div>
+                <div class="b-stat">
+                  <span class="b-num">100%</span>
+                  <span class="b-lbl">Youth Driven</span>
+                </div>
+              </div>
+              <div class="bureau-actions">
+                <a href="/history/leaders" class="btn btn-secondary text-sm">
+                  View Former Leaders Archive →
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Department Filter Selector -->
+      <section class="cabinet-section" aria-label="Cabinet Roster">
+        <div class="filter-bar-wrapper">
+          <div class="category-tabs" role="tablist" aria-label="Filter Team by Department">
+            <button type="button" class="tab-btn active" data-filter="all" role="tab" aria-selected="true">
+              All Cabinet ({allTeamMembers.length})
+            </button>
+            <button type="button" class="tab-btn" data-filter="executive" role="tab" aria-selected="false">
+              Executive Committee (8)
+            </button>
+            <button type="button" class="tab-btn" data-filter="director" role="tab" aria-selected="false">
+              Board of Directors (8)
+            </button>
+            <button type="button" class="tab-btn" data-filter="advisor" role="tab" aria-selected="false">
+              Leo Advisor (1)
+            </button>
+          </div>
+        </div>
+
+        <!-- Team Members Grid -->
+        <div class="team-grid" id="team-cards-grid">
+          {allTeamMembers.map((member) => (
+            <article 
+              class={`team-member-card ${member.isPlaceholder ? 'is-placeholder' : 'is-confirmed'}`}
+              data-category={member.category}
+            >
+              <div class="member-avatar-area">
+                {member.image ? (
+                  <div class="avatar-photo-frame">
+                    <img src={member.image} alt={member.name} class="avatar-img" loading="lazy" decoding="async" />
+                  </div>
+                ) : (
+                  <div class="avatar-monogram-frame">
+                    <div class="monogram-core">
+                      <span class="initials-glyph">{member.initials}</span>
+                    </div>
+                    <div class="avatar-ring-glow"></div>
+                  </div>
+                )}
+                <span class={`card-status-pill ${member.isPlaceholder ? 'status-pending' : 'status-live'}`}>
+                  {member.isPlaceholder ? 'Appointment Pending' : 'Active Officer'}
+                </span>
+              </div>
+
+              <div class="member-content">
+                <span class="member-dept">{member.department}</span>
+                <h3 class="member-name">{member.name}</h3>
+                <p class="member-role">{member.role}</p>
+                <p class="member-quote">"{member.quote}"</p>
+              </div>
+
+              <div class="member-card-footer">
+                <span class="tertiary-meta">2026/2027 Lionistic Term</span>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <!-- Bottom History & Ethos Banner -->
+      <section class="team-legacy-banner">
+        <div class="legacy-card">
+          <div class="legacy-content">
+            <span class="eyebrow eyebrow-gold">Rooted in Passion</span>
+            <h2 class="legacy-title">Discover Our Foundations</h2>
+            <p class="legacy-text">
+              Every milestone achieved by our current cabinet stands on the shoulders of the past executive committees that guided the Leo Club of EIC since our 2022 charter.
+            </p>
+            <div class="legacy-cta-group">
+              <a href="/history/leaders" class="btn btn-primary">
+                Former Leaders & Past Cabinets
+              </a>
+              <a href="/inspiration" class="btn btn-secondary">
+                Our Source of Inspiration
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .team-page {
+    position: relative;
+    padding: 120px 0 100px;
+    background: var(--c-bg, #FAF8FD);
+    color: var(--c-text-primary, #211638);
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  .team-ambient-glow {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1000px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(122, 87, 184, 0.12) 0%, rgba(194, 155, 77, 0.06) 50%, transparent 75%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .editorial-breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 32px;
+    font-size: 0.875rem;
+    color: var(--c-text-tertiary, #8C82A2);
+  }
+
+  .crumb-link {
+    color: var(--c-iris, #7A57B8);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .crumb-link:hover { text-decoration: underline; }
+  .crumb-current { color: var(--c-text-secondary, #5C5272); font-weight: 600; }
+
+  /* Header */
+  .team-header {
+    max-width: 840px;
+    margin: 0 auto 56px;
+  }
+
+  .header-pill-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 9999px;
+    background: var(--c-iris-soft, #EDE6F9);
+    border: 1px solid var(--c-border-subtle, rgba(122, 87, 184, 0.15));
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--c-iris-deep, #54398A);
+    margin-bottom: 16px;
+  }
+
+  .pill-sparkle { color: var(--c-gold, #C29B4D); }
+
+  .team-title {
+    font-family: var(--font-serif, serif);
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--c-text-primary, #211638);
+    margin: 0 0 16px;
+  }
+
+  .team-title em {
+    font-style: italic;
+    color: var(--c-iris, #7A57B8);
+  }
+
+  .team-subtitle {
+    font-size: clamp(1rem, 1.2vw, 1.15rem);
+    color: var(--c-text-secondary, #5C5272);
+    line-height: 1.6;
+    margin: 0 auto 24px;
+    max-width: 640px;
+  }
+
+  .cabinet-status-notice {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(194, 155, 77, 0.35);
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(33, 22, 56, 0.05);
+    text-align: left;
+    max-width: 720px;
+    margin: 0 auto;
+    font-size: 0.84rem;
+    color: var(--c-text-secondary, #5C5272);
+    line-height: 1.5;
+  }
+
+  .status-pulse-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--c-gold, #C29B4D);
+    box-shadow: 0 0 12px var(--c-gold, #C29B4D);
+    flex-shrink: 0;
+    animation: goldPulse 2s infinite ease-in-out;
+  }
+
+  /* Spotlight */
+  .spotlight-section {
+    margin-bottom: 72px;
+  }
+
+  .spotlight-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 28px;
+  }
+
+  .spotlight-card {
+    background: #FFFFFF;
+    border-radius: 24px;
+    border: 1px solid var(--c-border-subtle, rgba(122, 87, 184, 0.12));
+    box-shadow: 0 16px 40px -8px rgba(65, 41, 107, 0.08);
+    overflow: hidden;
+  }
+
+  .advisor-spotlight {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    align-items: stretch;
+  }
+
+  .spotlight-media-col {
+    position: relative;
+    background: #0E071A;
+  }
+
+  .distortion-frame {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .verified-badge {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: rgba(14, 7, 26, 0.82);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(194, 155, 77, 0.4);
+    border-radius: 9999px;
+    color: #FAF8FD;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    z-index: 10;
+  }
+
+  .verified-icon { color: var(--c-gold, #C29B4D); }
+
+  .spotlight-info-col {
+    padding: 32px 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .spotlight-name {
+    font-family: var(--font-serif, serif);
+    font-size: 1.85rem;
+    color: var(--c-text-primary, #211638);
+    margin: 4px 0;
+  }
+
+  .spotlight-role {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--c-iris, #7A57B8);
+    margin: 0;
+  }
+
+  .spotlight-dept {
+    font-size: 0.875rem;
+    color: var(--c-text-tertiary, #8C82A2);
+    margin: 0 0 16px;
+  }
+
+  .spotlight-quote {
+    font-family: var(--font-serif, serif);
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--c-text-secondary, #5C5272);
+    margin: 0 0 20px;
+    border-left: 3px solid var(--c-gold, #C29B4D);
+    padding-left: 16px;
+  }
+
+  .spotlight-affiliations {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag-pill {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    background: var(--c-iris-soft, #EDE6F9);
+    color: var(--c-iris-deep, #54398A);
+    border-radius: 9999px;
+  }
+
+  .bureau-vision {
+    background: linear-gradient(135deg, #24143D 0%, #170C2A 100%);
+    color: #FAF8FD;
+    padding: 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid rgba(194, 155, 77, 0.3);
+  }
+
+  .bureau-title {
+    font-family: var(--font-serif, serif);
+    font-size: 1.85rem;
+    color: #FAF8FD;
+    margin: 6px 0 14px;
+  }
+
+  .bureau-copy {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: rgba(243, 237, 250, 0.8);
+    margin-bottom: 24px;
+  }
+
+  .bureau-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 16px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 24px;
+  }
+
+  .b-stat { text-align: center; }
+  .b-num { display: block; font-family: var(--font-serif, serif); font-size: 1.85rem; font-weight: 700; color: #C29B4D; }
+  .b-lbl { font-size: 0.6875rem; color: rgba(243, 237, 250, 0.6); text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em; }
+
+  /* Filters */
+  .cabinet-section { margin-bottom: 80px; }
+
+  .filter-bar-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+
+  .category-tabs {
+    display: inline-flex;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--c-border-subtle, rgba(122, 87, 184, 0.15));
+    border-radius: 9999px;
+    padding: 6px;
+    gap: 6px;
+    box-shadow: 0 4px 16px rgba(33, 22, 56, 0.04);
+  }
+
+  .tab-btn {
+    padding: 8px 18px;
+    border-radius: 9999px;
+    border: none;
+    background: transparent;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--c-text-secondary, #5C5272);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .tab-btn:hover { color: var(--c-iris, #7A57B8); }
+
+  .tab-btn.active {
+    background: var(--c-iris-deep, #54398A);
+    color: #FFFFFF;
+    box-shadow: 0 4px 12px rgba(84, 57, 138, 0.3);
+  }
+
+  /* Grid of Member Cards */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 28px;
+  }
+
+  .team-member-card {
+    background: #FFFFFF;
+    border: 1px solid var(--c-border-subtle, rgba(122, 87, 184, 0.12));
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    box-shadow: 0 6px 20px -4px rgba(33, 22, 56, 0.05);
+  }
+
+  .team-member-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px -6px rgba(122, 87, 184, 0.12);
+    border-color: rgba(194, 155, 77, 0.35);
+  }
+
+  .member-avatar-area {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .avatar-photo-frame {
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--c-gold, #C29B4D);
+    box-shadow: 0 8px 20px rgba(194, 155, 77, 0.2);
+  }
+
+  .avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .avatar-monogram-frame {
+    position: relative;
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #F3EDFA 0%, #EDE6F9 100%);
+    border: 2px dashed rgba(122, 87, 184, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .monogram-core {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #54398A 0%, #351C66 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 16px rgba(84, 57, 138, 0.25);
+  }
+
+  .initials-glyph {
+    font-family: var(--font-serif, serif);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #FAF8FD;
+    letter-spacing: 0.05em;
+  }
+
+  .card-status-pill {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 3px 10px;
+    border-radius: 9999px;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .status-pending {
+    background: #F4E8C9;
+    color: #9F7B2F;
+    border: 1px solid rgba(194, 155, 77, 0.4);
+  }
+
+  .status-live {
+    background: #E8F4EC;
+    color: #38764B;
+    border: 1px solid rgba(72, 142, 98, 0.3);
+  }
+
+  .member-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .member-dept {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-gold-deep, #9F7B2F);
+    margin-bottom: 6px;
+  }
+
+  .member-name {
+    font-family: var(--font-serif, serif);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--c-text-primary, #211638);
+    margin: 0 0 4px;
+  }
+
+  .member-role {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--c-iris, #7A57B8);
+    margin: 0 0 12px;
+  }
+
+  .member-quote {
+    font-size: 0.8125rem;
+    color: var(--c-text-secondary, #5C5272);
+    line-height: 1.5;
+    margin: 0 0 16px;
+    font-style: italic;
+  }
+
+  .member-card-footer {
+    width: 100%;
+    padding-top: 14px;
+    border-top: 1px solid var(--c-border-subtle, rgba(122, 87, 184, 0.1));
+  }
+
+  .tertiary-meta {
+    font-size: 0.6875rem;
+    color: var(--c-text-tertiary, #8C82A2);
+  }
+
+  /* Bottom Legacy Banner */
+  .team-legacy-banner {
+    margin-top: 40px;
+  }
+
+  .legacy-card {
+    background: linear-gradient(135deg, rgba(84, 57, 138, 0.06) 0%, rgba(194, 155, 77, 0.08) 100%);
+    border: 1px solid var(--c-border-gold, rgba(194, 155, 77, 0.28));
+    border-radius: 28px;
+    padding: 48px;
+    text-align: center;
+  }
+
+  .legacy-content { max-width: 680px; margin: 0 auto; }
+  .legacy-title {
+    font-family: var(--font-serif, serif);
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    color: var(--c-text-primary, #211638);
+    margin: 8px 0 16px;
+  }
+
+  .legacy-text {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--c-text-secondary, #5C5272);
+    margin-bottom: 28px;
+  }
+
+  .legacy-cta-group {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 992px) {
+    .spotlight-grid { grid-template-columns: 1fr; }
+    .advisor-spotlight { grid-template-columns: 1fr; }
+    .spotlight-media-col { height: 320px; }
+  }
+
+  @media (max-width: 640px) {
+    .category-tabs { flex-wrap: wrap; border-radius: 16px; }
+    .tab-btn { flex: 1 1 45%; text-align: center; }
+    .cabinet-status-notice { flex-direction: column; text-align: center; }
+    .bureau-stats { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .legacy-card { padding: 32px 20px; }
+  }
+</style>
+
+<script>
+  // Dynamic client-side category filtering
+  const filterButtons = document.querySelectorAll<HTMLButtonElement>('.category-tabs .tab-btn');
+  const cards = document.querySelectorAll<HTMLElement>('.team-member-card');
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterButtons.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+
+      const filter = btn.getAttribute('data-filter') || 'all';
+
+      cards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        if (filter === 'all' || cat === filter) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>

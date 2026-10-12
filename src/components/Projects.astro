@@ -66,14 +66,22 @@ import ScrollVine from './ScrollVine.astro';
             </div>
 
             <div class="project-footer">
-              <span class="project-explore-btn">
+              <a href={`/projects/${project.storySlug || 'story'}`} class="project-explore-btn">
                 <span>View Project Story</span>
                 <Icon name="arrow-right" size={14} />
-              </span>
+              </a>
             </div>
           </article>
         ))}
       </div>
+    </div>
+
+    <!-- Link to dedicated Projects Page -->
+    <div class="projects-cta-row text-center">
+      <a href="/projects" class="btn btn-secondary">
+        <span>Explore Full Projects Archive & Roadmap</span>
+        <Icon name="arrow-right" size={15} />
+      </a>
     </div>
   </div>
 </section>
@@ -83,6 +91,12 @@ import ScrollVine from './ScrollVine.astro';
     position: relative;
     overflow-x: clip;
     background: linear-gradient(180deg, rgba(250, 248, 253, 0) 0%, rgba(243, 237, 250, 0.4) 50%, rgba(250, 248, 253, 0) 100%);
+  }
+
+  .projects-cta-row {
+    margin-top: clamp(2rem, 4vw, 3rem);
+    display: flex;
+    justify-content: center;
   }
 
   .projects-header-row {

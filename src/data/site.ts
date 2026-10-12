@@ -17,10 +17,12 @@ export const siteConfig = {
   navLinks: [
     { label: "Home", href: "#hero" },
     { label: "About", href: "#about" },
-    { label: "What We Do", href: "#pillars" },
-    { label: "Impact", href: "#impact" },
-    { label: "Leadership", href: "#leaders" },
+    { label: "Team", href: "/team" },
+    { label: "Former Leaders", href: "/history/leaders" },
+    { label: "Inspiration", href: "/inspiration" },
     { label: "Projects", href: "#projects" },
-    { label: "Gallery", href: "#gallery" }
+    { label: "Gallery", href: "/gallery" },
+    { label: "Newsletter", href: "/newsletter" }
   ]
 };
+

@@ -1,5 +1,5 @@
 ---
-import InfiniteSpiral from './InfiniteSpiral';
+import InfiniteSpiral from './InfiniteSpiral.astro';
 import BotanicalAccent from './BotanicalAccent.astro';
 import ScrollVine from './ScrollVine.astro';
 
@@ -95,7 +95,6 @@ const galleryItems = [
       <div class="spiral-orbit-ring ring-2" aria-hidden="true"></div>
 
       <InfiniteSpiral
-        client:visible
         items={galleryItems}
         speed={0.46}
         direction="up"
@@ -114,7 +113,7 @@ const galleryItems = [
         edgeBlur={5}
         pauseOnHover={true}
         imageFit="cover"
-        className="gallery-spiral-instance"
+        class="gallery-spiral-instance"
       />
     </div>
   </div>

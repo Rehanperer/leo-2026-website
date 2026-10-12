@@ -1,0 +1,661 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BotanicalAccent from '../../components/BotanicalAccent.astro';
+import ScrollVine from '../../components/ScrollVine.astro';
+import NewsletterCard from '../../components/newsletter/NewsletterCard.astro';
+import NewsletterReaderModal from '../../components/newsletter/NewsletterReaderModal.astro';
+import { ACADEMIC_YEARS, NEWSLETTERS } from '../../data/newsletters';
+import { siteConfig } from '../../data/site';
+---
+
+<BaseLayout 
+  title={`Newsletters & Magazines — ${siteConfig.name}`}
+  description="Explore the official virtual magazines and newsletters of the Leo Club of EIC from 2022 to 2027. Read interactive flipbooks celebrating youth service and fellowship."
+  showIntro={false}
+>
+  <div class="newsletter-page">
+    <!-- Atmospheric Ambient Background Sheen -->
+    <div class="newsletter-ambient-glow" aria-hidden="true"></div>
+
+    <!-- Scroll-triggered growing botanical vine on the right -->
+    <ScrollVine side="right" height={680} />
+
+    <!-- Botanical corner watercolor frames -->
+    <BotanicalAccent position="top-left" size="clamp(220px, 28vw, 380px)" opacity={0.35} />
+    <BotanicalAccent position="bottom-right" size="clamp(200px, 25vw, 360px)" opacity={0.32} />
+
+    <!-- Hero Section -->
+    <header class="newsletter-hero">
+      <div class="container hero-container text-center">
+        <!-- Breadcrumb Navigation -->
+        <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+          <a href="/#hero" class="breadcrumb-link">Home</a>
+          <span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-current">Newsletters & Magazines</span>
+        </nav>
+
+        <span class="eyebrow eyebrow-gold">
+          <span class="sparkle-gold">✦</span>
+          Living Fellowship Archive
+        </span>
+
+        <h1 class="page-title">
+          The Living <em>Chronicle</em> of Ethos
+        </h1>
+
+        <p class="page-subtitle">
+          Explore our official virtual magazines, monthly <em>Origins</em> newsletters, and historical charter bulletins spanning 2022 to 2027. Flip through interactive digital editions celebrating compassionate service and youth leadership across District 306 D2.
+        </p>
+
+        <!-- Live Statistics Counter Bar -->
+        <div class="stats-pills-row">
+          <div class="stat-pill">
+            <span class="stat-num">{NEWSLETTERS.length}</span>
+            <span class="stat-label">Publications</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-num">5</span>
+            <span class="stat-label">Charter Years</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-num">100%</span>
+            <span class="stat-label">Interactive Flipbooks</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Interactive Year Filter Section -->
+    <section class="filter-section" aria-label="Filter Newsletters by Year">
+      <div class="container">
+        <div class="filter-wrapper">
+          <div class="filter-label-wrap">
+            <span class="filter-icon">📅</span>
+            <span class="filter-heading">Select Lionistic Year:</span>
+          </div>
+
+          <div class="year-pills-carousel" role="tablist" aria-label="Select publication year">
+            {ACADEMIC_YEARS.map((year) => (
+              <button
+                type="button"
+                role="tab"
+                class={`year-pill-btn ${year.isDefault ? 'active' : ''}`}
+                data-year-id={year.id}
+                aria-selected={year.isDefault ? 'true' : 'false'}
+                aria-controls="newsletter-grid"
+              >
+                <span class="pill-year">{year.label}</span>
+                <span class="pill-badge">{year.sublabel}</span>
+                <div class="pill-glow" aria-hidden="true"></div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <!-- Filter Status Bar -->
+        <div class="filter-status-bar">
+          <div class="status-indicator">
+            <span class="status-dot"></span>
+            <span id="active-year-label">Viewing 2026 – 2027 Publications</span>
+          </div>
+          <span id="issue-count-badge" class="count-badge">
+            4 Editions Available
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter Grid Section -->
+    <main class="grid-section" id="newsletter-grid">
+      <div class="container">
+        <div class="newsletters-grid" id="cards-container">
+          {NEWSLETTERS.map((issue) => (
+            <NewsletterCard issue={issue} />
+          ))}
+        </div>
+
+        <!-- Empty State Container (Fallback if year has no published issues) -->
+        <div id="empty-state" class="empty-state" style="display: none;">
+          <div class="empty-card card-glass text-center">
+            <span class="empty-icon">📜</span>
+            <h3 class="empty-title">Archival Dispatch in Preparation</h3>
+            <p class="empty-subtitle">
+              Publications for this administrative term are currently in editorial curation. You can explore our published 2025–2026 Origins editions or 2024–2025 Legacy chronicles.
+            </p>
+            <button type="button" class="btn btn-primary btn-reset-year" id="btn-reset-filter">
+              <span>View 2025 – 2026 Origins Editions</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Editorial Collaboration Banner -->
+    <section class="editorial-banner-section">
+      <div class="container container-narrow">
+        <div class="editorial-card card-glass text-center">
+          <div class="editorial-aura" aria-hidden="true"></div>
+          <span class="eyebrow eyebrow-gold">Join the Editorial Panel</span>
+          <h2 class="editorial-title">
+            Have an Article or <em>Milestone</em> to Share?
+          </h2>
+          <p class="editorial-desc">
+            Our editorial committee invites prospective youth authors, project directors, and creative writers to contribute to upcoming editions of <em>Origins</em>.
+          </p>
+          <div class="editorial-actions">
+            <a href="mailto:contact@eicleos.org?subject=Newsletter%20Editorial%20Submission" class="btn btn-primary">
+              <span>Submit Your Contribution</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </a>
+            <a href="/#hero" class="btn btn-secondary">
+              <span>Return to Club Home</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- The Fullscreen Cinematic Reader Dialog -->
+    <NewsletterReaderModal />
+  </div>
+</BaseLayout>
+
+<style>
+  .newsletter-page {
+    position: relative;
+    padding-top: clamp(6.5rem, 13vh, 9rem);
+    padding-bottom: clamp(5rem, 9vw, 7.5rem);
+    min-height: 100vh;
+    overflow-x: clip;
+    background: radial-gradient(ellipse 90% 50% at 50% 0%, rgba(243, 237, 250, 0.6) 0%, transparent 60%);
+  }
+
+  .newsletter-ambient-glow {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: clamp(400px, 70vw, 900px);
+    height: 400px;
+    background: radial-gradient(circle, rgba(168, 128, 230, 0.16) 0%, rgba(255, 235, 185, 0.12) 40%, transparent 70%);
+    filter: blur(60px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Hero Section */
+  .newsletter-hero {
+    position: relative;
+    z-index: 2;
+    margin-bottom: clamp(2.5rem, 5vw, 3.8rem);
+  }
+
+  .hero-container {
+    max-width: 820px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.9rem;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  /* Breadcrumb */
+  .breadcrumb-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--c-text-tertiary);
+    margin-bottom: 0.4rem;
+  }
+
+  .breadcrumb-link {
+    color: var(--c-iris);
+    transition: color 0.2s ease;
+  }
+
+  .breadcrumb-link:hover {
+    color: var(--c-iris-deep);
+    text-decoration: underline;
+  }
+
+  .breadcrumb-sep {
+    color: var(--c-border-subtle);
+  }
+
+  .breadcrumb-current {
+    color: var(--c-text-primary);
+    font-weight: 600;
+  }
+
+  .page-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2.4rem, 5.5vw, 3.8rem);
+    font-weight: 600;
+    line-height: 1.12;
+    color: var(--c-text-primary);
+    letter-spacing: -0.015em;
+  }
+
+  .page-title em {
+    font-style: italic;
+    color: var(--c-iris);
+  }
+
+  .page-subtitle {
+    font-size: clamp(0.95rem, 1.8vw, 1.08rem);
+    color: var(--c-text-secondary);
+    line-height: 1.68;
+    max-width: 680px;
+  }
+
+  /* Statistics Pills */
+  .stats-pills-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .stat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 1rem;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(194, 155, 77, 0.3);
+    border-radius: var(--radius-full, 9999px);
+    box-shadow: 0 4px 14px -2px rgba(122, 87, 184, 0.08);
+    backdrop-filter: blur(8px);
+  }
+
+  .stat-num {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--c-iris-deep);
+  }
+
+  .stat-label {
+    font-size: 0.76rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--c-text-secondary);
+  }
+
+  /* Year Filter Section */
+  .filter-section {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 2.5rem;
+  }
+
+  .filter-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(194, 155, 77, 0.25);
+    border-radius: 24px;
+    box-shadow: 0 16px 36px -10px rgba(33, 22, 56, 0.08);
+    backdrop-filter: blur(14px);
+  }
+
+  @media (min-width: 860px) {
+    .filter-wrapper {
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 1rem 1.6rem;
+    }
+  }
+
+  .filter-label-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.84rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--c-text-primary);
+  }
+
+  .filter-icon {
+    font-size: 1rem;
+  }
+
+  .year-pills-carousel {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+    max-width: 100%;
+    scrollbar-width: none;
+  }
+
+  .year-pills-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .year-pill-btn {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1.25rem;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(194, 155, 77, 0.25);
+    color: var(--c-text-secondary);
+    cursor: pointer;
+    transition: all 0.3s var(--ease-apple);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .year-pill-btn:hover {
+    background: #FFFFFF;
+    border-color: rgba(194, 155, 77, 0.6);
+    color: var(--c-iris-deep);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(122, 87, 184, 0.12);
+  }
+
+  .year-pill-btn.active {
+    background: linear-gradient(135deg, var(--c-iris-deep) 0%, var(--c-iris) 100%);
+    border-color: var(--c-gold);
+    color: #FFFFFF;
+    box-shadow: 
+      0 8px 24px -2px rgba(84, 57, 138, 0.32),
+      0 0 0 1px var(--c-gold);
+    transform: translateY(-2px);
+  }
+
+  .pill-year {
+    font-family: var(--font-serif);
+    font-size: 0.98rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .pill-badge {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.85;
+    margin-top: 0.1rem;
+  }
+
+  .year-pill-btn.active .pill-badge {
+    color: var(--c-gold-light);
+    opacity: 1;
+  }
+
+  /* Status Bar */
+  .filter-status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+    padding-inline: 0.5rem;
+  }
+
+  .status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--c-text-secondary);
+  }
+
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--c-gold);
+    box-shadow: 0 0 8px var(--c-gold);
+    animation: pulseDot 2s infinite ease-in-out;
+  }
+
+  @keyframes pulseDot {
+    0%, 100% { opacity: 0.4; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+
+  .count-badge {
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--c-iris-deep);
+    background: rgba(122, 87, 184, 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(122, 87, 184, 0.2);
+  }
+
+  /* Grid Layout */
+  .grid-section {
+    position: relative;
+    z-index: 2;
+    margin-bottom: clamp(4rem, 8vw, 6rem);
+  }
+
+  .newsletters-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 640px) {
+    .newsletters-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1040px) {
+    .newsletters-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.25rem;
+    }
+  }
+
+  /* Empty State */
+  .empty-state {
+    padding: 3rem 1rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .empty-card {
+    max-width: 540px;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+  }
+
+  .empty-title {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--c-text-primary);
+  }
+
+  .empty-subtitle {
+    font-size: 0.9rem;
+    color: var(--c-text-secondary);
+    line-height: 1.6;
+  }
+
+  .btn-reset-year {
+    margin-top: 0.5rem;
+  }
+
+  /* Editorial Collaboration Banner */
+  .editorial-banner-section {
+    position: relative;
+    z-index: 2;
+  }
+
+  .editorial-card {
+    padding: clamp(2.5rem, 6vw, 4rem) clamp(1.5rem, 4vw, 3rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.95) 0%, rgba(246, 240, 253, 0.8) 100%);
+    border: 1px solid rgba(194, 155, 77, 0.35);
+    box-shadow: 0 20px 60px -15px rgba(122, 87, 184, 0.15);
+  }
+
+  .editorial-aura {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    background: radial-gradient(circle, rgba(194, 155, 77, 0.15) 0%, transparent 70%);
+    filter: blur(40px);
+    pointer-events: none;
+  }
+
+  .editorial-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.8rem, 3.8vw, 2.5rem);
+    font-weight: 600;
+    color: var(--c-text-primary);
+    line-height: 1.2;
+  }
+
+  .editorial-title em {
+    font-style: italic;
+    color: var(--c-iris);
+  }
+
+  .editorial-desc {
+    font-size: 0.95rem;
+    color: var(--c-text-secondary);
+    line-height: 1.65;
+    max-width: 580px;
+  }
+
+  .editorial-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.85rem;
+    margin-top: 0.5rem;
+  }
+</style>
+
+<script>
+  function setupNewsletterFilters() {
+    const yearButtons = document.querySelectorAll<HTMLButtonElement>('.year-pill-btn');
+    const cards = document.querySelectorAll<HTMLElement>('.newsletter-card');
+    const activeYearLabel = document.getElementById('active-year-label');
+    const issueCountBadge = document.getElementById('issue-count-badge');
+    const emptyState = document.getElementById('empty-state');
+    const resetBtn = document.getElementById('btn-reset-filter');
+
+    if (!yearButtons.length || !cards.length) return;
+
+    function applyYearFilter(selectedYear: string) {
+      // Update year pill buttons
+      yearButtons.forEach((btn) => {
+        const isSelected = btn.getAttribute('data-year-id') === selectedYear;
+        btn.classList.toggle('active', isSelected);
+        btn.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+      });
+
+      // Filter newsletter cards
+      let visibleCount = 0;
+      cards.forEach((card) => {
+        const cardYear = card.getAttribute('data-year');
+        if (cardYear === selectedYear) {
+          card.style.display = 'flex';
+          visibleCount++;
+          // Trigger subtle CSS animation
+          card.style.animation = 'none';
+          void card.offsetWidth;
+          card.style.animation = 'fadeCardIn 0.35s ease forwards';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Update labels & badges
+      const formattedYear = selectedYear.replace('-', ' – ');
+      if (activeYearLabel) {
+        activeYearLabel.textContent = `Viewing ${formattedYear} Publications`;
+      }
+      if (issueCountBadge) {
+        issueCountBadge.textContent = `${visibleCount} Edition${visibleCount === 1 ? '' : 's'} Available`;
+      }
+
+      // Handle empty state
+      if (emptyState) {
+        emptyState.style.display = visibleCount === 0 ? 'flex' : 'none';
+      }
+    }
+
+    // Attach click handlers to year pills
+    yearButtons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const yearId = btn.getAttribute('data-year-id');
+        if (yearId) {
+          applyYearFilter(yearId);
+        }
+      });
+    });
+
+    // Switch to active published year from empty state
+    resetBtn?.addEventListener('click', () => {
+      applyYearFilter('2025-2026');
+    });
+
+    // Apply default year (2026-2027) on page load
+    applyYearFilter('2026-2027');
+  }
+
+  // Animation keyframe injection for seamless tab transitions
+  const styleEl = document.createElement('style');
+  styleEl.textContent = `
+    @keyframes fadeCardIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  `;
+  document.head.appendChild(styleEl);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupNewsletterFilters);
+  } else {
+    setupNewsletterFilters();
+  }
+</script>
