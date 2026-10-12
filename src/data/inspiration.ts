@@ -4,73 +4,126 @@ export interface InspirationMilestone {
   description: string;
   image: string;
   tag: string;
+  highlight: string;
 }
 
 export interface ValueCard {
+  numeral: string;
   title: string;
   lead: string;
   description: string;
+  symbolism: string;
   icon: string;
   glowColor: string;
 }
 
+export interface HeraldicSymbol {
+  glyph: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  color: string;
+}
+
 export const inspirationData = {
   creed: "To serve selflessly, to lead fearlessly, to burn brightly in every act of kindness we do.",
+  motto: "Leading with Grace, Serving with Integrity",
   torchQuote: "Just as torches never dim when they share their flame, we grow brighter by uplifting others.",
-  foundingTribute: "The founders, under the guidance of inaugural President Rachel Desilva and chartered under the esteemed Lions Club of Colombo West, set out to create a sanctuary where youth could grow through service and leave an indelible mark on our community. Their enduring vision remains a living beacon for every Leo walking through our doors.",
+  foundingTribute: "Our club was chartered under the esteemed sponsorship of the Lions Club of Colombo West and the visionary stewardship of our inaugural Charter President. Founded with the conviction that young leaders possess the creative courage to transform society, our charter established an enduring sanctuary of fellowship, empathy, and servant leadership. Today, this living flame burns brighter than ever in every initiative we champion.",
   
+  heraldry: [
+    {
+      glyph: "🌍",
+      title: "The Terrestrial Globe",
+      subtitle: "Universal Fellowship",
+      description: "Representing our global humanitarian perspective. We recognize that our community extends beyond geographical borders, anchoring every local initiative within universal compassion.",
+      color: "#3E84C2"
+    },
+    {
+      glyph: "🌸",
+      title: "The Blooming Iris",
+      subtitle: "Wisdom, Faith & Valor",
+      description: "The botanical emblem of the club. Its three sacred petals signify wisdom in governance, unwavering faith in youth potential, and valor to advocate for the underprivileged.",
+      color: "#7A57B8"
+    },
+    {
+      glyph: "⚜",
+      title: "The Laurel Wreath",
+      subtitle: "Civic Honor & Heritage",
+      description: "Drawn from classical ceremonial traditions, the laurel wreath recognizes excellence in civic stewardship and our enduring charter affiliation with Lions International.",
+      color: "#C29B4D"
+    },
+    {
+      glyph: "🔥",
+      title: "The Living Torch",
+      subtitle: "Inextinguishable Light",
+      description: "Our founding promise: just as a torch loses nothing by sharing its flame, each generation of leaders multiplies its impact by empowering the next.",
+      color: "#D97736"
+    }
+  ] as HeraldicSymbol[],
+
   milestones: [
     {
       period: "2022 / 2023",
-      title: "The Beginning",
-      description: "Founded in 2022 with a bold vision of empowering youth driven by proactive service. Our inaugural leaders laid down the charter foundation of integrity, compassion, and camaraderie that continues to anchor our journey.",
+      title: "The Genesis of Grace",
+      description: "Chartered under the Lions Club of Colombo West. Our inaugural leaders laid down the charter foundation of integrity, compassion, and camaraderie that continues to anchor our journey.",
       image: "/history/history-22-23.png",
-      tag: "Founding Era"
+      tag: "Charter Era",
+      highlight: "Club Charter & Constitutional Foundation"
     },
     {
       period: "2023 / 2024",
-      title: "Growing Stronger",
+      title: "Roots Deepen, Branches Ascend",
       description: "Building upon the charter cornerstone, this year marked exponential expansion, welcoming enthusiastic young volunteers and pioneering new health, educational, and environmental projects.",
       image: "/history/history-23-24.jpg",
-      tag: "Expansion"
+      tag: "Expansion",
+      highlight: "District Accolades & First Flagship Outreach"
     },
     {
       period: "2024 / 2025",
-      title: "Expanding Horizons",
-      description: "With established traditions and a strong community presence, we focused on impactful, large-scale projects like 'Service with Spice', blending creative youth culture with heartfelt charity.",
+      title: "Horizons of Empathy",
+      description: "With established traditions and a strong community presence, our club focused on impactful, large-scale projects like 'Service with Spice', blending creative youth culture with heartfelt charity.",
       image: "/history/history-24-25.png",
-      tag: "Impact Scale"
+      tag: "Impact Scale",
+      highlight: "Major Community & Humanitarian Milestones"
     },
     {
       period: "2025 / 2026",
-      title: "The Future Awaits",
-      description: "Carrying forward our founding legacy with renewed vigor, innovative digital outreach, and a commitment to ensuring every single member has the platform to lead, serve, and inspire lasting social change.",
+      title: "The Enduring Torch",
+      description: "Carrying forward our founding legacy with renewed vigor, innovative digital outreach, and an unshakeable commitment to ensuring every member has the platform to lead, serve, and inspire.",
       image: "/history/history-25-26.png",
-      tag: "Enduring Vision"
+      tag: "Excellence",
+      highlight: "District Top Honors & Digital Innovation"
     }
   ] as InspirationMilestone[],
 
   values: [
     {
+      numeral: "I",
       title: "Leadership",
-      lead: "The fire within us",
-      description: "To inspire, guide, and illuminate the path for others. We believe in empowering every youth member to take initiative, shoulder responsibility, and lead with empathy.",
+      lead: "The Fire Within",
+      description: "Leadership is neither a title nor a hierarchy—it is the moral courage to illuminate the path for others. We mentor youth to lead with quiet dignity, active listening, and fierce dedication to the common good.",
+      symbolism: "Crowned with purpose, anchored in humility.",
       icon: "crown",
-      glowColor: "rgba(194, 155, 77, 0.4)"
+      glowColor: "rgba(194, 155, 77, 0.45)"
     },
     {
+      numeral: "II",
       title: "Service",
-      lead: "The light we carry",
-      description: "Igniting hope and unconditional compassion across our community. We serve selflessly not for applause, but to make a tangible, lasting difference in the lives of those we reach.",
+      lead: "The Living Compassion",
+      description: "To serve selflessly is our highest honor. Not for acclaim or outward applause, but to ignite hope where it has faded, providing tangible, measurable relief to vulnerable communities.",
+      symbolism: "Hands that build, hearts that heal.",
       icon: "sparkles",
-      glowColor: "rgba(122, 87, 184, 0.4)"
+      glowColor: "rgba(122, 87, 184, 0.45)"
     },
     {
-      title: "Community",
-      lead: "Connecting hearts & minds",
-      description: "Echoing the sacred geometry of our iris emblem, we champion unity in diversity—fostering lifelong fellowships and working hand-in-hand toward shared humanitarian ideals.",
+      numeral: "III",
+      title: "Fellowship",
+      lead: "The Sacred Geometry",
+      description: "Echoing the concentric harmony of our iris and earth crest, we believe transformative change only flourishes in authentic fellowship, where diverse talents unite in singular purpose.",
+      symbolism: "United as petals of a single blossom.",
       icon: "users",
-      glowColor: "rgba(62, 132, 194, 0.4)"
+      glowColor: "rgba(62, 132, 194, 0.45)"
     }
   ] as ValueCard[]
 };

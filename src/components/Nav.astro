@@ -14,78 +14,115 @@ const resolveHref = (href: string) => {
 <header class="nav-wrapper" id="site-header">
   <div class="nav-container">
     <nav class="nav-island" aria-label="Primary Navigation">
-      <!-- Brand Crest & Title -->
+      <!-- Watercolor Iris Petal Glass Ornament (Embedded on Right Edge) -->
+      <div class="nav-botanical-whisper" aria-hidden="true"></div>
+
+      <!-- Brand Crest & Title: Earth & Blooming Iris Medallion -->
       <a href={isHome ? '#hero' : '/#hero'} class="brand-link" aria-label="Leo Club of EIC — Return to top">
-        <div class="crest-frame">
+        <div class="crest-frame" aria-hidden="true">
+          <!-- Ambient Celestial Backlight (Earth Azure + Iris Violet) -->
+          <div class="crest-glow-halo"></div>
+          
+          <!-- Outer Laurel Gold Bezel -->
+          <div class="orbital-ring ring-laurel-gold"></div>
+          
+          <!-- Inner Earth Azure Orbit -->
+          <div class="orbital-ring ring-earth-blue"></div>
+
+          <!-- Central Official Club Crest -->
           <img 
             src="/crest.webp" 
             alt="Leo Club of EIC Crest" 
             class="brand-crest"
-            width="38" 
-            height="38" 
+            width="40" 
+            height="40" 
             loading="eager"
             decoding="async"
           />
         </div>
         <div class="brand-copy">
           <span class="brand-title">LEO CLUB OF EIC</span>
-          <span class="brand-subtitle">COLOMBO 7</span>
+          <span class="brand-subtitle">
+            Leading with Grace <span class="sub-dot">✦</span> Colombo 7
+          </span>
         </div>
       </a>
 
-      <!-- Desktop Nav Links -->
+      <!-- Desktop Nav Links: Botanical Hover & Celestial Active Capsules -->
       <ul class="nav-links" role="menubar">
         <li role="none">
           <a href={resolveHref('#hero')} class={`nav-item ${isHome ? 'active' : ''}`} role="menuitem">
-            Home
+            <span class="nav-label">Home</span>
+            {isHome && <span class="active-sparkle" aria-hidden="true">✦</span>}
           </a>
         </li>
         <li role="none">
           <a href={resolveHref('#about')} class="nav-item" role="menuitem">
-            About
+            <span class="nav-label">About</span>
           </a>
         </li>
 
-        <!-- Leadership & Ethos Dropdown -->
+        <!-- Leadership & Sacred Ethos Dropdown -->
         <li role="none" class="nav-dropdown-wrapper">
           <button 
             type="button" 
             class={`nav-item dropdown-trigger ${currentPath.startsWith('/team') || currentPath.startsWith('/history') || currentPath.startsWith('/inspiration') ? 'active' : ''}`}
             aria-haspopup="true"
             aria-expanded="false"
+            id="leadership-dropdown-btn"
           >
-            <span>Leadership</span>
-            <svg class="dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <span class="nav-label">Leadership</span>
+            <svg class="dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
               <path d="m6 9 6 6 6-6"/>
             </svg>
+            {(currentPath.startsWith('/team') || currentPath.startsWith('/history') || currentPath.startsWith('/inspiration')) && (
+              <span class="active-sparkle" aria-hidden="true">✦</span>
+            )}
           </button>
-          <div class="nav-dropdown-menu" role="menu">
+          
+          <div class="nav-dropdown-menu" role="menu" aria-labelledby="leadership-dropdown-btn">
+            <div class="dropdown-header-callout">
+              <span class="callout-motto">Leading with Grace • Serving with Integrity</span>
+              <span class="callout-sub">District 306 C2 • Chartered 2022</span>
+            </div>
+            
             <a href="/team" class={`dropdown-item ${currentPath.startsWith('/team') ? 'active' : ''}`} role="menuitem">
-              <span class="dp-icon">✦</span>
+              <div class="dp-icon-box icon-iris">
+                <span class="dp-icon">✦</span>
+              </div>
               <div class="dp-text">
                 <span class="dp-title">Our Full Team</span>
                 <span class="dp-desc">2026 / 2027 Executive Board & Cabinet</span>
               </div>
             </a>
+
             <a href="/history/leaders" class={`dropdown-item ${currentPath.startsWith('/history/leaders') ? 'active' : ''}`} role="menuitem">
-              <span class="dp-icon">⚜</span>
+              <div class="dp-icon-box icon-gold">
+                <span class="dp-icon">⚜</span>
+              </div>
               <div class="dp-text">
                 <span class="dp-title">Former Leaders</span>
                 <span class="dp-desc">Historical Cabinets (2022–2026)</span>
               </div>
             </a>
+
             <a href="/inspiration" class={`dropdown-item ${currentPath.startsWith('/inspiration') ? 'active' : ''}`} role="menuitem">
-              <span class="dp-icon">🔥</span>
+              <div class="dp-icon-box icon-bloom">
+                <span class="dp-icon">🌸</span>
+              </div>
               <div class="dp-text">
                 <span class="dp-title">Source of Inspiration</span>
                 <span class="dp-desc">Founding Ethos & Living Legacy</span>
               </div>
             </a>
+
             <a href="/history/awards" class={`dropdown-item ${currentPath.startsWith('/history/awards') ? 'active' : ''}`} role="menuitem">
-              <span class="dp-icon">🏆</span>
+              <div class="dp-icon-box icon-award">
+                <span class="dp-icon">🏆</span>
+              </div>
               <div class="dp-text">
                 <span class="dp-title">Club Awards</span>
-                <span class="dp-desc">Excellence & District Recognition</span>
+                <span class="dp-desc">District Honours & Distinctions</span>
               </div>
             </a>
           </div>
@@ -93,24 +130,27 @@ const resolveHref = (href: string) => {
 
         <li role="none">
           <a href="/projects" class={`nav-item ${currentPath.startsWith('/projects') ? 'active' : ''}`} role="menuitem">
-            Projects
+            <span class="nav-label">Projects</span>
+            {currentPath.startsWith('/projects') && <span class="active-sparkle" aria-hidden="true">✦</span>}
           </a>
         </li>
         <li role="none">
           <a href="/gallery" class={`nav-item ${currentPath.startsWith('/gallery') ? 'active' : ''}`} role="menuitem">
-            Gallery
+            <span class="nav-label">Gallery</span>
+            {currentPath.startsWith('/gallery') && <span class="active-sparkle" aria-hidden="true">✦</span>}
           </a>
         </li>
         <li role="none">
           <a href="/newsletter" class={`nav-item ${currentPath.startsWith('/newsletter') ? 'active' : ''}`} role="menuitem">
-            Newsletter
+            <span class="nav-label">Newsletter</span>
+            {currentPath.startsWith('/newsletter') && <span class="active-sparkle" aria-hidden="true">✦</span>}
           </a>
         </li>
       </ul>
 
-      <!-- Action Pill Group -->
+      <!-- Desktop Action Suite -->
       <div class="nav-actions">
-        <!-- Replay Bloom Intro Trigger -->
+        <!-- Replay Bloom Intro Trigger (Crystal Floral Pill) -->
         <button 
           id="replay-bloom-btn" 
           class="replay-pill" 
@@ -118,103 +158,200 @@ const resolveHref = (href: string) => {
           title="Replay cinematic flower bloom intro"
           aria-label="Replay cinematic flower bloom"
         >
-          <span class="replay-icon">✦</span>
-          <span class="replay-label">Replay Intro</span>
+          <span class="replay-icon" aria-hidden="true">🌸</span>
+          <span class="replay-label">Replay Bloom</span>
         </button>
 
-        <a href={resolveHref('#join')} class="btn btn-primary nav-cta">
-          Join Us
+        <!-- Imperial Iris & Earth Jewel CTA Button -->
+        <a href={resolveHref('#join')} class="nav-cta-jewel">
+          <span class="cta-sheen" aria-hidden="true"></span>
+          <span class="cta-text">Join Us</span>
+          <span class="cta-sparkle" aria-hidden="true">✦</span>
         </a>
 
-        <!-- Mobile Menu Toggle Button -->
+        <!-- Mobile Menu Toggle Button (Luxury Morphing Jewel) -->
         <button 
           id="mobile-nav-toggle" 
           class="mobile-toggle" 
           type="button" 
           aria-expanded="false" 
-          aria-controls="mobile-nav-menu"
+          aria-controls="mobile-cinematic-drawer"
           aria-label="Toggle navigation menu"
         >
-          <span class="menu-bar bar-top"></span>
-          <span class="menu-bar bar-bot"></span>
+          <div class="toggle-bezel">
+            <span class="menu-bar bar-top"></span>
+            <span class="menu-bar-dot"></span>
+            <span class="menu-bar bar-bot"></span>
+          </div>
         </button>
       </div>
     </nav>
   </div>
 
-  <!-- Mobile Dropdown Panel -->
-  <div id="mobile-nav-menu" class="mobile-menu-drawer" aria-hidden="true">
-    <div class="mobile-menu-inner">
-      <ul class="mobile-menu-list">
-        <li>
-          <a href={resolveHref('#hero')} class={`mobile-menu-link ${isHome ? 'active' : ''}`}>
-            <span>Home</span>
-            <span class="mobile-link-arrow">›</span>
-          </a>
-        </li>
-        <li>
-          <a href={resolveHref('#about')} class="mobile-menu-link">
-            <span>About Us</span>
-            <span class="mobile-link-arrow">›</span>
-          </a>
-        </li>
-        <li>
-          <a href="/team" class={`mobile-menu-link ${currentPath.startsWith('/team') ? 'active' : ''}`}>
-            <span>Our Full Team (2026/27)</span>
-            <span class="mobile-link-arrow">›</span>
-          </a>
-        </li>
-        <li>
-          <a href="/history/leaders" class={`mobile-menu-link ${currentPath.startsWith('/history/leaders') ? 'active' : ''}`}>
-            <span>Former Leaders Archive</span>
-            <span class="mobile-link-arrow">›</span>
-          </a>
-        </li>
-        <li>
-          <a href="/inspiration" class={`mobile-menu-link ${currentPath.startsWith('/inspiration') ? 'active' : ''}`}>
-            <span>Source of Inspiration</span>
-            <span class="mobile-link-arrow">›</span>
-          </a>
-        </li>
-        <li>
-          <a href="/history/awards" class={`mobile-menu-link ${currentPath.startsWith('/history/awards') ? 'active' : ''}`}>
-            <span>Club Awards Archive</span>
-            <span class="mobile-link-arrow">›</span>
-          </a>
-        </li>
-        <li>
-          <a href="/projects" class={`mobile-menu-link ${currentPath.startsWith('/projects') ? 'active' : ''}`}>
-            <span>Our Projects</span>
-            <span class="mobile-link-arrow">›</span>
-          </a>
-        </li>
-        <li>
-          <a href="/gallery" class={`mobile-menu-link ${currentPath.startsWith('/gallery') ? 'active' : ''}`}>
-            <span>3D Photo Gallery</span>
-            <span class="mobile-link-arrow">›</span>
-          </a>
-        </li>
-        <li>
-          <a href="/newsletter" class={`mobile-menu-link ${currentPath.startsWith('/newsletter') ? 'active' : ''}`}>
-            <span>Newsletter Archive</span>
-            <span class="mobile-link-arrow">›</span>
-          </a>
-        </li>
-      </ul>
+  <!-- Full-Screen Nocturnal Conservatory Mobile Drawer -->
+  <div id="mobile-cinematic-drawer" class="mobile-drawer-overlay" aria-hidden="true">
+    <!-- Atmospheric Environmental Nebulae -->
+    <div class="celestial-nebula earth-azure" aria-hidden="true"></div>
+    <div class="celestial-nebula iris-bloom" aria-hidden="true"></div>
+    <div class="celestial-nebula gold-starlight" aria-hidden="true"></div>
 
-      <div class="mobile-menu-footer">
-        <button id="mobile-replay-bloom-btn" class="btn btn-secondary w-full" type="button">
-          <span>✦ Replay Cinematic Bloom</span>
-        </button>
-        <a href={resolveHref('#join')} class="btn btn-primary w-full mobile-join-btn">
-          Join Leo Club of EIC
-        </a>
+    <!-- Floating Stardust Decor -->
+    <div class="stardust-container" aria-hidden="true">
+      <span class="star-particle star-1">✦</span>
+      <span class="star-particle star-2">✧</span>
+      <span class="star-particle star-3">✦</span>
+      <span class="star-particle star-4">·</span>
+      <span class="star-particle star-5">✧</span>
+    </div>
+
+    <div class="mobile-drawer-scroll">
+      <div class="mobile-drawer-inner">
+        <!-- Drawer Header with illuminated brand mark & close button -->
+        <div class="drawer-header">
+          <div class="drawer-brand">
+            <div class="drawer-crest-mini">
+              <img src="/crest.webp" alt="Leo Crest" width="34" height="34" loading="lazy" />
+            </div>
+            <div class="drawer-brand-text">
+              <span class="d-brand-title">LEO CLUB OF EIC</span>
+              <span class="d-brand-sub">Leading with Grace • Colombo 7</span>
+            </div>
+          </div>
+          
+          <button id="mobile-drawer-close" class="drawer-close-btn" type="button" aria-label="Close navigation menu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Editorial Staggered Link Stream -->
+        <nav class="drawer-nav-flow" aria-label="Mobile Navigation">
+          <ul class="drawer-links-list">
+            <li class="drawer-nav-item" style="--i: 1">
+              <a href={resolveHref('#hero')} class={`drawer-link ${isHome ? 'active' : ''}`}>
+                <span class="link-idx">01</span>
+                <span class="link-title">Home</span>
+                <span class="link-arrow">→</span>
+              </a>
+            </li>
+
+            <li class="drawer-nav-item" style="--i: 2">
+              <a href={resolveHref('#about')} class="drawer-link">
+                <span class="link-idx">02</span>
+                <span class="link-title">About Us</span>
+                <span class="link-arrow">→</span>
+              </a>
+            </li>
+
+            <!-- Accordion: Leadership & Living Ethos -->
+            <li class="drawer-nav-item drawer-accordion-wrapper" style="--i: 3">
+              <button 
+                type="button" 
+                class="drawer-link drawer-accordion-trigger" 
+                id="mobile-leadership-trigger"
+                aria-expanded="false"
+                aria-controls="mobile-leadership-sub"
+              >
+                <span class="link-idx">03</span>
+                <span class="link-title">Leadership & Ethos</span>
+                <span class="accordion-chevron" aria-hidden="true">▾</span>
+              </button>
+
+              <div id="mobile-leadership-sub" class="drawer-accordion-content" aria-hidden="true">
+                <div class="accordion-inner">
+                  <a href="/team" class={`acc-item ${currentPath.startsWith('/team') ? 'active' : ''}`}>
+                    <span class="acc-badge">✦</span>
+                    <div class="acc-text">
+                      <span class="acc-name">Our Full Team</span>
+                      <span class="acc-meta">2026/27 Cabinet</span>
+                    </div>
+                  </a>
+                  <a href="/history/leaders" class={`acc-item ${currentPath.startsWith('/history/leaders') ? 'active' : ''}`}>
+                    <span class="acc-badge">⚜</span>
+                    <div class="acc-text">
+                      <span class="acc-name">Former Leaders</span>
+                      <span class="acc-meta">Historical Roster</span>
+                    </div>
+                  </a>
+                  <a href="/inspiration" class={`acc-item ${currentPath.startsWith('/inspiration') ? 'active' : ''}`}>
+                    <span class="acc-badge">🌸</span>
+                    <div class="acc-text">
+                      <span class="acc-name">Source of Inspiration</span>
+                      <span class="acc-meta">Living Legacy</span>
+                    </div>
+                  </a>
+                  <a href="/history/awards" class={`acc-item ${currentPath.startsWith('/history/awards') ? 'active' : ''}`}>
+                    <span class="acc-badge">🏆</span>
+                    <div class="acc-text">
+                      <span class="acc-name">Club Awards</span>
+                      <span class="acc-meta">District Distinctions</span>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </li>
+
+            <li class="drawer-nav-item" style="--i: 4">
+              <a href="/projects" class={`drawer-link ${currentPath.startsWith('/projects') ? 'active' : ''}`}>
+                <span class="link-idx">04</span>
+                <span class="link-title">Initiatives & Projects</span>
+                <span class="link-arrow">→</span>
+              </a>
+            </li>
+
+            <li class="drawer-nav-item" style="--i: 5">
+              <a href="/gallery" class={`drawer-link ${currentPath.startsWith('/gallery') ? 'active' : ''}`}>
+                <span class="link-idx">05</span>
+                <span class="link-title">Photographic Gallery</span>
+                <span class="link-arrow">→</span>
+              </a>
+            </li>
+
+            <li class="drawer-nav-item" style="--i: 6">
+              <a href="/newsletter" class={`drawer-link ${currentPath.startsWith('/newsletter') ? 'active' : ''}`}>
+                <span class="link-idx">06</span>
+                <span class="link-title">Dispatches & Newsletter</span>
+                <span class="link-arrow">→</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Drawer Action Suite -->
+        <div class="drawer-action-hub">
+          <button id="mobile-replay-bloom-btn" class="drawer-btn-secondary" type="button">
+            <span class="d-btn-icon">🌸</span>
+            <span>Replay Cinematic Bloom Intro</span>
+          </button>
+          
+          <a href={resolveHref('#join')} class="drawer-btn-primary">
+            <span>Join Leo Club of EIC</span>
+            <span class="d-btn-arrow">→</span>
+          </a>
+        </div>
+
+        <!-- Drawer District Seal -->
+        <div class="drawer-footer-seal">
+          <div class="seal-line"></div>
+          <p class="seal-text">
+            <span>✦ DISTRICT 306 C2</span>
+            <span class="seal-sep">•</span>
+            <span>CHARTERED 2022</span>
+            <span class="seal-sep">•</span>
+            <span>EMPOWERING YOUTH ✦</span>
+          </p>
+        </div>
       </div>
     </div>
   </div>
 </header>
 
 <style>
+  /* =========================================================================
+     Floating Header Wrapper & Structural Flow
+     ========================================================================= */
   .nav-wrapper {
     position: fixed;
     top: 0;
@@ -222,9 +359,10 @@ const resolveHref = (href: string) => {
     right: 0;
     box-sizing: border-box;
     z-index: 1000;
-    padding-top: clamp(0.75rem, 2vw, 1.25rem);
+    padding-top: clamp(0.75rem, 1.8vw, 1.25rem);
     padding-inline: var(--gutter);
     pointer-events: none;
+    transition: transform var(--duration-normal) var(--ease-apple);
   }
 
   .nav-container {
@@ -235,88 +373,239 @@ const resolveHref = (href: string) => {
     justify-content: center;
   }
 
-  /* Apple-Style Floating Frosted Glass Island */
+  /* =========================================================================
+     Cinematic Nav Island: Celestial Garden Crystal Capsule
+     ========================================================================= */
   .nav-island {
+    position: relative;
     pointer-events: auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: clamp(0.75rem, 2vw, 2.5rem);
+    gap: clamp(0.75rem, 2vw, 2.25rem);
     width: 100%;
-    max-width: 1140px;
-    height: 64px;
-    padding: 0.4rem 0.6rem 0.4rem 0.85rem;
+    max-width: 1160px;
+    height: 68px;
+    padding: 0.45rem 0.75rem 0.45rem 0.95rem;
     border-radius: var(--radius-full);
-    background: rgba(255, 255, 255, 0.82);
-    backdrop-filter: blur(24px) saturate(190%);
-    -webkit-backdrop-filter: blur(24px) saturate(190%);
-    border: 1px solid rgba(122, 87, 184, 0.16);
-    box-shadow: 0 10px 32px -8px rgba(33, 22, 56, 0.1), 0 2px 6px rgba(0, 0, 0, 0.03);
-    transition: all var(--duration-normal) var(--ease-apple);
+    
+    /* Ethereal luminous glass body blending Azure (left) and Iris (right) */
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.94) 0%,
+      rgba(240, 246, 255, 0.9) 28%,
+      rgba(252, 248, 255, 0.94) 65%,
+      rgba(255, 252, 244, 0.92) 100%
+    );
+    backdrop-filter: blur(32px) saturate(220%);
+    -webkit-backdrop-filter: blur(32px) saturate(220%);
+    
+    /* Ceremonial Gold Hairline Border */
+    border: 1.5px solid rgba(194, 155, 77, 0.45);
+    
+    /* Atmospheric Multi-Glow: Earth Azure + Iris Violet + Champagne Gold */
+    box-shadow: 
+      0 16px 44px -10px rgba(33, 22, 56, 0.16),
+      0 0 24px -2px rgba(62, 132, 194, 0.22),
+      0 0 32px -2px rgba(122, 87, 184, 0.24),
+      inset 0 1px 1px #FFFFFF,
+      inset 0 -1px 1px rgba(194, 155, 77, 0.22);
+    
+    transition: 
+      background var(--duration-normal) var(--ease-apple),
+      box-shadow var(--duration-normal) var(--ease-apple),
+      border-color var(--duration-normal) var(--ease-apple),
+      transform var(--duration-normal) var(--ease-apple);
   }
 
-  /* Scrolled state enhancements */
+  /* Embedded Watercolor Iris Petal Ornament (Subtle botanical watermark on glass) */
+  .nav-botanical-whisper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 80px;
+    width: 120px;
+    height: 100%;
+    background-image: url('/botanical/iris-blossom-br.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.16;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    border-radius: inherit;
+    transition: opacity var(--duration-normal) ease;
+  }
+
+  /* Top Shimmer Line Reflecting Sunlight */
+  .nav-island::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(
+      90deg, 
+      transparent 0%, 
+      rgba(62, 132, 194, 0.6) 25%, 
+      rgba(194, 155, 77, 0.85) 50%, 
+      rgba(155, 121, 222, 0.6) 75%, 
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+
+  /* Scrolled State Elevation */
   :global(.is-scrolled) .nav-island {
-    background: rgba(255, 255, 255, 0.92);
-    border-color: rgba(122, 87, 184, 0.24);
-    box-shadow: 0 16px 40px -10px rgba(33, 22, 56, 0.15), 0 4px 12px rgba(194, 155, 77, 0.08);
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.97) 0%,
+      rgba(240, 246, 255, 0.94) 30%,
+      rgba(252, 248, 255, 0.97) 70%,
+      rgba(255, 252, 244, 0.95) 100%
+    );
+    border-color: rgba(194, 155, 77, 0.65);
+    box-shadow: 
+      0 20px 52px -10px rgba(33, 22, 56, 0.22),
+      0 0 28px -2px rgba(62, 132, 194, 0.28),
+      0 0 38px -2px rgba(194, 155, 77, 0.26);
+    transform: translateY(-2px);
   }
 
-  /* Brand */
+  /* =========================================================================
+     Brand Crest Medallion with Dual Orbital Rings & Living Artwork
+     ========================================================================= */
   .brand-link {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.9rem;
     text-decoration: none;
     flex-shrink: 0;
+    outline: none;
+    z-index: 2;
   }
 
   .crest-frame {
     position: relative;
-    width: 42px;
-    height: 42px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
-    padding: 2px;
-    background: linear-gradient(135deg, #F4E8C9 0%, #C29B4D 50%, #9F7B2F 100%);
-    box-shadow: 0 2px 8px rgba(194, 155, 77, 0.25);
     display: flex;
     align-items: center;
     justify-content: center;
     transition: transform var(--duration-normal) var(--ease-apple);
+    flex-shrink: 0;
   }
 
-  .brand-link:hover .crest-frame {
-    transform: scale(1.06) rotate(3deg);
+  /* Ambient Backlight Halo: Earth Azure & Iris Bloom */
+  .crest-glow-halo {
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle, 
+      rgba(62, 132, 194, 0.38) 0%, 
+      rgba(122, 87, 184, 0.3) 55%, 
+      transparent 100%
+    );
+    filter: blur(5px);
+    opacity: 0.85;
+    pointer-events: none;
+    transition: opacity var(--duration-normal) ease;
+  }
+
+  /* Outer Laurel Gold Bezel */
+  .ring-laurel-gold {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    padding: 1.8px;
+    background: linear-gradient(135deg, #F4E8C9 0%, #C29B4D 50%, #9F7B2F 100%);
+    box-shadow: 0 2px 12px rgba(194, 155, 77, 0.35);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Inner Earth Azure Orbital Ring */
+  .ring-earth-blue {
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    border: 1.2px dashed rgba(62, 132, 194, 0.6);
+    pointer-events: none;
+    animation: slowOrbitSpin 28s linear infinite;
+  }
+
+  @keyframes slowOrbitSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 
   .brand-crest {
-    width: 100%;
-    height: 100%;
+    width: 38px;
+    height: 38px;
     object-fit: cover;
     border-radius: 50%;
+    position: relative;
+    z-index: 2;
+    background: #FFFFFF;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  }
+
+  .brand-link:hover .crest-frame {
+    transform: scale(1.08) rotate(3deg);
+  }
+
+  .brand-link:hover .crest-glow-halo {
+    opacity: 1;
+    filter: blur(7px);
   }
 
   .brand-copy {
     display: flex;
     flex-direction: column;
-    line-height: 1.1;
+    line-height: 1.15;
   }
 
   .brand-title {
-    font-size: 0.88rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    font-size: 0.92rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
     color: var(--c-text-primary);
+    transition: color var(--duration-fast) ease;
   }
 
+  .brand-link:hover .brand-title {
+    color: var(--c-iris-deep);
+  }
+
+  /* Subtitle displaying official club motto in gold serif */
   .brand-subtitle {
-    font-size: 0.62rem;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.74rem;
     font-weight: 600;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.03em;
     color: var(--c-gold-deep);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 1px;
   }
 
-  /* Links */
+  .sub-dot {
+    font-size: 0.52rem;
+    color: var(--c-gold);
+    opacity: 0.85;
+    font-style: normal;
+  }
+
+  /* =========================================================================
+     Desktop Nav Links: Botanical Hover & Active Capsules
+     ========================================================================= */
   .nav-links {
     display: none;
     list-style: none;
@@ -324,44 +613,72 @@ const resolveHref = (href: string) => {
     gap: 0.25rem;
     margin: 0;
     padding: 0;
+    z-index: 2;
   }
 
-  @media (min-width: 900px) {
+  @media (min-width: 930px) {
     .nav-links {
       display: flex;
     }
   }
 
   .nav-item {
-    font-size: 0.86rem;
-    font-weight: 500;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.88rem;
+    font-weight: 600;
     color: var(--c-text-secondary);
-    padding: 0.45rem 0.75rem;
+    padding: 0.48rem 0.85rem;
     white-space: nowrap;
     border-radius: var(--radius-full);
-    transition: all var(--duration-fast) ease;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: 
+      color var(--duration-fast) ease,
+      background var(--duration-fast) ease,
+      border-color var(--duration-fast) ease,
+      transform var(--duration-fast) ease;
   }
 
-  .nav-item:hover,
+  .nav-item:hover {
+    color: var(--c-iris-deep);
+    background: rgba(122, 87, 184, 0.09);
+    border-color: rgba(194, 155, 77, 0.3);
+    transform: translateY(-1px);
+  }
+
   .nav-item.active {
     color: var(--c-iris-deep);
-    background: var(--c-iris-mist);
+    font-weight: 700;
+    background: linear-gradient(135deg, rgba(122, 87, 184, 0.16) 0%, rgba(62, 132, 194, 0.12) 100%);
+    border-color: rgba(194, 155, 77, 0.55);
+    box-shadow: 
+      0 2px 10px rgba(122, 87, 184, 0.14),
+      inset 0 1px 0 rgba(255, 255, 255, 0.85);
   }
 
-  .nav-item.active {
-    font-weight: 600;
-    box-shadow: inset 0 0 0 1px rgba(194, 155, 77, 0.4);
+  .active-sparkle {
+    font-size: 0.65rem;
+    color: var(--c-gold);
+    line-height: 1;
+    animation: gentlePulse 2.4s ease-in-out infinite;
   }
 
-  /* Dropdown Styles */
+  @keyframes gentlePulse {
+    0%, 100% { opacity: 0.85; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.15); }
+  }
+
+  /* =========================================================================
+     Leadership & Sacred Ethos Dropdown Flyout
+     ========================================================================= */
   .nav-dropdown-wrapper {
     position: relative;
   }
 
   .dropdown-trigger {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
     border: none;
     background: transparent;
     cursor: pointer;
@@ -369,75 +686,148 @@ const resolveHref = (href: string) => {
   }
 
   .dropdown-chevron {
-    transition: transform 0.2s ease;
+    transition: transform var(--duration-fast) ease;
+    opacity: 0.75;
   }
 
   .nav-dropdown-wrapper:hover .dropdown-chevron,
   .nav-dropdown-wrapper:focus-within .dropdown-chevron,
   .nav-dropdown-wrapper.is-open .dropdown-chevron {
     transform: rotate(180deg);
+    opacity: 1;
   }
 
   .nav-dropdown-menu {
     position: absolute;
-    top: calc(100% + 4px);
+    top: calc(100% + 10px);
     left: 50%;
     transform: translateX(-50%) translateY(4px);
-    width: 300px;
-    background: rgba(255, 255, 255, 0.96);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--c-border-gold, rgba(194, 155, 77, 0.3));
-    border-radius: 18px;
-    padding: 8px;
-    box-shadow: 0 16px 40px rgba(33, 22, 56, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
+    width: 326px;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(32px) saturate(210%);
+    -webkit-backdrop-filter: blur(32px) saturate(210%);
+    border: 1.5px solid rgba(194, 155, 77, 0.45);
+    border-radius: 20px;
+    padding: 10px;
+    box-shadow: 
+      0 24px 56px -8px rgba(33, 22, 56, 0.22),
+      0 6px 20px rgba(122, 87, 184, 0.14),
+      0 0 0 1px rgba(255, 255, 255, 0.9);
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 100;
+    transition: 
+      opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+      visibility 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 99999;
   }
 
-  /* Invisible hover bridge to eliminate gap */
+  /* Continuous invisible hover bridge to prevent premature closure */
   .nav-dropdown-menu::before {
     content: '';
     position: absolute;
-    top: -18px;
+    top: -24px;
     left: 0;
     right: 0;
-    height: 20px;
+    height: 30px;
     background: transparent;
   }
 
   .nav-dropdown-wrapper:hover .nav-dropdown-menu,
   .nav-dropdown-wrapper:focus-within .nav-dropdown-menu,
+  .nav-dropdown-wrapper.is-open .nav-dropdown-menu,
   .nav-dropdown-menu.is-open {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transform: translateX(-50%) translateY(0);
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: translateX(-50%) translateY(0) !important;
+  }
+
+  /* Header callout with official motto in serif */
+  .dropdown-header-callout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px 8px 10px;
+    border-bottom: 1px solid rgba(194, 155, 77, 0.18);
+    margin-bottom: 6px;
+    text-align: center;
+  }
+
+  .callout-motto {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--c-gold-deep);
+    letter-spacing: 0.02em;
+  }
+
+  .callout-sub {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--c-text-tertiary);
+    text-transform: uppercase;
+    margin-top: 2px;
   }
 
   .dropdown-item {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 12px;
-    padding: 10px 14px;
-    border-radius: 12px;
+    padding: 9px 12px;
+    border-radius: 14px;
     text-decoration: none;
-    transition: background 0.2s ease;
+    transition: 
+      background var(--duration-fast) ease,
+      transform var(--duration-fast) ease;
   }
 
   .dropdown-item:hover,
   .dropdown-item.active {
-    background: var(--c-bg-subtle, #F3EDFA);
+    background: linear-gradient(90deg, rgba(122, 87, 184, 0.1) 0%, rgba(62, 132, 194, 0.06) 100%);
+    transform: translateX(3px);
+  }
+
+  .dp-icon-box {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform var(--duration-fast) ease;
+  }
+
+  .dropdown-item:hover .dp-icon-box {
+    transform: scale(1.08);
+  }
+
+  .icon-iris {
+    background: rgba(122, 87, 184, 0.14);
+    color: var(--c-iris);
+  }
+
+  .icon-gold {
+    background: rgba(194, 155, 77, 0.16);
+    color: var(--c-gold-deep);
+  }
+
+  .icon-bloom {
+    background: rgba(155, 121, 222, 0.18);
+    color: #8C57B8;
+  }
+
+  .icon-award {
+    background: rgba(62, 132, 194, 0.14);
+    color: var(--c-earth-blue);
   }
 
   .dp-icon {
-    font-size: 1rem;
-    color: var(--c-gold, #C29B4D);
-    flex-shrink: 0;
-    margin-top: 1px;
+    font-size: 0.95rem;
   }
 
   .dp-text {
@@ -446,206 +836,687 @@ const resolveHref = (href: string) => {
   }
 
   .dp-title {
-    font-size: 0.84rem;
+    font-size: 0.86rem;
     font-weight: 700;
-    color: var(--c-text-primary, #211638);
+    color: var(--c-text-primary);
   }
 
   .dp-desc {
-    font-size: 0.6875rem;
-    color: var(--c-text-secondary, #5C5272);
+    font-size: 0.7rem;
+    color: var(--c-text-secondary);
     margin-top: 1px;
   }
 
-  /* Actions */
+  /* =========================================================================
+     Desktop Actions: Crystal Replay Pill & Imperial Jewel Button
+     ========================================================================= */
   .nav-actions {
     display: flex;
     align-items: center;
     gap: 0.65rem;
     flex-shrink: 0;
+    z-index: 2;
   }
 
+  /* Replay Bloom Intro Button (Crystal Botanical Capsule) */
   .replay-pill {
     display: none;
     align-items: center;
-    gap: 0.35rem;
-    font-size: 0.78rem;
-    font-weight: 600;
+    gap: 0.45rem;
+    font-size: 0.79rem;
+    font-weight: 700;
     letter-spacing: 0.02em;
-    color: var(--c-gold-deep);
-    background: rgba(194, 155, 77, 0.1);
-    border: 1px solid var(--c-border-gold);
-    padding: 0.45rem 0.95rem;
+    color: #8A641A;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(14px);
+    border: 1.5px solid rgba(194, 155, 77, 0.45);
+    padding: 0.5rem 0.95rem;
     border-radius: var(--radius-full);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(194, 155, 77, 0.12);
     transition: all var(--duration-fast) ease;
   }
 
-  @media (min-width: 640px) {
+  @media (min-width: 680px) {
     .replay-pill {
       display: inline-flex;
     }
   }
 
   .replay-pill:hover {
-    background: rgba(194, 155, 77, 0.18);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(194, 155, 77, 0.2);
+    background: rgba(244, 232, 201, 0.35);
+    border-color: rgba(194, 155, 77, 0.75);
+    transform: translateY(-1.5px);
+    box-shadow: 0 4px 16px rgba(194, 155, 77, 0.28);
+    color: #6E4D0C;
   }
 
   .replay-icon {
+    font-size: 0.85rem;
+    display: inline-block;
+    transition: transform 0.5s ease;
+  }
+
+  .replay-pill:hover .replay-icon {
+    transform: rotate(180deg) scale(1.15);
+  }
+
+  /* Imperial Iris & Earth Jewel CTA Button */
+  .nav-cta-jewel {
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.56rem 1.45rem;
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #FFFFFF;
+    text-decoration: none;
+    
+    /* Imperial violet to oceanic azure velvet gradient */
+    background: linear-gradient(135deg, #7A57B8 0%, #54398A 45%, #2670B8 100%);
+    border: 1.5px solid #F4E8C9;
+    box-shadow: 
+      0 6px 20px rgba(122, 87, 184, 0.45),
+      0 2px 8px rgba(38, 112, 184, 0.25);
+    
+    transition: 
+      transform var(--duration-fast) ease,
+      box-shadow var(--duration-fast) ease;
+  }
+
+  .nav-cta-jewel:hover {
+    transform: translateY(-1.5px) scale(1.02);
+    box-shadow: 
+      0 8px 28px rgba(122, 87, 184, 0.55),
+      0 3px 12px rgba(38, 112, 184, 0.35),
+      0 0 16px rgba(194, 155, 77, 0.4);
+  }
+
+  .cta-sparkle {
     font-size: 0.7rem;
-    color: var(--c-gold);
+    color: #F4E8C9;
+    opacity: 0.95;
   }
 
-  .nav-cta {
-    padding: 0.55rem 1.35rem;
-    font-size: 0.84rem;
+  /* Sheen sweep animation */
+  .cta-sheen {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    transform: skewX(-20deg);
+    pointer-events: none;
+    transition: left 0.6s ease;
   }
 
-  /* Mobile hamburger button */
+  .nav-cta-jewel:hover .cta-sheen {
+    left: 140%;
+  }
+
+  /* =========================================================================
+     Mobile Toggle Button: Luxury Morphing Jewel
+     ========================================================================= */
   .mobile-toggle {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    gap: 5px;
-    width: 42px;
-    height: 42px;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    background: var(--c-iris-mist);
-    border: 1px solid var(--c-border-subtle);
-    color: var(--c-text-primary);
-    transition: background var(--duration-fast) ease;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(16px);
+    border: 1.5px solid rgba(194, 155, 77, 0.5);
+    box-shadow: 0 4px 14px rgba(33, 22, 56, 0.1);
+    cursor: pointer;
     flex-shrink: 0;
+    padding: 0;
+    transition: 
+      transform var(--duration-fast) ease,
+      box-shadow var(--duration-fast) ease,
+      border-color var(--duration-fast) ease;
   }
 
-  @media (min-width: 900px) {
+  @media (min-width: 930px) {
     .mobile-toggle {
       display: none !important;
     }
   }
 
+  .mobile-toggle:hover {
+    transform: scale(1.05);
+    border-color: rgba(194, 155, 77, 0.8);
+    box-shadow: 0 4px 18px rgba(122, 87, 184, 0.25);
+  }
+
+  .toggle-bezel {
+    position: relative;
+    width: 20px;
+    height: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .menu-bar {
+    width: 20px;
+    height: 2px;
+    border-radius: 2px;
+    transition: 
+      transform var(--duration-normal) var(--ease-apple),
+      background-color var(--duration-fast) ease;
+  }
+
+  .bar-top {
+    background-color: var(--c-iris-deep);
+  }
+
+  .bar-bot {
+    background-color: var(--c-gold-deep);
+  }
+
+  .menu-bar-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--c-gold);
+    transition: opacity var(--duration-fast) ease;
+  }
+
+  /* Morphing state on toggle expanded */
+  .mobile-toggle[aria-expanded="true"] .bar-top {
+    transform: translateY(6px) rotate(45deg);
+    background-color: var(--c-gold);
+  }
+
+  .mobile-toggle[aria-expanded="true"] .bar-bot {
+    transform: translateY(-6px) rotate(-45deg);
+    background-color: var(--c-iris-light);
+  }
+
+  .mobile-toggle[aria-expanded="true"] .menu-bar-dot {
+    opacity: 0;
+  }
+
+  /* Compact screens */
   @media (max-width: 580px) {
-    .nav-cta {
+    .nav-cta-jewel {
       display: none !important;
     }
     .brand-subtitle {
       display: none;
     }
     .nav-island {
-      height: 52px;
+      height: 56px;
       padding-inline: 0.65rem;
       gap: 0.5rem;
     }
-    .brand-link {
-      gap: 0.5rem;
-      min-width: 0;
-      flex: 1;
+    .crest-frame {
+      width: 40px;
+      height: 40px;
+    }
+    .brand-crest {
+      width: 32px;
+      height: 32px;
     }
     .brand-title {
-      font-size: 0.78rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .crest-frame {
-      width: 34px;
-      height: 34px;
-      flex-shrink: 0;
+      font-size: 0.82rem;
     }
     .mobile-toggle {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
     }
   }
 
-  .menu-bar {
-    width: 18px;
-    height: 2px;
-    background-color: var(--c-text-primary);
-    border-radius: 2px;
-    transition: transform var(--duration-fast) ease, opacity var(--duration-fast) ease;
-  }
-
-  .mobile-toggle[aria-expanded="true"] .bar-top {
-    transform: translateY(3.5px) rotate(45deg);
-  }
-
-  .mobile-toggle[aria-expanded="true"] .bar-bot {
-    transform: translateY(-3.5px) rotate(-45deg);
-  }
-
-  /* Mobile Drawer Dropdown */
-  .mobile-menu-drawer {
+  /* =========================================================================
+     Mobile Experience: The Nocturnal Conservatory Drawer
+     ========================================================================= */
+  .mobile-drawer-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
     pointer-events: none;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-8px);
-    transition: all var(--duration-normal) var(--ease-apple);
-    margin-top: 0.65rem;
+    transform: translate3d(0, -12px, 0);
+    
+    /* Nocturnal floral conservatory glass */
+    background: rgba(14, 10, 26, 0.95);
+    backdrop-filter: blur(36px) saturate(210%);
+    -webkit-backdrop-filter: blur(36px) saturate(210%);
+    
+    transition: 
+      opacity var(--duration-normal) var(--ease-apple),
+      transform var(--duration-normal) var(--ease-apple),
+      visibility var(--duration-normal) var(--ease-apple);
+    overflow: hidden;
   }
 
-  .mobile-menu-drawer.is-open {
+  .mobile-drawer-overlay.is-open {
     pointer-events: auto;
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 
-  .mobile-menu-inner {
-    max-width: 1100px;
-    margin-inline: auto;
-    background: rgba(255, 255, 255, 0.94);
-    backdrop-filter: blur(28px) saturate(190%);
-    -webkit-backdrop-filter: blur(28px) saturate(190%);
-    border: 1px solid rgba(122, 87, 184, 0.18);
-    border-radius: var(--radius-xl);
-    padding: 1.25rem;
-    box-shadow: var(--shadow-xl);
+  /* Atmospheric Environmental Nebulae */
+  .celestial-nebula {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(60px);
+    opacity: 0.45;
   }
 
-  .mobile-menu-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .earth-azure {
+    top: -80px;
+    right: -80px;
+    width: 380px;
+    height: 380px;
+    background: radial-gradient(circle, rgba(62, 132, 194, 0.65) 0%, transparent 70%);
+  }
+
+  .iris-bloom {
+    bottom: -80px;
+    left: -80px;
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, rgba(122, 87, 184, 0.65) 0%, transparent 70%);
+  }
+
+  .gold-starlight {
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, rgba(194, 155, 77, 0.35) 0%, transparent 70%);
+  }
+
+  /* Stardust Decor */
+  .stardust-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .star-particle {
+    position: absolute;
+    color: var(--c-gold-light);
+    opacity: 0.35;
+    user-select: none;
+    animation: stardustTwinkle 4s ease-in-out infinite alternate;
+  }
+
+  .star-1 { top: 15%; left: 12%; font-size: 0.75rem; animation-delay: 0s; }
+  .star-2 { top: 28%; right: 15%; font-size: 0.6rem; animation-delay: 1.2s; }
+  .star-3 { top: 58%; left: 8%; font-size: 0.8rem; animation-delay: 2.1s; }
+  .star-4 { top: 72%; right: 22%; font-size: 1.2rem; animation-delay: 0.8s; }
+  .star-5 { top: 85%; left: 35%; font-size: 0.7rem; animation-delay: 1.7s; }
+
+  @keyframes stardustTwinkle {
+    0% { opacity: 0.2; transform: scale(0.9); }
+    100% { opacity: 0.65; transform: scale(1.15); }
+  }
+
+  /* Drawer Scroll container for fluid touch navigation */
+  .mobile-drawer-scroll {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: clamp(1rem, 3vw, 1.75rem);
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
   }
 
-  .mobile-menu-link {
+  .mobile-drawer-inner {
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  /* Drawer Header */
+  .drawer-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.85rem 1.15rem;
-    border-radius: var(--radius-md);
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--c-text-primary);
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .drawer-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .drawer-crest-mini {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    padding: 2px;
+    background: linear-gradient(135deg, #F4E8C9 0%, #C29B4D 50%, #9F7B2F 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(194, 155, 77, 0.4);
+  }
+
+  .drawer-crest-mini img {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #FFFFFF;
+  }
+
+  .drawer-brand-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .d-brand-title {
+    font-size: 0.88rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: #FFFFFF;
+  }
+
+  .d-brand-sub {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--c-gold-light);
+  }
+
+  .drawer-close-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(194, 155, 77, 0.4);
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--duration-fast) ease;
+  }
+
+  .drawer-close-btn:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(194, 155, 77, 0.8);
+    transform: rotate(90deg);
+  }
+
+  /* Editorial Link List */
+  .drawer-links-list {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .drawer-nav-item {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+    transition: 
+      opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mobile-drawer-overlay.is-open .drawer-nav-item {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition-delay: calc(var(--i) * 0.05s + 0.1s);
+  }
+
+  .drawer-link {
+    display: flex;
+    align-items: center;
+    padding: 0.85rem 1rem;
+    border-radius: 16px;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: #FFFFFF;
+    width: 100%;
+    box-sizing: border-box;
+    transition: 
+      background var(--duration-fast) ease,
+      border-color var(--duration-fast) ease,
+      transform var(--duration-fast) ease;
+  }
+
+  .drawer-link:hover,
+  .drawer-link.active {
+    background: linear-gradient(90deg, rgba(122, 87, 184, 0.24) 0%, rgba(62, 132, 194, 0.16) 100%);
+    border-color: rgba(194, 155, 77, 0.5);
+    transform: translateX(4px);
+  }
+
+  .link-idx {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--c-gold);
+    margin-right: 0.85rem;
+    opacity: 0.9;
+  }
+
+  .link-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    flex: 1;
+    text-align: left;
+  }
+
+  .link-arrow {
+    font-size: 1.1rem;
+    color: var(--c-iris-light);
+    transition: transform var(--duration-fast) ease;
+  }
+
+  .drawer-link:hover .link-arrow {
+    transform: translateX(4px);
+    color: var(--c-gold-light);
+  }
+
+  /* Accordion Submenu for Leadership */
+  .drawer-accordion-trigger {
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    font-family: inherit;
+  }
+
+  .accordion-chevron {
+    font-size: 0.85rem;
+    color: var(--c-gold);
+    transition: transform 0.3s ease;
+  }
+
+  .drawer-accordion-trigger[aria-expanded="true"] .accordion-chevron {
+    transform: rotate(180deg);
+  }
+
+  .drawer-accordion-content {
+    display: none;
+    padding-top: 0.4rem;
+    padding-left: 1.5rem;
+  }
+
+  .drawer-accordion-content.is-open {
+    display: block;
+    animation: accordionSlideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes accordionSlideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .accordion-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .acc-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.65rem 0.85rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    text-decoration: none;
     transition: background var(--duration-fast) ease;
   }
 
-  .mobile-menu-link:hover,
-  .mobile-menu-link.active {
-    background: var(--c-iris-mist);
-    color: var(--c-iris-deep);
+  .acc-item:hover,
+  .acc-item.active {
+    background: rgba(122, 87, 184, 0.22);
+    border-color: rgba(194, 155, 77, 0.4);
   }
 
-  .mobile-menu-link.active {
+  .acc-badge {
+    font-size: 0.85rem;
+    color: var(--c-gold);
+  }
+
+  .acc-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .acc-name {
+    font-size: 0.88rem;
     font-weight: 600;
+    color: #FFFFFF;
   }
 
-  .mobile-menu-footer {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--c-border-subtle);
+  .acc-meta {
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  /* Drawer Action Hub */
+  .drawer-action-hub {
     display: flex;
     flex-direction: column;
     gap: 0.65rem;
+    padding-top: 0.75rem;
   }
 
-  .w-full {
+  .drawer-btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
     width: 100%;
+    padding: 0.88rem 1rem;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(194, 155, 77, 0.45);
+    color: var(--c-gold-light);
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--duration-fast) ease;
+  }
+
+  .drawer-btn-secondary:hover {
+    background: rgba(194, 155, 77, 0.22);
+    border-color: rgba(194, 155, 77, 0.8);
+    transform: translateY(-1px);
+  }
+
+  .d-btn-icon {
+    font-size: 0.9rem;
+  }
+
+  .drawer-btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.94rem 1rem;
+    border-radius: var(--radius-full);
+    background: linear-gradient(135deg, #7A57B8 0%, #54398A 50%, #2670B8 100%);
+    border: 1.5px solid #F4E8C9;
+    box-shadow: 0 8px 24px rgba(122, 87, 184, 0.45);
+    color: #FFFFFF;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all var(--duration-fast) ease;
+  }
+
+  .drawer-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(122, 87, 184, 0.6), 0 0 20px rgba(194, 155, 77, 0.45);
+  }
+
+  .d-btn-arrow {
+    transition: transform var(--duration-fast) ease;
+  }
+
+  .drawer-btn-primary:hover .d-btn-arrow {
+    transform: translateX(4px);
+  }
+
+  /* Drawer Footer Seal */
+  .drawer-footer-seal {
+    text-align: center;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .seal-line {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(194, 155, 77, 0.5), transparent);
+    margin: 0 auto 0.75rem;
+  }
+
+  .seal-text {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: rgba(244, 232, 201, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .seal-sep {
+    color: var(--c-gold);
+    opacity: 0.5;
   }
 </style>
 
@@ -653,82 +1524,125 @@ const resolveHref = (href: string) => {
   function initNav() {
     const header = document.getElementById('site-header');
     const toggle = document.getElementById('mobile-nav-toggle');
-    const menu = document.getElementById('mobile-nav-menu');
+    const drawer = document.getElementById('mobile-cinematic-drawer');
+    const closeBtn = document.getElementById('mobile-drawer-close');
+    const leadershipTrigger = document.getElementById('mobile-leadership-trigger');
+    const leadershipSub = document.getElementById('mobile-leadership-sub');
     const replayBtn = document.getElementById('replay-bloom-btn');
     const mobileReplayBtn = document.getElementById('mobile-replay-bloom-btn');
-
-    // Sticky scroll effect
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 24) {
-        header?.classList.add('is-scrolled');
-      } else {
-        header?.classList.remove('is-scrolled');
-      }
-    }, { passive: true });
-
-    // Mobile menu toggle
-    function closeMenu() {
-      toggle?.setAttribute('aria-expanded', 'false');
-      menu?.classList.remove('is-open');
-      menu?.setAttribute('aria-hidden', 'true');
-    }
-
-    toggle?.addEventListener('click', () => {
-      const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', (!isExpanded).toString());
-      if (!isExpanded) {
-        menu?.classList.add('is-open');
-        menu?.setAttribute('aria-hidden', 'false');
-      } else {
-        closeMenu();
-      }
-    });
-
-    // Close when clicking nav links
-    menu?.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', closeMenu);
-    });
-
-    // Desktop Dropdown mouse buffer & click toggle
     const dropdownWrapper = document.querySelector('.nav-dropdown-wrapper');
     const dropdownTrigger = document.querySelector('.dropdown-trigger');
     const dropdownMenu = document.querySelector('.nav-dropdown-menu');
 
     let dropdownTimer: any = null;
 
+    // Sticky scroll effect
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        header?.classList.add('is-scrolled');
+      } else {
+        header?.classList.remove('is-scrolled');
+      }
+    }, { passive: true });
+
+    // Drawer state management & Body Scroll lock
+    function openDrawer() {
+      toggle?.setAttribute('aria-expanded', 'true');
+      drawer?.classList.add('is-open');
+      drawer?.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      toggle?.setAttribute('aria-expanded', 'false');
+      drawer?.classList.remove('is-open');
+      drawer?.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    toggle?.addEventListener('click', () => {
+      const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+      if (isExpanded) {
+        closeDrawer();
+      } else {
+        openDrawer();
+      }
+    });
+
+    closeBtn?.addEventListener('click', closeDrawer);
+
+    // Close when tapping links in drawer (except accordion trigger)
+    drawer?.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', closeDrawer);
+    });
+
+    // Accordion toggle inside mobile drawer
+    leadershipTrigger?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isExpanded = leadershipTrigger.getAttribute('aria-expanded') === 'true';
+      leadershipTrigger.setAttribute('aria-expanded', (!isExpanded).toString());
+      leadershipSub?.classList.toggle('is-open', !isExpanded);
+      leadershipSub?.setAttribute('aria-hidden', isExpanded.toString());
+    });
+
+    // Keyboard support: Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeDrawer();
+        dropdownMenu?.classList.remove('is-open');
+        dropdownWrapper?.classList.remove('is-open');
+        dropdownTrigger?.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Desktop Dropdown mouse buffer & click toggle
     dropdownWrapper?.addEventListener('mouseenter', () => {
       clearTimeout(dropdownTimer);
       dropdownMenu?.classList.add('is-open');
       dropdownWrapper.classList.add('is-open');
+      dropdownTrigger?.setAttribute('aria-expanded', 'true');
     });
 
     dropdownWrapper?.addEventListener('mouseleave', () => {
       dropdownTimer = setTimeout(() => {
         dropdownMenu?.classList.remove('is-open');
         dropdownWrapper?.classList.remove('is-open');
-      }, 250);
+        dropdownTrigger?.setAttribute('aria-expanded', 'false');
+      }, 300);
     });
 
     dropdownTrigger?.addEventListener('click', (e) => {
+      e.preventDefault();
       e.stopPropagation();
-      const isOpen = dropdownMenu?.classList.toggle('is-open');
-      dropdownWrapper?.classList.toggle('is-open', isOpen);
+      clearTimeout(dropdownTimer);
+      dropdownMenu?.classList.add('is-open');
+      dropdownWrapper?.classList.add('is-open');
+      dropdownTrigger?.setAttribute('aria-expanded', 'true');
     });
 
     document.addEventListener('click', (e) => {
       if (!dropdownWrapper?.contains(e.target as Node)) {
         dropdownMenu?.classList.remove('is-open');
         dropdownWrapper?.classList.remove('is-open');
+        dropdownTrigger?.setAttribute('aria-expanded', 'false');
       }
     });
 
-    // Replay intro handlers
+    dropdownMenu?.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        dropdownMenu?.classList.remove('is-open');
+        dropdownWrapper?.classList.remove('is-open');
+        dropdownTrigger?.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Replay bloom intro handlers
     function handleReplay(e?: Event) {
       if (e) {
         e.preventDefault();
         e.stopPropagation();
       }
-      closeMenu();
+      closeDrawer();
 
       // Scroll smoothly to top so hero section reveals cleanly
       window.scrollTo({ top: 0, behavior: 'instant' });

@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import RippleDistortion from '../../components/RippleDistortion.astro';
 import { allTeamMembers, lionAdvisor } from '../../data/team';
 
 const pageTitle = "Our Team — Leo Club of EIC";
@@ -49,16 +48,16 @@ const pageDescription = "Meet the stewards, executive officers, and directors of
           <!-- Advisor Card with Interactive RippleDistortion -->
           <div class="spotlight-card advisor-spotlight">
             <div class="spotlight-media-col">
-              <div class="distortion-frame">
-                <RippleDistortion 
-                  src={lionAdvisor.image || "/team/anthony_sepion.png"} 
-                  alt={lionAdvisor.name}
-                  aspectRatio="1 / 1"
-                  brushSize={140}
-                  strength={0.2}
-                  tint="#7A57B8"
-                  tintAmount={0.22}
+              <div class="advisor-portrait-frame">
+                <img 
+                  src="/team/anthony_sepion.jpg" 
+                  alt={lionAdvisor.name} 
+                  class="advisor-portrait-img" 
+                  loading="eager" 
+                  decoding="async" 
+                  fetchpriority="high" 
                 />
+                <div class="portrait-ambient-overlay" aria-hidden="true"></div>
                 <span class="verified-badge">
                   <span class="verified-icon">✓</span>
                   <span>Confirmed Advisor</span>
@@ -336,13 +335,35 @@ const pageDescription = "Meet the stewards, executive officers, and directors of
   .spotlight-media-col {
     position: relative;
     background: #0E071A;
+    overflow: hidden;
   }
 
-  .distortion-frame {
+  .advisor-portrait-frame {
     width: 100%;
     height: 100%;
     position: relative;
     overflow: hidden;
+    min-height: 280px;
+  }
+
+  .advisor-portrait-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 15%;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .advisor-spotlight:hover .advisor-portrait-img {
+    transform: scale(1.05);
+  }
+
+  .portrait-ambient-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 65%, rgba(14, 7, 26, 0.5) 100%);
+    pointer-events: none;
   }
 
   .verified-badge {
@@ -352,14 +373,15 @@ const pageDescription = "Meet the stewards, executive officers, and directors of
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 4px 10px;
-    background: rgba(14, 7, 26, 0.82);
+    padding: 5px 12px;
+    background: rgba(14, 7, 26, 0.86);
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(194, 155, 77, 0.4);
+    border: 1px solid rgba(194, 155, 77, 0.5);
     border-radius: 9999px;
     color: #FAF8FD;
-    font-size: 0.6875rem;
+    font-size: 0.72rem;
     font-weight: 700;
+    letter-spacing: 0.02em;
     z-index: 10;
   }
 
