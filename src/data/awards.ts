@@ -283,7 +283,7 @@ export const awardsArchive: Award[] = [
     badge: "Inaugural Distinction"
   },
   {
-    id: "2022-ind-rachel-best-pres",
+    id: "2022-ind-charter-best-pres",
     year: "2022/2023",
     category: "individual",
     categoryLabel: "Individual Honor",

@@ -3,6 +3,7 @@ interface JourneyItem {
   id: string;
   year: string;
   month: string;
+  tag?: string;
   content: string;
 }
 
@@ -21,66 +22,185 @@ const {
   imageAlt = "Charter Era — Leo Club of Ethos International"
 } = Astro.props;
 
-const topJourneyData: JourneyItem[] = [
+// Master Chronological Milestones
+const chronologicalJourney: JourneyItem[] = [
   {
     id: "2022-march",
     year: "2022",
     month: "March",
-    content: "Charter Dawn: Officially founded under Lions Club of Colombo West (District 306 D2) led by Rachel Desilva."
+    tag: "Founding Era",
+    content: "Charter Dawn: Officially founded under Lions Club of Colombo West (District 306 D2) led by our inaugural Charter President."
+  },
+  {
+    id: "2022-november",
+    year: "2022",
+    month: "November",
+    tag: "Civic Health",
+    content: "Inaugural community medical camps, club constitution bylaws, and ceremonial crest adoption."
   },
   {
     id: "2023-april",
     year: "2023",
     month: "April",
+    tag: "Youth Network",
     content: "Serve. Inspire. Grow: Rapid membership expansion into schools, colleges, and university campuses."
-  },
-  {
-    id: "2024-july",
-    year: "2024",
-    month: "July",
-    content: "Expanding Horizons: Flagship 'Service with Spice' project and large-scale youth welfare initiatives."
-  },
-  {
-    id: "2026-may",
-    year: "2026",
-    month: "May",
-    content: "The Future Awaits: 2026/2027 cabinet installations, digital platforms, and lasting social impact."
-  }
-];
-
-const bottomJourneyData: JourneyItem[] = [
-  {
-    id: "2022-november",
-    year: "2022",
-    month: "November",
-    content: "Inaugural community medical camps, club constitution bylaws, and ceremonial crest adoption."
   },
   {
     id: "2023-october",
     year: "2023",
     month: "October",
+    tag: "Eco Sanctuary",
     content: "Tree canopy conservation drives and recurring compassionate eldercare home sanctuaries."
+  },
+  {
+    id: "2024-july",
+    year: "2024",
+    month: "July",
+    tag: "Flagship Service",
+    content: "Expanding Horizons: Flagship 'Service with Spice' project and large-scale youth welfare initiatives."
   },
   {
     id: "2025-march",
     year: "2025",
     month: "March",
+    tag: "District Summit",
     content: "Hosted District 306 D2 Youth Orientation Summit and forged international Leo fellowships."
+  },
+  {
+    id: "2026-may",
+    year: "2026",
+    month: "May",
+    tag: "The Future",
+    content: "The Future Awaits: 2026/2027 cabinet installations, digital platforms, and lasting social impact."
   }
 ];
 
+// Desktop Alternating Tracks
+const topJourneyData: JourneyItem[] = [
+  chronologicalJourney[0],
+  chronologicalJourney[2],
+  chronologicalJourney[4],
+  chronologicalJourney[6]
+];
+
+const bottomJourneyData: JourneyItem[] = [
+  chronologicalJourney[1],
+  chronologicalJourney[3],
+  chronologicalJourney[5]
+];
 ---
 
-
 <section id="journey" class="timeline-section" aria-label="Club Historical Journey">
-  <!-- Pinned / Sticky Viewport -->
-  <div class="timeline-sticky-viewport">
-    <!-- Top Micro Header & Ambient Aura -->
-    <div class="timeline-aura" aria-hidden="true"></div>
+  <!-- DESKTOP PINNED SCRUB STAGE (Visible on screens > 768px) -->
+  <div class="timeline-desktop-stage" aria-hidden="false">
+    <div class="timeline-sticky-viewport">
+      <!-- Ambient Golden Aura -->
+      <div class="timeline-aura" aria-hidden="true"></div>
 
-    <div class="whole-slider-track" id="whole-slider-track">
-      <!-- Left Featured Milestone Picture -->
-      <div class="timeline-featured-card">
+      <div class="whole-slider-track" id="whole-slider-track">
+        <!-- Left Featured Milestone Picture -->
+        <div class="timeline-featured-card">
+          <div class="featured-media-frame">
+            <img src={imageUrl} alt={imageAlt} class="featured-img" loading="lazy" decoding="async" />
+            <div class="featured-sheen" aria-hidden="true"></div>
+            <div class="featured-badge">
+              <span class="badge-sparkle">✦</span>
+              <span>Est. 2022 • Colombo 7</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Horizontal Timeline Canvas -->
+        <div class="timeline-content-stage">
+          <!-- Central Horizontal Connecting Line -->
+          <div class="timeline-axis-line-container" aria-hidden="true">
+            <div class="axis-node-dot start-dot"></div>
+            <div class="journey-line"></div>
+            <div class="axis-node-dot end-dot"></div>
+          </div>
+
+          <!-- Upper Half: Top Milestones -->
+          <div class="timeline-half top-half">
+            <div class="title-column">
+              <span class="eyebrow eyebrow-gold">Historical Tapestry</span>
+              <h2 class="timeline-main-title">
+                {title}
+              </h2>
+            </div>
+
+            <div class="milestones-row top-milestones-row">
+              {topJourneyData.map((item) => (
+                <div class="milestone-item top-item" data-id={item.id}>
+                  <!-- Vertical Stem and Dot -->
+                  <div class="stem-container top-stem">
+                    <div class={`stem-dot jd-${item.id}`}></div>
+                    <div class={`stem-line jl-${item.id}`}></div>
+                  </div>
+
+                  <!-- Text Block -->
+                  <div class="milestone-text-block">
+                    <h4 class={`milestone-date title-${item.id}`}>
+                      <span class="date-year">{item.year}</span>
+                      <span class="date-month">{item.month}</span>
+                    </h4>
+                    <p class={`milestone-content description-${item.id}`}>
+                      {item.content}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Lower Half: Bottom Milestones -->
+          <div class="timeline-half bottom-half">
+            <div class="period-column">
+              <span class="period-pill">{periodLabel}</span>
+              <p class="period-sub">Scroll to travel through our history</p>
+            </div>
+
+            <div class="milestones-row bottom-milestones-row">
+              {bottomJourneyData.map((item) => (
+                <div class="milestone-item bottom-item" data-id={item.id}>
+                  <!-- Vertical Stem and Dot -->
+                  <div class="stem-container bottom-stem">
+                    <div class={`stem-line jl-${item.id}`}></div>
+                    <div class={`stem-dot jd-${item.id}`}></div>
+                  </div>
+
+                  <!-- Text Block -->
+                  <div class="milestone-text-block bottom-text-block">
+                    <h4 class={`milestone-date title-${item.id}`}>
+                      <span class="date-year">{item.year}</span>
+                      <span class="date-month">{item.month}</span>
+                    </h4>
+                    <p class={`milestone-content description-${item.id}`}>
+                      {item.content}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE CHRONOLOGICAL EXPERIENCE (Visible on screens <= 768px) -->
+  <div class="timeline-mobile-stage" aria-label="Mobile Historical Journey">
+    <div class="mobile-stage-inner">
+      <!-- Mobile Masthead -->
+      <header class="mobile-timeline-header">
+        <span class="eyebrow eyebrow-gold">Historical Tapestry</span>
+        <h2 class="mobile-timeline-title">{title}</h2>
+        <div class="mobile-period-wrap">
+          <span class="period-pill">{periodLabel}</span>
+        </div>
+      </header>
+
+      <!-- Featured Visual Card for Mobile -->
+      <div class="mobile-featured-card">
         <div class="featured-media-frame">
           <img src={imageUrl} alt={imageAlt} class="featured-img" loading="lazy" decoding="async" />
           <div class="featured-sheen" aria-hidden="true"></div>
@@ -91,77 +211,38 @@ const bottomJourneyData: JourneyItem[] = [
         </div>
       </div>
 
-      <!-- Main Horizontal Timeline Canvas -->
-      <div class="timeline-content-stage">
-        <!-- Central Horizontal Connecting Line -->
-        <div class="timeline-axis-line-container" aria-hidden="true">
-          <div class="axis-node-dot start-dot"></div>
-          <div class="journey-line"></div>
-          <div class="axis-node-dot end-dot"></div>
+      <!-- Chronological Vertical Stream -->
+      <div class="mobile-timeline-stream">
+        <div class="mobile-spine-track" aria-hidden="true">
+          <div class="mobile-spine-line"></div>
         </div>
 
-        <!-- Upper Half: Top Milestones -->
-        <div class="timeline-half top-half">
-          <div class="title-column">
-            <span class="eyebrow eyebrow-gold">Historical Tapestry</span>
-            <h2 class="timeline-main-title">
-              {title}
-            </h2>
-          </div>
-
-          <div class="milestones-row top-milestones-row">
-            {topJourneyData.map((item) => (
-              <div class="milestone-item top-item" data-id={item.id}>
-                <!-- Vertical Stem and Dot -->
-                <div class="stem-container top-stem">
-                  <div class={`stem-dot jd-${item.id}`}></div>
-                  <div class={`stem-line jl-${item.id}`}></div>
-                </div>
-
-                <!-- Text Block -->
-                <div class="milestone-text-block">
-                  <h4 class={`milestone-date title-${item.id}`}>
-                    <span class="date-year">{item.year}</span>
-                    <span class="date-month">{item.month}</span>
-                  </h4>
-                  <p class={`milestone-content description-${item.id}`}>
-                    {item.content}
-                  </p>
-                </div>
+        <div class="mobile-milestones-list">
+          {chronologicalJourney.map((item, index) => (
+            <article class="mobile-milestone-entry" data-index={index}>
+              <!-- Spine Node Point -->
+              <div class="mobile-node-container" aria-hidden="true">
+                <div class="mobile-node-ring"></div>
+                <div class="mobile-node-core"></div>
               </div>
-            ))}
-          </div>
-        </div>
 
-        <!-- Lower Half: Bottom Milestones -->
-        <div class="timeline-half bottom-half">
-          <div class="period-column">
-            <span class="period-pill">{periodLabel}</span>
-            <p class="period-sub">Scroll to travel through our history</p>
-          </div>
-
-          <div class="milestones-row bottom-milestones-row">
-            {bottomJourneyData.map((item) => (
-              <div class="milestone-item bottom-item" data-id={item.id}>
-                <!-- Vertical Stem and Dot -->
-                <div class="stem-container bottom-stem">
-                  <div class={`stem-line jl-${item.id}`}></div>
-                  <div class={`stem-dot jd-${item.id}`}></div>
-                </div>
-
-                <!-- Text Block -->
-                <div class="milestone-text-block bottom-text-block">
-                  <h4 class={`milestone-date title-${item.id}`}>
-                    <span class="date-year">{item.year}</span>
-                    <span class="date-month">{item.month}</span>
-                  </h4>
-                  <p class={`milestone-content description-${item.id}`}>
-                    {item.content}
-                  </p>
-                </div>
+              <!-- Milestone Glass Card -->
+              <div class="mobile-card card-glass">
+                <header class="mobile-card-top">
+                  <div class="mobile-date-cluster">
+                    <span class="mobile-year">{item.year}</span>
+                    <span class="mobile-month">{item.month}</span>
+                  </div>
+                  {item.tag && (
+                    <span class="mobile-tag-badge">{item.tag}</span>
+                  )}
+                </header>
+                <p class="mobile-card-desc">
+                  {item.content}
+                </p>
               </div>
-            ))}
-          </div>
+            </article>
+          ))}
         </div>
       </div>
     </div>
@@ -169,17 +250,44 @@ const bottomJourneyData: JourneyItem[] = [
 </section>
 
 <style>
-  /* Outer Section creates the vertical scroll track */
+  /* Outer Section */
   .timeline-section {
     position: relative;
     width: 100%;
-    height: 220vw;
     background: var(--c-bg, #FAF8FD);
     color: var(--c-text-primary, #211638);
     overflow: clip;
   }
 
-  /* Pinned Sticky Stage */
+  /* Desktop Stage Responsive Switch */
+  @media (min-width: 769px) {
+    .timeline-section {
+      height: 220vw;
+    }
+    .timeline-desktop-stage {
+      display: block;
+    }
+    .timeline-mobile-stage {
+      display: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .timeline-section {
+      height: auto;
+      padding: clamp(3rem, 6vw, 4.5rem) 0 clamp(4rem, 8vw, 5.5rem);
+    }
+    .timeline-desktop-stage {
+      display: none;
+    }
+    .timeline-mobile-stage {
+      display: block;
+    }
+  }
+
+  /* ====================================================
+     DESKTOP PINNED SCRUB STYLES
+     ==================================================== */
   .timeline-sticky-viewport {
     position: sticky;
     top: 0;
@@ -209,17 +317,17 @@ const bottomJourneyData: JourneyItem[] = [
     display: flex;
     align-items: center;
     height: 36vw;
-    min-height: 460px;
-    width: 250vw;
-    gap: 4vw;
-    padding: 0 4vw;
+    min-height: 480px;
+    width: max-content;
+    gap: clamp(2.5rem, 3.5vw, 4rem);
+    padding: 0 clamp(2.5rem, 4vw, 5rem);
     will-change: transform;
     z-index: 1;
   }
 
   /* Featured Left Image Card */
   .timeline-featured-card {
-    width: 26vw;
+    width: clamp(280px, 24vw, 360px);
     height: 100%;
     flex-shrink: 0;
   }
@@ -329,9 +437,9 @@ const bottomJourneyData: JourneyItem[] = [
 
   /* Header Columns */
   .title-column {
-    width: 18vw;
+    width: clamp(200px, 18vw, 280px);
     flex-shrink: 0;
-    padding-right: 2vw;
+    padding-right: 1.5vw;
   }
 
   .timeline-main-title {
@@ -343,9 +451,9 @@ const bottomJourneyData: JourneyItem[] = [
   }
 
   .period-column {
-    width: 18vw;
+    width: clamp(200px, 18vw, 280px);
     flex-shrink: 0;
-    padding-right: 2vw;
+    padding-right: 1.5vw;
   }
 
   .period-pill {
@@ -368,7 +476,7 @@ const bottomJourneyData: JourneyItem[] = [
   /* Milestone Rows */
   .milestones-row {
     display: flex;
-    gap: 12vw;
+    gap: clamp(6vw, 10vw, 14vw);
   }
 
   .top-milestones-row {
@@ -376,12 +484,12 @@ const bottomJourneyData: JourneyItem[] = [
   }
 
   .bottom-milestones-row {
-    padding-left: 8vw;
+    padding-left: 6vw;
   }
 
   .milestone-item {
     position: relative;
-    width: 22vw;
+    width: clamp(260px, 22vw, 340px);
     flex-shrink: 0;
   }
 
@@ -473,87 +581,217 @@ const bottomJourneyData: JourneyItem[] = [
     margin: 0;
   }
 
-  /* Mobile Responsiveness */
-  @media (max-width: 768px) {
-    .timeline-section {
-      height: 380vh;
-    }
+  /* ====================================================
+     MOBILE DEDICATED STREAM STYLES (<= 768px)
+     ==================================================== */
+  .timeline-mobile-stage {
+    position: relative;
+    width: 100%;
+    padding-inline: 1.15rem;
+    max-width: 600px;
+    margin: 0 auto;
+    z-index: 2;
+  }
 
-    .timeline-sticky-viewport {
-      padding-top: 6vh;
-    }
+  .mobile-timeline-header {
+    text-align: center;
+    margin-bottom: 1.75rem;
+  }
 
-    .whole-slider-track {
-      height: 75vh;
-      width: 720vw;
-      gap: 8vw;
-      padding: 0 6vw;
-    }
+  .mobile-timeline-title {
+    font-family: var(--font-serif, serif);
+    font-size: clamp(1.9rem, 6.5vw, 2.6rem);
+    line-height: 1.15;
+    color: var(--c-text-primary, #211638);
+    margin: 6px 0 12px;
+  }
 
-    .timeline-featured-card {
-      width: 65vw;
-      height: 60vh;
-    }
+  .mobile-period-wrap {
+    display: flex;
+    justify-content: center;
+  }
 
-    .title-column {
-      width: 50vw;
-    }
+  .mobile-featured-card {
+    width: 100%;
+    height: 220px;
+    border-radius: 20px;
+    margin-bottom: 2.25rem;
+    overflow: hidden;
+    box-shadow: 0 16px 36px rgba(33, 22, 56, 0.1);
+  }
 
-    .timeline-main-title {
-      font-size: 7vw;
-    }
+  .mobile-timeline-stream {
+    position: relative;
+    padding-left: 28px;
+  }
 
-    .period-column {
-      width: 45vw;
-    }
+  .mobile-spine-track {
+    position: absolute;
+    left: 8px;
+    top: 14px;
+    bottom: 14px;
+    width: 2px;
+  }
 
-    .milestones-row {
-      gap: 30vw;
-    }
+  .mobile-spine-line {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #C29B4D 0%, #7A57B8 50%, #C29B4D 100%);
+    border-radius: 9999px;
+    opacity: 0.65;
+  }
 
-    .milestone-item {
-      width: 65vw;
-    }
+  .mobile-milestones-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.35rem;
+  }
 
-    .top-stem,
-    .bottom-stem {
-      height: 18vh;
-    }
+  .mobile-milestone-entry {
+    position: relative;
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
 
-    .top-stem {
-      bottom: -3vh;
-    }
+  .mobile-milestone-entry.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
-    .bottom-stem {
-      top: -3vh;
-    }
+  .mobile-node-container {
+    position: absolute;
+    left: -28px;
+    top: 22px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(-50%);
+  }
 
-    .stem-dot {
-      width: 14px;
-      height: 14px;
-    }
+  .mobile-node-core {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #C29B4D;
+    box-shadow: 0 0 10px #C29B4D;
+    z-index: 2;
+  }
 
-    .date-year {
-      font-size: 5.5vw;
-    }
+  .mobile-node-ring {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(194, 155, 77, 0.4);
+    background: rgba(255, 255, 255, 0.85);
+    z-index: 1;
+  }
 
-    .milestone-content {
-      font-size: 3.8vw;
-      line-height: 1.45;
-    }
+  .mobile-card {
+    padding: 1.15rem 1.25rem;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(194, 155, 77, 0.28);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 10px 24px -6px rgba(33, 22, 56, 0.06);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .mobile-card:hover {
+    border-color: rgba(194, 155, 77, 0.55);
+    box-shadow: 0 14px 30px -6px rgba(122, 87, 184, 0.12);
+  }
+
+  .mobile-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.55rem;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .mobile-date-cluster {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .mobile-year {
+    font-family: var(--font-serif, serif);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--c-iris-deep, #54398A);
+    line-height: 1;
+  }
+
+  .mobile-month {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #9F7B2F;
+  }
+
+  .mobile-tag-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    background: rgba(194, 155, 77, 0.12);
+    border: 1px solid rgba(194, 155, 77, 0.3);
+    color: #9F7B2F;
+    border-radius: 9999px;
+  }
+
+  .mobile-card-desc {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--c-text-secondary, #5C5272);
+    margin: 0;
   }
 </style>
 
 <script>
-  function initTimelineScrub() {
+  function setupTimeline() {
     const section = document.getElementById('journey');
+    if (!section) return;
+
+    // Check if mobile view is active
+    if (window.innerWidth <= 768) {
+      // Mobile scroll reveal with IntersectionObserver
+      const mobileEntries = section.querySelectorAll<HTMLElement>('.mobile-milestone-entry');
+      if (mobileEntries.length) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+            }
+          });
+        }, {
+          threshold: 0.15,
+          rootMargin: '0px 0px -40px 0px'
+        });
+
+        mobileEntries.forEach((el) => observer.observe(el));
+      }
+      return;
+    }
+
+    // Desktop horizontal scrub track logic
     const track = document.getElementById('whole-slider-track');
-    const journeyLine = section?.querySelector('.journey-line') as HTMLElement | null;
-    if (!section || !track || !journeyLine) return;
+    const journeyLine = section.querySelector('.journey-line') as HTMLElement | null;
+    if (!track || !journeyLine) return;
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Timeline items list in chronological order
     const itemIds = [
       '2022-march',
       '2022-november',
@@ -592,16 +830,6 @@ const bottomJourneyData: JourneyItem[] = [
       [0.74, 0.88]
     ];
 
-    const mobilePositions = [
-      [0.08, 0.18],
-      [0.18, 0.30],
-      [0.30, 0.42],
-      [0.42, 0.55],
-      [0.55, 0.68],
-      [0.68, 0.80],
-      [0.80, 0.92]
-    ];
-
     const updateFrame = () => {
       raf = 0;
       if (!isVisible) return;
@@ -611,21 +839,18 @@ const bottomJourneyData: JourneyItem[] = [
       if (maxScroll <= 0) return;
 
       const progress = Math.max(0, Math.min(1, -rect.top / maxScroll));
-      const isMobile = window.innerWidth < 768;
 
-      const slidePercent = isMobile ? -62 : -60;
-      const lineWidth = isMobile ? 80 : 96;
-      const positions = isMobile ? mobilePositions : desktopPositions;
+      // Calculate track total scroll amount dynamically
+      const trackOverflow = Math.max(0, track.scrollWidth - window.innerWidth + 120);
+      const shiftPx = progress * trackOverflow;
+      track.style.transform = `translateX(-${shiftPx}px)`;
 
-      // 1. Horizontal track motion
-      track.style.transform = `translateX(${progress * slidePercent}%)`;
+      // Central axis line expanding
+      journeyLine.style.width = `${progress * 96}%`;
 
-      // 2. Central axis line expanding
-      journeyLine.style.width = `${progress * lineWidth}%`;
-
-      // 3. Staggered reveal for stems, dots, and text
+      // Staggered reveal for stems, dots, and text
       itemIds.forEach((id, index) => {
-        const [start, end] = positions[index] || [0.1, 0.3];
+        const [start, end] = desktopPositions[index] || [0.1, 0.3];
         const itemP = Math.max(0, Math.min(1, (progress - start) / (end - start)));
 
         const line = section.querySelector(`.jl-${id}`) as HTMLElement | null;
@@ -667,5 +892,9 @@ const bottomJourneyData: JourneyItem[] = [
     updateFrame();
   }
 
-  initTimelineScrub();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupTimeline);
+  } else {
+    setupTimeline();
+  }
 </script>
