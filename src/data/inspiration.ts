@@ -34,31 +34,31 @@ export const inspirationData = {
   heraldry: [
     {
       glyph: "🌍",
-      title: "The Terrestrial Globe",
+      title: "The Living Globe",
       subtitle: "Universal Fellowship",
-      description: "Representing our global humanitarian perspective. We recognize that our community extends beyond geographical borders, anchoring every local initiative within universal compassion.",
+      description: "Serving the global community. Our humanitarian commitment transcends geographical borders, dedicating our volunteer spirit to uplift communities worldwide.",
       color: "#3E84C2"
     },
     {
       glyph: "🌸",
-      title: "The Blooming Iris",
-      subtitle: "Wisdom, Faith & Valor",
-      description: "The botanical emblem of the club. Its three sacred petals signify wisdom in governance, unwavering faith in youth potential, and valor to advocate for the underprivileged.",
+      title: "Bud to Blooming Iris",
+      subtitle: "The Journey of Growth",
+      description: "The transition from an unbloomed bud into a magnificent blossoming iris symbolises continuous personal growth, youth empowerment, and evolving potential.",
       color: "#7A57B8"
     },
     {
-      glyph: "⚜",
-      title: "The Laurel Wreath",
-      subtitle: "Civic Honor & Heritage",
-      description: "Drawn from classical ceremonial traditions, the laurel wreath recognizes excellence in civic stewardship and our enduring charter affiliation with Lions International.",
-      color: "#C29B4D"
+      glyph: "💜",
+      title: "The Royal Purple",
+      subtitle: "Dignity & Leadership",
+      description: "The signature purple hue represents dignity, noble purpose, and ethical servant leadership guided by quiet grace and steadfast integrity.",
+      color: "#54398A"
     },
     {
-      glyph: "🔥",
-      title: "The Living Torch",
-      subtitle: "Inextinguishable Light",
-      description: "Our founding promise: just as a torch loses nothing by sharing its flame, each generation of leaders multiplies its impact by empowering the next.",
-      color: "#D97736"
+      glyph: "🌿",
+      title: "The Living Leaves",
+      subtitle: "Nurturing & Stewardship",
+      description: "Cradling the globe with botanical grace, the leaves signify nurturing care, ecological sustainability, and profound civic responsibility.",
+      color: "#2E7D32"
     }
   ] as HeraldicSymbol[],
 

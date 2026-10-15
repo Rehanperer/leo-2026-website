@@ -11,193 +11,177 @@ export const galleryItems: GalleryItem[] = [
   {
     id: 1,
     image: "/gallery/gallery-image-1.jpg",
-    title: "Annual Installation Ceremony",
-    caption: "Charter investiture & ceremonial oath of office for the incoming cabinet.",
-    category: "leadership",
-    alt: "Leo Club of EIC — Annual Installation Ceremony"
+    title: "Cleanup Sri Lanka Delegation",
+    caption: "Lions Club of Colombo West & Leo Club of Ethos International joint coastal conservation campaign.",
+    category: "service",
+    alt: "Leo Club of Ethos International — Cleanup Sri Lanka Community Project"
   },
   {
     id: 2,
     image: "/gallery/gallery-image-2.jpg",
-    title: "Community Health Camp",
-    caption: "Providing free diagnostics, vital checks, and medical wellness consultations.",
-    category: "service",
-    alt: "Leo Club of EIC — Community Health Camp"
+    title: "Executive Cabinet Investiture",
+    caption: "Incoming student leadership board presiding at the annual installation table.",
+    category: "leadership",
+    alt: "Leo Club of Ethos International — Executive Cabinet Investiture"
   },
   {
     id: 3,
     image: "/gallery/gallery-image-3.jpg",
-    title: "Beach Cleanup & Eco Drive",
-    caption: "Coastal conservation drive removing plastic debris along the shoreline.",
-    category: "projects",
-    alt: "Leo Club of EIC — Beach Cleanup & Eco Drive"
+    title: "Ceremonial Oil Lamp Lighting",
+    caption: "Leo Club Advisor Lion Anthony Sepion kindles the ceremonial flame alongside incoming officers.",
+    category: "leadership",
+    alt: "Lion Advisor Anthony Sepion lighting the ceremonial oil lamp with Leo cabinet"
   },
   {
     id: 4,
     image: "/gallery/gallery-image-4.jpg",
-    title: "Youth Leadership Summit",
-    caption: "Civic governance, ethical stewardship, and public speaking masterclasses.",
-    category: "leadership",
-    alt: "Leo Club of EIC — Youth Leadership Summit"
+    title: "Coastal Shoreline Restoration",
+    caption: "Dedicated Leo volunteers collecting waste along Sri Lanka's oceanfront.",
+    category: "service",
+    alt: "Leo Club of Ethos International — Beach Cleanup Volunteers on Shoreline"
   },
   {
     id: 5,
     image: "/gallery/gallery-image-5.jpg",
-    title: "Elderly Care Home Visit",
-    caption: "Bringing warmth, acoustic melodies, and companionship to senior residents.",
-    category: "service",
-    alt: "Leo Club of EIC — Elderly Care Home Visit"
+    title: "Solemn Oath of Office",
+    caption: "Students solemnly taking the official Leo membership affirmation and pledge of service.",
+    category: "leadership",
+    alt: "Leo Club of Ethos International — Student Members Taking Oath of Office"
   },
   {
     id: 6,
     image: "/gallery/gallery-image-6.jpg",
-    title: "Book Donation & Literacy Drive",
-    caption: "Donating thousands of curated storybooks and stationery to rural school libraries.",
-    category: "projects",
-    alt: "Leo Club of EIC — Book Donation & Literacy Drive"
+    title: "Floral Monogram Display",
+    caption: "Members proudly showcasing handcrafted floral 'L E O' letters celebrating unity.",
+    category: "fellowship",
+    alt: "Leo Club of Ethos International — Members with Floral LEO Letter Props"
   },
   {
     id: 7,
     image: "/gallery/gallery-image-7.jpg",
-    title: "Food Relief & Spice Kitchen",
-    caption: "Preparing and delivering warm, nutritious dry food parcels to families in need.",
-    category: "service",
-    alt: "Leo Club of EIC — Food Relief & Spice Kitchen"
+    title: "Advisor Recognition & Honor",
+    caption: "Lion Anthony Sepion recognizing high-achieving student leaders in front of the club banner.",
+    category: "leadership",
+    alt: "Lion Advisor Anthony Sepion presenting honor to student member"
   },
   {
     id: 8,
     image: "/gallery/gallery-image-8.jpg",
-    title: "Leo Orientation Gathering",
-    caption: "Welcoming energetic new prospects into our Lions and Leos family.",
-    category: "fellowship",
-    alt: "Leo Club of EIC — Leo Orientation Gathering"
+    title: "Beach Plastic Remediation",
+    caption: "Clearing macro and microplastics from the shoreline for marine ecosystem preservation.",
+    category: "service",
+    alt: "Leo volunteer collecting plastic waste on the beach"
   },
   {
     id: 9,
     image: "/gallery/gallery-image-9.jpg",
-    title: "Inter-District Fellowship Night",
-    caption: "An evening of cross-club collaboration, shared visions, and youth bonding.",
-    category: "fellowship",
-    alt: "Leo Club of EIC — Inter-District Fellowship Night"
+    title: "Lions & Leos Joint Action",
+    caption: "Senior Lions and youth Leos working shoulder-to-shoulder in community environmental stewardship.",
+    category: "service",
+    alt: "Lions and Leos volunteers carrying collected waste bags during cleanup"
   },
   {
     id: 10,
     image: "/gallery/gallery-image-10.jpg",
-    title: "Tree Planting Conservation",
-    caption: "Restoring biodiversity by planting native saplings across urban school grounds.",
-    category: "projects",
-    alt: "Leo Club of EIC — Tree Planting Conservation"
+    title: "Environmental Action Brigade",
+    caption: "Volunteers in safety gear transporting collected recyclable debris off the coast.",
+    category: "service",
+    alt: "Volunteers carrying debris bags during Cleanup Sri Lanka"
   },
   {
     id: 11,
     image: "/gallery/gallery-image-11.jpg",
-    title: "Fundraising Gala Dinner",
-    caption: "An elegant charity banquet mobilizing community donors for sustainable outreach.",
+    title: "Charter Banner Ceremony",
+    caption: "Student speaker addressing the assembly beside the official Colombo 7 charter banner.",
     category: "leadership",
-    alt: "Leo Club of EIC — Fundraising Gala Dinner"
+    alt: "Leo member delivering opening address beside official club banner"
   },
   {
     id: 12,
     image: "/gallery/gallery-image-12.jpg",
-    title: "Skills Development Workshop",
-    caption: "Hands-on vocational coaching and digital career readiness for youth.",
-    category: "projects",
-    alt: "Leo Club of EIC — Skills Development Workshop"
+    title: "District Dignitary Address",
+    caption: "Distinguished Leo leader speaking from the ceremonial velvet lectern.",
+    category: "leadership",
+    alt: "Leo leader delivering speech at the installation podium"
   },
   {
     id: 13,
     image: "/gallery/gallery-image-13.jpg",
-    title: "Children's Home Art Fest",
-    caption: "Spreading boundless joy with watercolor paints, murals, and craft games.",
-    category: "service",
-    alt: "Leo Club of EIC — Children's Home Art Fest"
+    title: "Installation Head Table",
+    caption: "Advisor Lion Anthony Sepion and district dignitaries reviewing official installation minutes.",
+    category: "leadership",
+    alt: "Installation head table with Lion Advisor Anthony Sepion and student leaders"
   },
   {
     id: 14,
     image: "/gallery/gallery-image-14.jpg",
-    title: "Animal Shelter Welfare Drive",
-    caption: "Providing nutritious food supplies, care medication, and shelter rehabilitation.",
-    category: "service",
-    alt: "Leo Club of EIC — Animal Shelter Welfare Drive"
+    title: "Inaugural Presidential Address",
+    caption: "Incoming Club President delivering the presidential vision and charter roadmap.",
+    category: "leadership",
+    alt: "Leo Club President addressing the installation assembly at the podium"
   },
   {
     id: 15,
     image: "/gallery/gallery-image-15.jpg",
-    title: "Sports Meet & Vitality Day",
-    caption: "Fostering athletic stamina, healthy living, and teamwork across districts.",
-    category: "fellowship",
-    alt: "Leo Club of EIC — Sports Meet & Vitality Day"
+    title: "Executive Line of Honor",
+    caption: "Ethos International College student officers assembled before the presidential rostrum.",
+    category: "leadership",
+    alt: "Student officers assembled before the podium during installation"
   },
   {
     id: 16,
     image: "/gallery/gallery-image-16.jpg",
-    title: "Digital Literacy Training",
-    caption: "Guiding students through computer basics, coding logic, and cyber wellness.",
+    title: "United in Purpose Summit",
+    caption: "District 306 D2 orientation leaders with Ethos International College students.",
     category: "projects",
-    alt: "Leo Club of EIC — Digital Literacy Training"
+    alt: "United in Purpose District 306 D2 orientation with student leaders"
   },
   {
     id: 17,
     image: "/gallery/gallery-image-17.jpg",
-    title: "Charter Anniversary Banquet",
-    caption: "Commemorating our founding charter milestone and honoring our mentors.",
-    category: "fellowship",
-    alt: "Leo Club of EIC — Charter Anniversary Banquet"
+    title: "Presidential Placecard",
+    caption: "Ceremonial placecard of the Club President, Leo Club of Ethos International College.",
+    category: "leadership",
+    alt: "Official Club President placecard on ceremonial desk"
   },
   {
     id: 18,
     image: "/gallery/gallery-image-18.jpg",
-    title: "Poverty Relief Distribution",
-    caption: "Emergency ration packets and care hampers delivered to vulnerable homes.",
-    category: "service",
-    alt: "Leo Club of EIC — Poverty Relief Distribution"
+    title: "Orientation Masterclass",
+    caption: "Interactive workshop covering self-development, networking, and executive management.",
+    category: "projects",
+    alt: "District orientation presenter leading leadership masterclass"
   },
   {
     id: 19,
     image: "/gallery/gallery-image-19.jpg",
-    title: "Youth Forum Debate",
-    caption: "Stimulating dialogue on sustainability, youth leadership, and ethical service.",
-    category: "leadership",
-    alt: "Leo Club of EIC — Youth Forum Debate"
+    title: "Student Civic Seminar",
+    caption: "Students attentively absorbing foundational Leo principles and service ethics.",
+    category: "projects",
+    alt: "Ethos International College students attending leadership seminar"
   },
   {
     id: 20,
     image: "/gallery/gallery-image-20.jpg",
-    title: "Medical Supplies Handover",
-    caption: "Delivering surgical supplies, wheelchairs, and test kits to rural clinics.",
-    category: "service",
-    alt: "Leo Club of EIC — Medical Supplies Handover"
+    title: "General Assembly Gathering",
+    caption: "A vibrant room of young Leos engaging with district representatives.",
+    category: "projects",
+    alt: "Assembly of students listening to orientation presentation"
   },
   {
     id: 21,
     image: "/gallery/gallery-image-21.jpg",
-    title: "Community Park Renovation",
-    caption: "Painting recreation benches, clearing walkways, and planting flowerbeds.",
-    category: "projects",
-    alt: "Leo Club of EIC — Community Park Renovation"
+    title: "Youth Interactive Session",
+    caption: "Students participating in dynamic group discussions and collaborative planning.",
+    category: "fellowship",
+    alt: "Students participating in interactive workshop discussion"
   },
   {
     id: 22,
     image: "/gallery/gallery-image-22.jpg",
-    title: "Winter Care Pack Handover",
-    caption: "Distributing warm blankets and cold-weather clothing during chilly spells.",
-    category: "service",
-    alt: "Leo Club of EIC — Winter Care Pack Handover"
-  },
-  {
-    id: 23,
-    image: "/gallery/gallery-image-23.jpg",
-    title: "Leo Fellowship Campfire",
-    caption: "An unforgettable night under the starry sky sharing stories and laughter.",
+    title: "Fellowship Icebreaker",
+    caption: "Student leaders sharing laughter and camaraderie during orientation icebreakers.",
     category: "fellowship",
-    alt: "Leo Club of EIC — Leo Fellowship Campfire"
-  },
-  {
-    id: 24,
-    image: "/gallery/gallery-image-24.jpg",
-    title: "Vision & Eye Care Screening",
-    caption: "Professional optometrist screenings and free prescription spectacles.",
-    category: "service",
-    alt: "Leo Club of EIC — Vision & Eye Care Screening"
+    alt: "Students enjoying leadership fellowship and icebreakers"
   }
 ];

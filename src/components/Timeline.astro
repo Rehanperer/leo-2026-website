@@ -91,9 +91,8 @@ const bottomJourneyData: JourneyItem[] = [
 ---
 
 <section id="journey" class="timeline-section" aria-label="Club Historical Journey">
-  <!-- DESKTOP PINNED SCRUB STAGE (Visible on screens > 768px) -->
-  <div class="timeline-desktop-stage" aria-hidden="false">
-    <div class="timeline-sticky-viewport">
+  <!-- DESKTOP PINNED SCRUB VIEWPORT (Visible on screens > 768px) -->
+  <div class="timeline-sticky-viewport" aria-hidden="false">
       <!-- Ambient Golden Aura -->
       <div class="timeline-aura" aria-hidden="true"></div>
 
@@ -185,7 +184,6 @@ const bottomJourneyData: JourneyItem[] = [
         </div>
       </div>
     </div>
-  </div>
 
   <!-- MOBILE CHRONOLOGICAL EXPERIENCE (Visible on screens <= 768px) -->
   <div class="timeline-mobile-stage" aria-label="Mobile Historical Journey">
@@ -256,19 +254,18 @@ const bottomJourneyData: JourneyItem[] = [
     width: 100%;
     background: var(--c-bg, #FAF8FD);
     color: var(--c-text-primary, #211638);
-    overflow: clip;
   }
 
-  /* Desktop Stage Responsive Switch */
+  /* Desktop vs Mobile Responsive Display Switch */
   @media (min-width: 769px) {
     .timeline-section {
       height: 220vw;
     }
-    .timeline-desktop-stage {
-      display: block;
+    .timeline-sticky-viewport {
+      display: flex;
     }
     .timeline-mobile-stage {
-      display: none;
+      display: none !important;
     }
   }
 
@@ -277,8 +274,8 @@ const bottomJourneyData: JourneyItem[] = [
       height: auto;
       padding: clamp(3rem, 6vw, 4.5rem) 0 clamp(4rem, 8vw, 5.5rem);
     }
-    .timeline-desktop-stage {
-      display: none;
+    .timeline-sticky-viewport {
+      display: none !important;
     }
     .timeline-mobile-stage {
       display: block;
@@ -291,12 +288,11 @@ const bottomJourneyData: JourneyItem[] = [
   .timeline-sticky-viewport {
     position: sticky;
     top: 0;
-    width: 100vw;
+    width: 100%;
     height: 100vh;
-    display: flex;
     align-items: center;
     overflow: hidden;
-    padding-top: 2vh;
+    padding-top: clamp(1.5rem, 3vh, 2.5rem);
   }
 
   .timeline-aura {
@@ -761,135 +757,170 @@ const bottomJourneyData: JourneyItem[] = [
 
 <script>
   function setupTimeline() {
-    const section = document.getElementById('journey');
-    if (!section) return;
+    let cleanupCurrentMode: (() => void) | null = null;
 
-    // Check if mobile view is active
-    if (window.innerWidth <= 768) {
-      // Mobile scroll reveal with IntersectionObserver
-      const mobileEntries = section.querySelectorAll<HTMLElement>('.mobile-milestone-entry');
-      if (mobileEntries.length) {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('in-view');
-            }
+    function initMode() {
+      const section = document.getElementById('journey');
+      if (!section) return;
+
+      if (cleanupCurrentMode) {
+        cleanupCurrentMode();
+        cleanupCurrentMode = null;
+      }
+
+      const isMobile = window.innerWidth <= 768;
+
+      if (isMobile) {
+        // Mobile scroll reveal with IntersectionObserver
+        const mobileEntries = section.querySelectorAll<HTMLElement>('.mobile-milestone-entry');
+        if (mobileEntries.length) {
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+              }
+            });
+          }, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -40px 0px'
           });
-        }, {
-          threshold: 0.15,
-          rootMargin: '0px 0px -40px 0px'
+
+          mobileEntries.forEach((el) => observer.observe(el));
+          cleanupCurrentMode = () => observer.disconnect();
+        }
+        return;
+      }
+
+      // Desktop horizontal scrub track logic
+      const track = document.getElementById('whole-slider-track');
+      const journeyLine = section.querySelector('.journey-line') as HTMLElement | null;
+      if (!track || !journeyLine) return;
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const itemIds = [
+        '2022-march',
+        '2022-november',
+        '2023-april',
+        '2023-october',
+        '2024-july',
+        '2025-march',
+        '2026-may'
+      ];
+
+      if (reduceMotion) {
+        journeyLine.style.width = '100%';
+        itemIds.forEach(id => {
+          const line = section.querySelector(`.jl-${id}`) as HTMLElement | null;
+          const dot = section.querySelector(`.jd-${id}`) as HTMLElement | null;
+          const title = section.querySelector(`.title-${id}`) as HTMLElement | null;
+          const desc = section.querySelector(`.description-${id}`) as HTMLElement | null;
+          if (line) line.style.transform = 'scaleY(1)';
+          if (dot) dot.style.transform = 'translateX(-50%) scale(1)';
+          if (title) { title.style.transform = 'none'; title.style.opacity = '1'; }
+          if (desc) { desc.style.transform = 'none'; desc.style.opacity = '1'; }
         });
-
-        mobileEntries.forEach((el) => observer.observe(el));
+        return;
       }
-      return;
+
+      let isVisible = true;
+      let raf = 0;
+
+      const desktopPositions = [
+        [0.05, 0.18],
+        [0.15, 0.28],
+        [0.26, 0.40],
+        [0.38, 0.52],
+        [0.50, 0.65],
+        [0.62, 0.77],
+        [0.74, 0.88]
+      ];
+
+      const updateFrame = () => {
+        raf = 0;
+        if (!isVisible) return;
+
+        const rect = section.getBoundingClientRect();
+        const maxScroll = rect.height - window.innerHeight;
+        if (maxScroll <= 0) return;
+
+        const progress = Math.max(0, Math.min(1, -rect.top / maxScroll));
+
+        // Calculate track total scroll amount dynamically
+        const trackOverflow = Math.max(0, track.scrollWidth - window.innerWidth + 120);
+        const shiftPx = progress * trackOverflow;
+        track.style.transform = `translateX(-${shiftPx}px)`;
+
+        // Central axis line expanding
+        journeyLine.style.width = `${progress * 96}%`;
+
+        // Staggered reveal for stems, dots, and text
+        itemIds.forEach((id, index) => {
+          const [start, end] = desktopPositions[index] || [0.1, 0.3];
+          const itemP = Math.max(0, Math.min(1, (progress - start) / (end - start)));
+
+          const line = section.querySelector(`.jl-${id}`) as HTMLElement | null;
+          const dot = section.querySelector(`.jd-${id}`) as HTMLElement | null;
+          const title = section.querySelector(`.title-${id}`) as HTMLElement | null;
+          const desc = section.querySelector(`.description-${id}`) as HTMLElement | null;
+
+          if (line) line.style.transform = `scaleY(${itemP})`;
+          if (dot) dot.style.transform = `translateX(-50%) scale(${itemP})`;
+
+          const yShift = (1 - itemP) * 30;
+          const op = itemP > 0.1 ? itemP : 0;
+          if (title) {
+            title.style.transform = `translateY(${yShift}px)`;
+            title.style.opacity = `${op}`;
+          }
+          if (desc) {
+            desc.style.transform = `translateY(${yShift}px)`;
+            desc.style.opacity = `${op}`;
+          }
+        });
+      };
+
+      const onScroll = () => {
+        if (!raf && isVisible) {
+          raf = requestAnimationFrame(updateFrame);
+        }
+      };
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      const observer = new IntersectionObserver(([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible) onScroll();
+      });
+      observer.observe(section);
+
+      updateFrame();
+
+      cleanupCurrentMode = () => {
+        window.removeEventListener('scroll', onScroll);
+        if (raf) cancelAnimationFrame(raf);
+        observer.disconnect();
+      };
     }
 
-    // Desktop horizontal scrub track logic
-    const track = document.getElementById('whole-slider-track');
-    const journeyLine = section.querySelector('.journey-line') as HTMLElement | null;
-    if (!track || !journeyLine) return;
+    initMode();
 
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    const itemIds = [
-      '2022-march',
-      '2022-november',
-      '2023-april',
-      '2023-october',
-      '2024-july',
-      '2025-march',
-      '2026-may'
-    ];
-
-    if (reduceMotion) {
-      journeyLine.style.width = '100%';
-      itemIds.forEach(id => {
-        const line = section.querySelector(`.jl-${id}`) as HTMLElement | null;
-        const dot = section.querySelector(`.jd-${id}`) as HTMLElement | null;
-        const title = section.querySelector(`.title-${id}`) as HTMLElement | null;
-        const desc = section.querySelector(`.description-${id}`) as HTMLElement | null;
-        if (line) line.style.transform = 'scaleY(1)';
-        if (dot) dot.style.transform = 'translateX(-50%) scale(1)';
-        if (title) { title.style.transform = 'none'; title.style.opacity = '1'; }
-        if (desc) { desc.style.transform = 'none'; desc.style.opacity = '1'; }
-      });
-      return;
-    }
-
-    let isVisible = true;
-    let raf = 0;
-
-    const desktopPositions = [
-      [0.05, 0.18],
-      [0.15, 0.28],
-      [0.26, 0.40],
-      [0.38, 0.52],
-      [0.50, 0.65],
-      [0.62, 0.77],
-      [0.74, 0.88]
-    ];
-
-    const updateFrame = () => {
-      raf = 0;
-      if (!isVisible) return;
-
-      const rect = section.getBoundingClientRect();
-      const maxScroll = rect.height - window.innerHeight;
-      if (maxScroll <= 0) return;
-
-      const progress = Math.max(0, Math.min(1, -rect.top / maxScroll));
-
-      // Calculate track total scroll amount dynamically
-      const trackOverflow = Math.max(0, track.scrollWidth - window.innerWidth + 120);
-      const shiftPx = progress * trackOverflow;
-      track.style.transform = `translateX(-${shiftPx}px)`;
-
-      // Central axis line expanding
-      journeyLine.style.width = `${progress * 96}%`;
-
-      // Staggered reveal for stems, dots, and text
-      itemIds.forEach((id, index) => {
-        const [start, end] = desktopPositions[index] || [0.1, 0.3];
-        const itemP = Math.max(0, Math.min(1, (progress - start) / (end - start)));
-
-        const line = section.querySelector(`.jl-${id}`) as HTMLElement | null;
-        const dot = section.querySelector(`.jd-${id}`) as HTMLElement | null;
-        const title = section.querySelector(`.title-${id}`) as HTMLElement | null;
-        const desc = section.querySelector(`.description-${id}`) as HTMLElement | null;
-
-        if (line) line.style.transform = `scaleY(${itemP})`;
-        if (dot) dot.style.transform = `translateX(-50%) scale(${itemP})`;
-
-        const yShift = (1 - itemP) * 30;
-        const op = itemP > 0.1 ? itemP : 0;
-        if (title) {
-          title.style.transform = `translateY(${yShift}px)`;
-          title.style.opacity = `${op}`;
+    let resizeTimer: number;
+    let lastWidth = window.innerWidth;
+    const onWindowResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        const currentWidth = window.innerWidth;
+        if ((lastWidth <= 768 && currentWidth > 768) || (lastWidth > 768 && currentWidth <= 768)) {
+          initMode();
+        } else if (currentWidth > 768) {
+          initMode();
         }
-        if (desc) {
-          desc.style.transform = `translateY(${yShift}px)`;
-          desc.style.opacity = `${op}`;
-        }
-      });
+        lastWidth = currentWidth;
+      }, 150);
     };
 
-    const onScroll = () => {
-      if (!raf && isVisible) {
-        raf = requestAnimationFrame(updateFrame);
-      }
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-
-    const observer = new IntersectionObserver(([entry]) => {
-      isVisible = entry.isIntersecting;
-      if (isVisible) onScroll();
-    });
-    observer.observe(section);
-
-    updateFrame();
+    window.addEventListener('resize', onWindowResize, { passive: true });
   }
 
   if (document.readyState === 'loading') {
@@ -897,4 +928,5 @@ const bottomJourneyData: JourneyItem[] = [
   } else {
     setupTimeline();
   }
+  document.addEventListener('astro:page-load', setupTimeline);
 </script>

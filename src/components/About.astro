@@ -80,12 +80,54 @@ import ScrollVine from './ScrollVine.astro';
           <div class="symbol-meta">
             <div class="earth-tag-badge">
               <span class="earth-badge-dot"></span>
-              <span>Global Fellowship & Planetary Care</span>
+              <span>Symbolism of Our Crest</span>
             </div>
             <h4 class="symbol-title">The Iris & Living Earth</h4>
             <p class="symbol-desc">
-              The purple iris represents wisdom, faith, and renewal, rising peacefully from the earth to symbolize our commitment to environmental harmony and global humanitarian service.
+              Each facet of our emblem embodies the living purpose of our club:
             </p>
+
+            <div class="symbol-elements-list" role="list">
+              <div class="symbol-element-item" role="listitem">
+                <div class="element-icon-box icon-globe" aria-hidden="true">
+                  <span>🌍</span>
+                </div>
+                <div class="element-copy">
+                  <span class="element-heading">The Globe</span>
+                  <span class="element-meaning">Serving the global community</span>
+                </div>
+              </div>
+
+              <div class="symbol-element-item" role="listitem">
+                <div class="element-icon-box icon-bloom" aria-hidden="true">
+                  <span>🌸</span>
+                </div>
+                <div class="element-copy">
+                  <span class="element-heading">Bud to Blooming Iris</span>
+                  <span class="element-meaning">Symbolizes continuous growth</span>
+                </div>
+              </div>
+
+              <div class="symbol-element-item" role="listitem">
+                <div class="element-icon-box icon-purple" aria-hidden="true">
+                  <span>💜</span>
+                </div>
+                <div class="element-copy">
+                  <span class="element-heading">The Royal Purple</span>
+                  <span class="element-meaning">Dignity and visionary leadership</span>
+                </div>
+              </div>
+
+              <div class="symbol-element-item" role="listitem">
+                <div class="element-icon-box icon-leaves" aria-hidden="true">
+                  <span>🌿</span>
+                </div>
+                <div class="element-copy">
+                  <span class="element-heading">The Living Leaves</span>
+                  <span class="element-meaning">Nurturing, sustainability & responsibility</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -142,7 +184,7 @@ import ScrollVine from './ScrollVine.astro';
 
   @media (min-width: 900px) {
     .about-hero-grid {
-      grid-template-columns: 1.35fr 0.85fr;
+      grid-template-columns: 1.15fr 0.95fr;
     }
   }
 
@@ -217,9 +259,9 @@ import ScrollVine from './ScrollVine.astro';
 
   .symbol-showcase-stage {
     position: relative;
-    width: clamp(210px, 24vw, 270px);
-    height: clamp(210px, 24vw, 270px);
-    margin-bottom: 1.5rem;
+    width: clamp(190px, 20vw, 240px);
+    height: clamp(190px, 20vw, 240px);
+    margin-bottom: 1.25rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -365,19 +407,108 @@ import ScrollVine from './ScrollVine.astro';
     box-shadow: 0 0 6px var(--c-gold);
   }
 
+  .symbol-meta {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .symbol-title {
     font-family: var(--font-serif);
-    font-size: 1.25rem;
+    font-size: 1.35rem;
     font-weight: 600;
     color: var(--c-text-primary);
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.35rem;
   }
 
   .symbol-desc {
-    font-size: 0.84rem;
+    font-size: 0.85rem;
     color: var(--c-text-secondary);
-    line-height: 1.6;
-    max-width: 300px;
+    line-height: 1.5;
+    max-width: 320px;
+    margin-bottom: 0.25rem;
+  }
+
+  .symbol-elements-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    width: 100%;
+    margin-top: 0.85rem;
+    text-align: left;
+  }
+
+  .symbol-element-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.55rem 0.85rem;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(194, 155, 77, 0.22);
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(84, 57, 138, 0.04);
+    transition: transform 0.25s var(--ease-apple), border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .symbol-element-item:hover {
+    transform: translateX(3px);
+    border-color: rgba(194, 155, 77, 0.5);
+    box-shadow: 0 6px 18px rgba(122, 87, 184, 0.1);
+  }
+
+  .element-icon-box {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .icon-globe {
+    background: rgba(62, 132, 194, 0.12);
+    border: 1px solid rgba(62, 132, 194, 0.25);
+  }
+
+  .icon-bloom {
+    background: rgba(186, 104, 200, 0.14);
+    border: 1px solid rgba(186, 104, 200, 0.3);
+  }
+
+  .icon-purple {
+    background: rgba(84, 57, 138, 0.12);
+    border: 1px solid rgba(122, 87, 184, 0.3);
+  }
+
+  .icon-leaves {
+    background: rgba(67, 160, 71, 0.12);
+    border: 1px solid rgba(67, 160, 71, 0.3);
+  }
+
+  .element-copy {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .element-heading {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--c-iris-deep);
+    line-height: 1.2;
+  }
+
+  .element-meaning {
+    font-size: 0.82rem;
+    color: var(--c-text-secondary);
+    line-height: 1.35;
+    margin-top: 0.1rem;
+    font-weight: 500;
   }
 
   /* Tenets Grid */
