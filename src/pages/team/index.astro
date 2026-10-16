@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { allTeamMembers, lionAdvisor } from '../../data/team';
+import { allTeamMembers, executiveOfficers, boardDirectors, lionAdvisor } from '../../data/team';
 
 const pageTitle = "Our Team — Leo Club of EIC";
 const pageDescription = "Meet the stewards, executive officers, and directors of the Leo Club of Ethos International for the 2026/2027 Lionistic year.";
@@ -37,7 +37,7 @@ const pageDescription = "Meet the stewards, executive officers, and directors of
         <div class="cabinet-status-notice">
           <span class="status-pulse-dot"></span>
           <p>
-            <strong>2026/2027 Term In-Progress:</strong> Executive cabinet appointments and official portrait studio sessions are actively underway. Full individual rosters will be published upon installation. Leo Advisor credentials confirmed.
+            <strong>2026/2027 Term Confirmed:</strong> Official executive appointments and directorate portfolios for the 2026/2027 Lionistic term under President Sera Sepion.
           </p>
         </div>
       </header>
@@ -86,11 +86,11 @@ const pageDescription = "Meet the stewards, executive officers, and directors of
               <span class="eyebrow eyebrow-gold">Cabinet Horizon</span>
               <h3 class="bureau-title">Leadership Through Purpose</h3>
               <p class="bureau-copy">
-                The incoming 2026/2027 administration inherits an inspiring legacy of service. Our leadership cabinet brings together dedicated minds across humanitarian welfare, environmental sustainability, digital media, and youth empowerment.
+                The 2026/2027 administration inherits an inspiring legacy of service. Under President Sera Sepion, our leadership cabinet brings together dedicated minds across humanitarian welfare, environmental sustainability, digital media, and youth empowerment.
               </p>
               <div class="bureau-stats">
                 <div class="b-stat">
-                  <span class="b-num">18</span>
+                  <span class="b-num">16</span>
                   <span class="b-lbl">Leadership Posts</span>
                 </div>
                 <div class="b-stat">
@@ -120,10 +120,10 @@ const pageDescription = "Meet the stewards, executive officers, and directors of
               All Cabinet ({allTeamMembers.length})
             </button>
             <button type="button" class="tab-btn" data-filter="executive" role="tab" aria-selected="false">
-              Executive Committee (8)
+              Executive Committee ({executiveOfficers.filter(m => m.category === 'executive').length})
             </button>
             <button type="button" class="tab-btn" data-filter="director" role="tab" aria-selected="false">
-              Board of Directors (8)
+              Board of Directors ({boardDirectors.length})
             </button>
             <button type="button" class="tab-btn" data-filter="advisor" role="tab" aria-selected="false">
               Leo Advisor (1)

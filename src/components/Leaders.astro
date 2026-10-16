@@ -1,10 +1,20 @@
 ---
-import { executiveOfficers, lionAdvisor } from '../data/team';
+import { executiveOfficers, lionAdvisor, type TeamMember } from '../data/team';
 import BotanicalAccent from './BotanicalAccent.astro';
 import ScrollVine from './ScrollVine.astro';
 
-const displayLeaders = [
-  ...executiveOfficers.filter(m => m.id !== lionAdvisor.id).slice(0, 5),
+const primaryOfficersOrder = [
+  'exec-president',
+  'exec-vp1',
+  'exec-vp2',
+  'exec-secretary',
+  'exec-treasurer'
+];
+
+const displayLeaders: TeamMember[] = [
+  ...primaryOfficersOrder
+    .map(id => executiveOfficers.find(m => m.id === id))
+    .filter((m): m is TeamMember => m !== undefined),
   lionAdvisor
 ];
 ---
@@ -65,13 +75,13 @@ const displayLeaders = [
       <div class="leaders-curator-note">
         <span class="curator-dot"></span>
         <p>
-          2026/2027 Executive Board & Cabinet in progress. Leo Advisor verified.
+          Official 2026/2027 Executive Board & Cabinet under President Sera Sepion. Leo Advisor Lion Anthony Sepion verified.
         </p>
       </div>
 
       <div class="leaders-directory-actions">
         <a href="/team" class="btn btn-primary">
-          Meet Full Cabinet (18 Members) →
+          Meet Full Cabinet (16 Members) →
         </a>
         <a href="/history/leaders" class="btn btn-secondary">
           Former Leaders Archive

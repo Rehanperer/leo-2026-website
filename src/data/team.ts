@@ -25,83 +25,73 @@ export const lionAdvisor: TeamMember = {
 export const executiveOfficers: TeamMember[] = [
   {
     id: "exec-president",
-    name: "Leo President",
+    name: "Sera Sepion",
     role: "Club President",
     department: "Executive Bureau",
     category: "executive",
-    initials: "LP",
-    quote: "Leading with grace, igniting purposeful action, and empowering our members to serve fearlessly across our community.",
-    isPlaceholder: true
+    initials: "SS",
+    quote: "Leading with grace, fostering empathy, and creating enduring opportunities for youth to serve.",
+    isPlaceholder: false
   },
   {
     id: "exec-vp1",
-    name: "Leo 1st Vice President",
+    name: "Vinuga Ranulge",
     role: "1st Vice President",
     department: "Administration & Strategy",
     category: "executive",
-    initials: "1VP",
+    initials: "VR",
     quote: "Harmonizing operational excellence with high-impact community outreach.",
-    isPlaceholder: true
+    isPlaceholder: false
   },
   {
     id: "exec-vp2",
-    name: "Leo 2nd Vice President",
+    name: "Abidth Sharif",
     role: "2nd Vice President",
     department: "Service Initiatives & Outreach",
     category: "executive",
-    initials: "2VP",
+    initials: "AS",
     quote: "Designing sustainable service projects that touch lives and spark hope.",
-    isPlaceholder: true
-  },
-  {
-    id: "exec-vp3",
-    name: "Leo 3rd Vice President",
-    role: "3rd Vice President",
-    department: "Youth Leadership Development",
-    category: "executive",
-    initials: "3VP",
-    quote: "Nurturing emerging talent and creating collaborative avenues for growth.",
-    isPlaceholder: true
+    isPlaceholder: false
   },
   {
     id: "exec-secretary",
-    name: "Leo Secretary",
+    name: "Krishanthani Kumar",
     role: "Honorary Secretary",
     department: "Secretariat & Records",
     category: "executive",
-    initials: "SEC",
-    quote: "Guiding club governance with meticulous record-keeping and clear communication.",
-    isPlaceholder: true
+    initials: "KK",
+    quote: "Guiding club governance with meticulous record-keeping, transparency, and timely communication.",
+    isPlaceholder: false
   },
   {
-    id: "exec-ast-secretary-1",
-    name: "Leo Assistant Secretary",
+    id: "exec-ast-secretary",
+    name: "Zakif Zuhri",
     role: "Assistant Secretary",
     department: "Secretariat Support",
     category: "executive",
-    initials: "AS",
-    quote: "Ensuring timely reporting, documentation, and administrative harmony.",
-    isPlaceholder: true
+    initials: "ZZ",
+    quote: "Ensuring administrative harmony, documentation excellence, and seamless reporting.",
+    isPlaceholder: false
   },
   {
     id: "exec-treasurer",
-    name: "Leo Treasurer",
+    name: "Safa Riyall",
     role: "Honorary Treasurer",
     department: "Finance & Stewardship",
     category: "executive",
-    initials: "TRS",
-    quote: "Stewarding resources with transparency, responsibility, and fiscal rigor.",
-    isPlaceholder: true
+    initials: "SR",
+    quote: "Stewarding club resources with unwavering integrity, transparency, and fiscal rigor.",
+    isPlaceholder: false
   },
   {
     id: "exec-ast-treasurer",
-    name: "Leo Assistant Treasurer",
+    name: "Dinuli Rodrigo",
     role: "Assistant Treasurer",
     department: "Finance & Accounts",
     category: "executive",
-    initials: "AT",
-    quote: "Maintaining accountability and assisting with financial administration.",
-    isPlaceholder: true
+    initials: "DR",
+    quote: "Upholding fiscal responsibility and accountability in every community investment.",
+    isPlaceholder: false
   },
   lionAdvisor
 ];
@@ -109,83 +99,83 @@ export const executiveOfficers: TeamMember[] = [
 export const boardDirectors: TeamMember[] = [
   {
     id: "dir-environment",
-    name: "Leo Director of Environment",
+    name: "Desandi Hettiarachi",
     role: "Director of Environment",
     department: "Sustainability & Green Action",
     category: "director",
-    initials: "ENV",
+    initials: "DH",
     quote: "Championing reforestation, conservation drives, and eco-friendly community stewardship.",
-    isPlaceholder: true
+    isPlaceholder: false
   },
   {
     id: "dir-media",
-    name: "Leo Director of Media",
-    role: "Director of Media & PR",
+    name: "Lindsay Muya",
+    role: "Director of Media",
     department: "Creative Studio & Brand Communications",
     category: "director",
-    initials: "MED",
+    initials: "LM",
     quote: "Crafting cinematic narratives that broadcast the heartbeat of Leo service to the world.",
-    isPlaceholder: true
+    isPlaceholder: false
   },
   {
     id: "dir-children-elders",
-    name: "Leo Director of Children & Elders",
+    name: "Dinara Weerasinghe",
     role: "Director of Children & Elders",
     department: "Humanitarian Welfare",
     category: "director",
-    initials: "WEL",
+    initials: "DW",
     quote: "Bringing warmth, dignity, and active care to our society's most cherished generations.",
-    isPlaceholder: true
+    isPlaceholder: false
   },
   {
     id: "dir-sports",
-    name: "Leo Director of Sports",
-    role: "Director of Sports & Recreation",
+    name: "Treasure Boco",
+    role: "Director of Sports",
     department: "Youth Fitness & Fellowship",
     category: "director",
-    initials: "SPT",
+    initials: "TB",
     quote: "Fostering camaraderie, vitality, and healthy sportsmanship through dynamic events.",
-    isPlaceholder: true
+    isPlaceholder: false
   },
   {
     id: "dir-learning",
-    name: "Leo Director of Learning",
+    name: "Kenoli Fernando",
     role: "Director of Learning & Management",
     department: "Workshops & Skill Building",
     category: "director",
-    initials: "LRN",
+    initials: "KF",
     quote: "Empowering our members with modern vocational proficiencies and managerial insight.",
-    isPlaceholder: true
+    isPlaceholder: false
   },
   {
     id: "dir-health",
-    name: "Leo Director of Health",
-    role: "Director of Health & Wellbeing",
+    name: "Abhithi Amilthan",
+    role: "Director of Health",
     department: "Community Healthcare",
     category: "director",
-    initials: "HLT",
-    quote: "Organizing medical camps, wellness awareness, and preventative health outreach.",
-    isPlaceholder: true
-  },
-  {
-    id: "dir-animal-welfare",
-    name: "Leo Director of Animal Welfare",
-    role: "Director of Animal Welfare",
-    department: "Humane Care & Veterinary Aid",
-    category: "director",
-    initials: "ANI",
-    quote: "Advocating for shelter animals, vaccination drives, and compassionate treatment of strays.",
-    isPlaceholder: true
+    initials: "AA",
+    quote: "Organizing healthcare camps, wellness awareness, and preventative health outreach.",
+    isPlaceholder: false
   },
   {
     id: "dir-technology",
-    name: "Leo Director of Technology",
-    role: "Director of Technology & Systems",
+    name: "Sachitha Rajapakshe",
+    role: "Director of Technology",
     department: "Digital Innovation",
     category: "director",
-    initials: "TEC",
+    initials: "SR",
     quote: "Powering modern digital platforms and innovative tools to scale our humanitarian reach.",
-    isPlaceholder: true
+    isPlaceholder: false
+  },
+  {
+    id: "dir-animal-welfare",
+    name: "Sanaya Liyanage",
+    role: "Director of Animal Welfare",
+    department: "Humane Care & Veterinary Aid",
+    category: "director",
+    initials: "SL",
+    quote: "Advocating for shelter animals, vaccination drives, and compassionate treatment of strays.",
+    isPlaceholder: false
   }
 ];
 

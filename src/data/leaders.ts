@@ -7,54 +7,69 @@ export interface Leader {
   initials: string;
 }
 
-// NOTE: Placeholder leadership board - swap easily when official 2026 executive portraits & roster are confirmed
 export const executiveBoard: Leader[] = [
   {
     id: "president",
-    name: "Leo President",
+    name: "Sera Sepion",
     role: "Club President",
     department: "Executive Bureau",
     quote: "Leading with grace, fostering empathy, and creating enduring opportunities for youth to serve.",
-    initials: "LP"
+    initials: "SS"
   },
   {
     id: "vp1",
-    name: "Leo 1st Vice President",
+    name: "Vinuga Ranulge",
     role: "1st Vice President",
     department: "Administration & Operations",
-    quote: "Turning shared visions into purposeful actions that uplift our community.",
-    initials: "1VP"
+    quote: "Harmonizing operational excellence with high-impact community outreach.",
+    initials: "VR"
   },
   {
     id: "vp2",
-    name: "Leo 2nd Vice President",
+    name: "Abidth Sharif",
     role: "2nd Vice President",
     department: "Service Projects & Outreach",
     quote: "Every community initiative begins with compassion and flourishes through dedication.",
-    initials: "2VP"
+    initials: "AS"
   },
   {
     id: "secretary",
-    name: "Leo Secretary",
+    name: "Krishanthani Kumar",
     role: "Honorary Secretary",
     department: "Secretariat & Records",
     quote: "Precision, transparency, and timely communication guide our club's legacy.",
-    initials: "LS"
+    initials: "KK"
+  },
+  {
+    id: "ast-secretary",
+    name: "Zakif Zuhri",
+    role: "Assistant Secretary",
+    department: "Secretariat Support",
+    quote: "Ensuring administrative harmony, documentation excellence, and seamless reporting.",
+    initials: "ZZ"
   },
   {
     id: "treasurer",
-    name: "Leo Treasurer",
+    name: "Safa Riyall",
     role: "Honorary Treasurer",
     department: "Finance & Stewardship",
     quote: "Stewarding our club resources with unwavering integrity and financial responsibility.",
-    initials: "LT"
+    initials: "SR"
+  },
+  {
+    id: "ast-treasurer",
+    name: "Dinuli Rodrigo",
+    role: "Assistant Treasurer",
+    department: "Finance & Accounts",
+    quote: "Maintaining accountability and assisting with financial administration.",
+    initials: "DR"
   },
   {
     id: "advisor",
-    name: "Lion Advisor",
+    name: "Lion Anthony Sepion",
     role: "Leo Club Advisor",
     department: "Lions Clubs International",
     quote: "Guiding the next generation of compassionate leaders to make their mark on the world.",
-    initials: "LA"
+    initials: "AS"
   }
 ];
